@@ -282,33 +282,6 @@ local Signal = {} do
 end
 
 local Module = {} do
-  local SkillsDebounce = {}
-  local CachedEnemies = {}
-  local CachedBring = {}
-  local CachedChars = {}
-  local CachedTools = {}
-  local Items = {}
-  
-  local placeId = game.PlaceId
-  local HitBoxSize = Vector3.new(50, 50, 50)
-  local SeaList = {"TravelMain", "TravelDressrosa", "TravelZou"}
-  
-  Module.Sea = (placeId == 2753915549 and 1) or (placeId == 4442272183 and 2) or (placeId == 7449423635 and 3) or 0
-  
-  Module.IsSuperBring = false
-  Module.RemoveCanTouch = 0
-  Module.AttackCooldown = 0.3
-  Module.MaxLevel = 2800
-  Module.Webhooks = false
-  Module.JobIds = true
-  
-  Module.allMobs = { __RaidBoss = {}, __Bones = {}, __Elite = {}, __CakePrince = {} }
-  Module.Progress = {}
-  Module.SpawnedFruits = {}
-  Module.BossesName = {}
-  Module.EnemyLocations = {}
-  Module.SpawnLocations = {}
-
 	local Cached = {
 		Closest = nil,
 		Equipped = nil,
@@ -653,10 +626,11 @@ local Module = {} do
 		Module.SpawnLocations = {};
 		
 		Module.Cached = Cached;
-		-- Module.Debounce = Debounce
+		Module.Debounce = Debounce
 		Module.IsAlive = IsAlive;
 		Module.FireRemote = FireRemote;
-		
+
+        Module.Sea = ({ [2753915549] = 1, [4442272183] = 2, [7449423635] = 3 })[game.PlaceId] or 0;
 		local SeaMaxVersion = ({26.61, 26.61, 26.61})[Module.GameData.Sea];
 		Module.SuperFastAttack = Module.GameData.NumberVersion <= SeaMaxVersion;
 	end
