@@ -299,6 +299,8 @@ local Module = {} do
 		GetEnemy = 0,
 		Skills = {}
 	}
+
+    Module.Sea = (placeId == 2753915549 and 1) or (placeId == 4442272183 and 2) or (placeId == 7449423635 and 3) or 0
 	
 	Module.GameData = {
 		Sea = ({ [2753915549] = 1, [4442272183] = 2, [7449423635] = 3 })[game.PlaceId] or 0;
