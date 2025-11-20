@@ -123,7 +123,7 @@ local Module = {} do
   local HitBoxSize = Vector3.new(50, 50, 50)
   local SeaList = {"TravelMain", "TravelDressrosa", "TravelZou"}
   
-  Module.Sea = (placeId == 2753915549 and 1) or (placeId == 4442272183 and 2) or (placeId == 7449423635 and 3) or 0
+  Module.Sea = (placeId == 2753915549 or placeId == 85211729168715 and 1) or (placeId == 4442272183 or placeId == 79091703265657 and 2) or (placeId == 7449423635 or  placeId == 100117331123089 and 3) or 0
   
   Module.IsSuperBring = false
   Module.RemoveCanTouch = 0
