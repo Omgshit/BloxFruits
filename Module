@@ -373,55 +373,6 @@ local Module = {} do
       Position = CFrame.new(-10218, 333, -9444)
     }
   }
-  Module.Shop = {
-    {"Frags", {{"Race Reroll", {"BlackbeardReward", "Reroll", "2"}}, {"Reset Stats", {"BlackbeardReward", "Refund", "2"}}}},
-    {"Fighting Style", {
-      {"Buy Black Leg", {"BuyBlackLeg"}},
-      {"Buy Electro", {"BuyElectro"}},
-      {"Buy Fishman Karate", {"BuyFishmanKarate"}},
-      {"Buy Dragon Claw", {"BlackbeardReward", "DragonClaw", "2"}},
-      {"Buy Superhuman", {"BuySuperhuman"}},
-      {"Buy Death Step", {"BuyDeathStep"}},
-      {"Buy Sharkman Karate", {"BuySharkmanKarate"}},
-      {"Buy Electric Claw", {"BuyElectricClaw"}},
-      {"Buy Dragon Talon", {"BuyDragonTalon"}},
-      {"Buy GodHuman", {"BuyGodhuman"}},
-      {"Buy Sanguine Art", {"BuySanguineArt"}}
-      -- {"Buy Divine Art", {"BuyDivineArt"}}
-    }},
-    {"Ability Teacher", {
-      {"Buy Geppo", {"BuyHaki", "Geppo"}},
-      {"Buy Buso", {"BuyHaki", "Buso"}},
-      {"Buy Soru", {"BuyHaki", "Soru"}},
-      {"Buy Ken", {"KenTalk", "Buy"}}
-    }},
-    {"Sword", {
-      {"Buy Katana", {"BuyItem", "Katana"}},
-      {"Buy Cutlass", {"BuyItem", "Cutlass"}},
-      {"Buy Dual Katana", {"BuyItem", "Dual Katana"}},
-      {"Buy Iron Mace", {"BuyItem", "Iron Mace"}},
-      {"Buy Triple Katana", {"BuyItem", "Triple Katana"}},
-      {"Buy Pipe", {"BuyItem", "Pipe"}},
-      {"Buy Dual-Headed Blade", {"BuyItem", "Dual-Headed Blade"}},
-      {"Buy Soul Cane", {"BuyItem", "Soul Cane"}},
-      {"Buy Bisento", {"BuyItem", "Bisento"}}
-    }},
-    {"Gun", {
-      {"Buy Musket", {"BuyItem", "Musket"}},
-      {"Buy Slingshot", {"BuyItem", "Slingshot"}},
-      {"Buy Flintlock", {"BuyItem", "Flintlock"}},
-      {"Buy Refined Slingshot", {"BuyItem", "Refined Slingshot"}},
-      {"Buy Dual Flintlock", {"BuyItem", "Dual Flintlock"}},
-      {"Buy Cannon", {"BuyItem", "Cannon"}},
-      {"Buy Kabucha", {"BlackbeardReward", "Slingshot", "2"}}
-    }},
-    {"Accessories", {
-      {"Buy Black Cape", {"BuyItem", "Black Cape"}},
-      {"Buy Swordsman Hat", {"BuyItem", "Swordsman Hat"}},
-      {"Buy Tomoe Ring", {"BuyItem", "Tomoe Ring"}}
-    }},
-    {"Race", {{"Ghoul Race", {"Ectoplasm", "Change", 4}}, {"Cyborg Race", {"CyborgTrainer", "Buy"}}}}
-  }
   
   function EnableBuso()
     local Char = Player.Character
@@ -1198,49 +1149,6 @@ local Module = {} do
     CameraShaker:Stop()
     if hookfunction then
       hookfunction(DeathM, function(...) return ... end)
-    end
-  end)
-  
-  task.spawn(function()
-    local OwnersId = { 3095250 }
-    local OwnersFriends = {}
-    
-    local function StopFarming()
-     print("ai")
-    end
-    
-    local function OnPlayerAdded(__Player, Error)
-      if __Player == Player then return end
-      
-      if table.find(OwnersId, __Player.UserId) or OwnersFriends[__Player.UserId] then
-        return if Error then error("A-D-M-I-N", 2) else StopFarming()
-      elseif WaitChilds(__Player, "Data", "Level").Value > Module.MaxLevel then
-        return if Error then error("A-D-M-I-N", 2) else StopFarming()
-      end
-    end
-    
-    table.insert(Connections, Players.PlayerAdded:Connect(OnPlayerAdded))
-    for _, __Player in ipairs(Players:GetPlayers()) do OnPlayerAdded(__Player, true) end
-    
-    for i = 1, #OwnersId do
-      local Friends = Players:GetFriendsAsync(OwnersId[i])
-      
-      while not Friends.IsFinished do
-        local FriendsList = Friends:GetCurrentPage()
-        
-        for i = 1, #FriendsList do
-          local Friend = FriendsList[i]
-          local __Player = Players:GetPlayerByUserId(Friend.Id)
-          
-          if __Player then
-            OnPlayerAdded(__Player)
-          else
-            table.insert(OwnersFriends, Friend.Id)
-          end
-        end
-        
-        Friends:AdvanceToNextPageAsync()
-      end
     end
   end)
   
