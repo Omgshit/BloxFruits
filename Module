@@ -123,15 +123,22 @@ local Module = {} do
   local HitBoxSize = Vector3.new(50, 50, 50)
   local SeaList = {"TravelMain", "TravelDressrosa", "TravelZou"}
 
-if placeId == 2753915549 or placeId == 85211729168715 then
-    Module.Sea = 1
-elseif placeId == 4442272183 or placeId == 79091703265657 then
-    Module.Sea = 2
-elseif placeId == 7449423635 or placeId == 100117331123089 then
-    Module.Sea = 3
-else
-    Module.Sea = 0
+local sea1 = {2753915549, 85211729168715}
+local sea2 = {4442272183, 79091703265657}
+local sea3 = {7449423635, 100117331123089}
+
+local function detectSea(placeId)
+    if table.find(sea1, placeId) then
+        return 1
+    elseif table.find(sea2, placeId) then
+        return 2
+    elseif table.find(sea3, placeId) then
+        return 3
+    end
+    return 0
 end
+
+Module.Sea = detectSea(placeId)
 
   Module.IsSuperBring = false
   Module.RemoveCanTouch = 0
