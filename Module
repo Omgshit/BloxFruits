@@ -1517,7 +1517,8 @@ Module.FastAttack = (function()
 				["Bazooka"] = "Position",
 				["Cannon"] = "Position",
 				["Dragonstorm"] = "Overheat"
-			}
+			},
+			HitboxLimbs = {"RightLowerArm", "RightUpperArm", "LeftLowerArm", "LeftUpperArm", "RightHand", "LeftHand"}
 		}
 		
 		local RE_RegisterAttack = Net:WaitForChild("RE/RegisterAttack")
@@ -1551,6 +1552,8 @@ Module.FastAttack = (function()
 			end
 		end)
 		
+		local IsAlive = Module.IsAlive
+		
 		FastAttack.ShootsFunctions = {
 			["Skull Guitar"] = function(self: FastAttack, Equipped: Tool, Position: Vector3)
 				Equipped.RemoteEvent:FireServer("TAP", Position) -- Events.ShootSoulGuitar:Invoke(Position)
@@ -1562,19 +1565,6 @@ Module.FastAttack = (function()
 				Enemies[i][2].Size = Vector3.one * 50
 				Enemies[i][2].Transparency = 1
 			end
-		end
-		
-		local function CheckStun(ToolTip: string, Character: Character, Humanoid: Humanoid): boolean
-			-- local Stun = Character:FindFirstChild("Stun")
-			local Busy = Character:FindFirstChild("Busy")
-			
-			if Humanoid.Sit and (ToolTip == "Sword" or ToolTip == "Melee" or ToolTip == "Gun") then
-				return false
-			-- elseif Stun and Stun.Value > 0 then {{ or Busy and Busy.Value }}
-			--	 return false
-			end
-			
-			return true
 		end
 		
 		function FastAttack:ShootInTarget(TargetPosition: Vector3): (nil)
@@ -1610,37 +1600,47 @@ Module.FastAttack = (function()
 			end
 		end
 		
-		function FastAttack:NewBladeHit(BladeHits: table, Hitbox: BasePart, Character: Model): (nil)
-			if self.PrimaryBladeHit then
-				table.insert(BladeHits, { Character, Hitbox })
-			else
-				self.PrimaryBladeHit = Hitbox
+		function FastAttack:CheckStun(ToolTip: string, Character: Character, Humanoid: Humanoid): boolean
+			local Stun = Character:FindFirstChild("Stun")
+			local Busy = Character:FindFirstChild("Busy")
+			
+			if Humanoid.Sit and (ToolTip == "Sword" or ToolTip == "Melee" or ToolTip == "Gun") then
+				return false
+			-- elseif Stun and Stun.Value > 0 then {{ or Busy and Busy.Value }}
+			--	 return false
 			end
+			
+			return true
 		end
 		
-		function FastAttack:Process(assert: boolean, List: Folder, BladeHits: table, MyPosition: Vector3, Distance: number): (nil)
+		function FastAttack:Process(assert: boolean, Enemies: Folder, BladeHits: table, Position: Vector3, Distance: number): (nil)
 			if not assert then return end
 			
-			local MyCharacter = Player.Character;
-			local Targets = List:GetChildren();
+			local HitboxLimbs = self.HitboxLimbs
+			local Mobs = Enemies:GetChildren()
 			
-			for i = 1, #Targets do
-				local Character = Targets[i]
-				if Character == MyCharacter or Character:GetAttribute("IsBoat") or not IsAlive(Character) then continue end
-				local RootPart = Character.PrimaryPart
+			for i = 1, #Mobs do
+				local Enemy = Mobs[i]
+				local BasePart = Enemy:FindFirstChild(HitboxLimbs[math.random(#HitboxLimbs)]) or Enemy.PrimaryPart
 				
-				if RootPart and (Character.Parent ~= Characters or CheckPlayerAlly(Character)) then
-					local Hitbox = GetRandomHitboxLimb(Character) or RootPart
-					
-					if Hitbox and (MyPosition - RootPart.Position).Magnitude <= Distance then
-						self:NewBladeHit(BladeHits, Hitbox, Character)
+				if not BasePart then continue end
+				
+				local CanAttack = Enemy.Parent == Characters and CheckPlayerAlly(Players:GetPlayerFromCharacter(Enemy))
+				
+				if Enemy ~= Player.Character and (Enemy.Parent ~= Characters or CanAttack) then
+					if IsAlive(Enemy) and (Position - BasePart.Position).Magnitude <= Distance then
+						if not self.EnemyRootPart then
+							self.EnemyRootPart = BasePart
+						else
+							table.insert(BladeHits, { Enemy, BasePart })
+						end
 					end
 				end
 			end
 		end
 		
 		function FastAttack:GetAllBladeHits(Character: Character, Distance: number?): (nil)
-			local Position = Character.Humanoid.RootPart.Position
+			local Position = Character:GetPivot().Position
 			local BladeHits = {}
 			Distance = Distance or self.Distance
 			
@@ -1692,23 +1692,24 @@ Module.FastAttack = (function()
 		function FastAttack:UseFruitM1(Character: Character, Equipped: Tool, Combo: number): (nil)
 			if self.UsingM1 then return end
 			
-			local MyPosition = Character.Humanoid.RootPart.Position
-			local _Enemies = Enemies:GetChildren()
+			local M1Active = Equipped:FindFirstChild("M1Active")
+			local Position = Character:GetPivot().Position
+			local EnemyList = Enemies:GetChildren()
 			
-			for i = 1, #_Enemies do
-				local Enemy = _Enemies[i]
-				local RootPart = IsAlive(Enemy) and Enemy.PrimaryPart
-				
-				if RootPart and (RootPart.Position - MyPosition).Magnitude <= 50 then
-					Equipped.LeftClickRemote:FireServer((RootPart.Position - MyPosition).Unit, Combo)
+			for i = 1, #EnemyList do
+				local Enemy = EnemyList[i]
+				local PrimaryPart = Enemy.PrimaryPart
+				if IsAlive(Enemy) and PrimaryPart and (PrimaryPart.Position - Position).Magnitude <= 50 then
+					local Direction = (PrimaryPart.Position - Position).Unit
+					Equipped.LeftClickRemote:FireServer(Direction, Combo)
 				end
 			end
 		end
 		
 		function FastAttack:UseNormalClick(Humanoid: Humanoid, Character: Character, Cooldown: number): (nil)
-			self.PrimaryBladeHit = nil
+			self.EnemyRootPart = nil
 			local BladeHits = self:GetAllBladeHits(Character)
-			local EnemyHitBox = self.PrimaryBladeHit
+			local EnemyHitBox = self.EnemyRootPart
 			
 			if EnemyHitBox then
 				if SUCCESS_FLAGS and COMBAT_REMOTE_THREAD and HIT_FUNCTION then
@@ -1831,8 +1832,6 @@ Module.FastAttack = (function()
 			local Character = Player.Character
 			local Humanoid = Character.Humanoid
 			
-			if not Humanoid.RootPart then return end
-			
 			local Equipped = Character:FindFirstChildOfClass("Tool")
 			local ToolTip = Equipped and Equipped.ToolTip
 			local ToolName = Equipped and Equipped.Name
@@ -1843,7 +1842,7 @@ Module.FastAttack = (function()
 			
 			local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or 0.3
 			
-			if (tick() - self.Debounce) >= Cooldown and CheckStun(ToolTip, Character, Humanoid) then
+			if (tick() - self.Debounce) >= Cooldown and self:CheckStun(ToolTip, Character, Humanoid) then
 				local Combo = self:GetCombo()
 				Cooldown += if Combo >= 4 then 0.05 else 0
 				
