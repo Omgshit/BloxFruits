@@ -544,7 +544,7 @@ Module.Sea = detectSea(placeId)
 				
 				local Debounce = Debounces.Skills[Skill]
 				
-				if Enabled and (not Debounce or (tick() - Debounce) >= HIDDEN_SETTINGS.SKILL_COOLDOWN) then
+				if Enabled and (not Debounce or (tick() - Debounce) >= 1) then
 					VirtualInputManager:SendKeyEvent(true, Skill, false, game)
 					VirtualInputManager:SendKeyEvent(false, Skill, false, game)
 					Debounces.Skills[Skill] = tick()
