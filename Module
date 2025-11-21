@@ -1771,30 +1771,6 @@ Module.FastAttack = (function()
 			end
 		end
 		
-		function FastAttack:SuperFastAttack(EnemyHitBox, BladeHits, Cooldown)
-			if Module.SuperFastAttack and Settings.FastAttack then
-				local Enemy = EnemyHitBox.Parent
-				local Times = if Enemy:GetAttribute("IsBoss") then 25 elseif Enemy:GetAttribute("RaidBoss") then 40 else 6
-				
-				self.Debounce = tick() + 9e9;
-				local Overheat = 0;
-				
-				table.insert(BladeHits, { EnemyHitBox.Parent, EnemyHitBox })
-				table.insert(BladeHits, math.random())
-				
-				while Overheat <= 0.4 do
-					for i = 1, Times do
-						RE_RegisterAttack:FireServer(self:GetCombo())
-						HIT_FUNCTION(EnemyHitBox, BladeHits)
-					end
-					Overheat += task.wait(if Times > 10 then 0.07 else 0)
-				end
-				
-				self.Debounce = 0;
-				return true;
-			end
-		end
-		
 		function FastAttack:UseNormalClick(Cooldown: number): (nil)
 			self:UpdateBladeHits()
 			
@@ -1802,10 +1778,8 @@ Module.FastAttack = (function()
 				local PrimaryRootPart = table.remove(CurrentBladeHits)[2]
 				
 				if SUCCESS_FLAGS and COMBAT_REMOTE_THREAD and HIT_FUNCTION then
-					if not self:SuperFastAttack(PrimaryRootPart, CurrentBladeHits, Cooldown) then
-						RE_RegisterAttack:FireServer(Cooldown)
-						HIT_FUNCTION(PrimaryRootPart, CurrentBladeHits)
-					end
+					RE_RegisterAttack:FireServer(Cooldown)
+					HIT_FUNCTION(PrimaryRootPart, CurrentBladeHits)
 				elseif SUCCESS_FLAGS and not COMBAT_REMOTE_THREAD then
 					RE_RegisterAttack:FireServer(Cooldown)
 					RE_RegisterHit:FireServer(PrimaryRootPart, CurrentBladeHits)
@@ -1930,7 +1904,7 @@ Module.FastAttack = (function()
 				if Combo >= 4 then Cooldown += 0.05 end;
 				
 				self.Equipped = Equipped;
-				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then tick() + 0.05 else tick();
+				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then tick() + (Cooldown / 2) else tick();
 				MyRootPartPosition = Character.Humanoid.RootPart.Position;
 				
 				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] then
