@@ -1489,7 +1489,8 @@ Module.Sea = detectSea(placeId)
     return module
   end)()
   
-Module.FastAttack = (function()
+
+	Module.FastAttack = (function()
 		local FastAttack = {
 			Distance = 50,
 			attackMobs = true,
