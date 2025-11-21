@@ -517,11 +517,7 @@ Module.Sea = detectSea(placeId)
     return Module.Bosses[Name] and true
   end
   
-  function Module.UseSkills(Target: any?, Skills: table?): (nil)
-    if Player:DistanceFromCharacter(Target.Position) >= 60 then
-      return nil
-    end
-    
+  function Module.UseSkills(Skills: table?): (nil)  
     for Skill, Enabled in Skills do
       if Enabled then
         VirtualInputManager:SendKeyEvent(true, Skill, false, game)
