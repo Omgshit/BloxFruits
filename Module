@@ -1556,16 +1556,9 @@ Module.FastAttack = (function()
 		
 		FastAttack.ShootsFunctions = {
 			["Skull Guitar"] = function(self: FastAttack, Equipped: Tool, Position: Vector3)
-				Equipped.RemoteEvent:FireServer("TAP", Position) -- Events.ShootSoulGuitar:Invoke(Position)
+				Events.ShootSoulGuitar:Invoke(Position) -- Equipped.RemoteEvent:FireServer("TAP", Position)
 			end
 		}
-		
-		local function ExpandsHitBox(Enemies)
-			for i = 1, #Enemies do
-				Enemies[i][2].Size = Vector3.one * 50
-				Enemies[i][2].Transparency = 1
-			end
-		end
 		
 		function FastAttack:ShootInTarget(TargetPosition: Vector3): (nil)
 			local Equipped = IsAlive(Player.Character) and Player.Character:FindFirstChildOfClass("Tool")
@@ -1690,9 +1683,6 @@ Module.FastAttack = (function()
 		end
 		
 		function FastAttack:UseFruitM1(Character: Character, Equipped: Tool, Combo: number): (nil)
-			if self.UsingM1 then return end
-			
-			local M1Active = Equipped:FindFirstChild("M1Active")
 			local Position = Character:GetPivot().Position
 			local EnemyList = Enemies:GetChildren()
 			
@@ -1701,7 +1691,7 @@ Module.FastAttack = (function()
 				local PrimaryPart = Enemy.PrimaryPart
 				if IsAlive(Enemy) and PrimaryPart and (PrimaryPart.Position - Position).Magnitude <= 50 then
 					local Direction = (PrimaryPart.Position - Position).Unit
-					Equipped.LeftClickRemote:FireServer(Direction, Combo)
+					return Equipped.LeftClickRemote:FireServer(Direction, Combo)
 				end
 			end
 		end
@@ -1709,18 +1699,18 @@ Module.FastAttack = (function()
 		function FastAttack:UseNormalClick(Humanoid: Humanoid, Character: Character, Cooldown: number): (nil)
 			self.EnemyRootPart = nil
 			local BladeHits = self:GetAllBladeHits(Character)
-			local EnemyHitBox = self.EnemyRootPart
+			local EnemyRoot = self.EnemyRootPart
 			
-			if EnemyHitBox then
+			if EnemyRoot then
 				if SUCCESS_FLAGS and COMBAT_REMOTE_THREAD and HIT_FUNCTION then
 					RE_RegisterAttack:FireServer(Cooldown)
-					HIT_FUNCTION(EnemyHitBox, BladeHits)
+					HIT_FUNCTION(EnemyRoot, BladeHits)
 				elseif SUCCESS_FLAGS and not COMBAT_REMOTE_THREAD then
 					RE_RegisterAttack:FireServer(Cooldown)
-					RE_RegisterHit:FireServer(EnemyHitBox, BladeHits)
+					RE_RegisterHit:FireServer(EnemyRoot, BladeHits)
 				else
-					table.insert(BladeHits, { Enemy, EnemyHitBox })
-					ExpandsHitBox(BladeHits)
+					EnemyRoot.Size = Vector3.one * 50
+					for i = 1, #BladeHits do BladeHits[i][2].Size = Vector3.one * 50 end
 					
 					VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1);task.wait(0.05)
 					VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
