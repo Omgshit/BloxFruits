@@ -1122,69 +1122,58 @@ Module.Sea = detectSea(placeId)
     table.insert(Connections, Locations.ChildAdded:Connect(NewIslandAdded))
   end)
   
-  Module.Inventory = (function()
-		local Inventory = {
-			Unlocked = setmetatable({}, { __index = function() return false end }),
-			Mastery = setmetatable({}, { __index = function() return 0 end }),
-			Count = setmetatable({}, { __index = function() return 0 end }),
-			MasteryRequirements = {},
-			Items = {},
-		}
-		
-		function Inventory:UpdateItem(item)
-			if type(item) == "table" then
-				if item.Type == "Wear" then
-					item.Type = "Accessory"
-				end
-				
-				local Name = item.Name
-				
-				self.Items[Name] = item
-				
-				if not self.Unlocked[Name] then self.Unlocked[Name] = true end
-				if item.Count then self.Count[Name] = item.Count end
-				if item.Mastery then self.Mastery[Name] = item.Mastery end
-				if item.MasteryRequirements then self.MasteryRequirements[Name] = item.MasteryRequirements end
-			end
-		end
-		
-		function Inventory:RemoveItem(ItemName)
-			if type(ItemName) == "string" then
-				self.Unlocked[ItemName] = nil
-				self.Mastery[ItemName] = nil
-				self.Count[ItemName] = nil
-				self.Items[ItemName] = nil
-			end
-		end
-		
-		local function OnClientEvent(Method, ...)
-			if Method == "ItemChanged" then
-				Inventory:UpdateItem(...)
-			elseif Method == "ItemAdded" then
-				Inventory:UpdateItem(...)
-			elseif Method == "ItemRemoved" then
-				Inventory:RemoveItem(...)
-			elseif Method == "Notify" then
-				Module.Signals.Notify:Fire(...)
-			end
-		end
-		
-		task.spawn(function()
-			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
-			local InventoryItems = nil;
-			
-			repeat
-				task.wait(1)
-				InventoryItems = FireRemote("getInventory")
-			until type(InventoryItems) == "table"
-			
-			for index = 1, #InventoryItems do
-				Inventory:UpdateItem(InventoryItems[index])
-			end
-		end)
-		
-		return Inventory
-	end)()
+ task.spawn(function()
+    function Module:GetItemCount(index: string?): number
+      return self.ItemsCount[index] or 0
+    end
+    
+    function Module:GetItemMastery(index: string?): number
+      return self.ItemsMastery[index] or 0
+    end
+    
+    function Module:UpdateItem(item: table): (nil)
+      if type(item) == "table" then
+        if item.Type == "Wear" then
+          item.Type = "Accessory"
+        end
+        
+        local Name = item.Name
+        
+        self.Inventory[Name] = item
+        
+        if not self.Unlocked[Name] then self.Unlocked[Name] = true end
+        if item.Count then self.ItemsCount[Name] = item.Count end
+        if item.Mastery then self.ItemsMastery[Name] = item.Mastery end
+      end
+    end
+    
+    function Module:RemoveItem(itemName: string): (nil)
+      if type(itemName) == "string" then
+        self.Unlocked[itemName] = nil
+        self.Inventory[itemName] = nil
+        self.ItemsCount[itemName] = nil
+        self.ItemsMastery[itemName] = nil
+      end
+    end
+    
+    local function OnClientEvent(Method, ...)
+      if Method == "ItemChanged" then
+        Module:UpdateItem(...)
+      elseif Method == "ItemAdded" then
+        Module:UpdateItem(...)
+      elseif Method == "ItemRemoved" then
+        Module:RemoveItem(...)
+      end
+    end
+    
+    Module.ItemsMastery = {}
+    Module.ItemsCount = {}
+    Module.Inventory = {}
+    Module.Unlocked = {}
+    
+    for _, Tool in ipairs(Module.FireRemote("getInventory")) do Module:UpdateItem(Tool) end
+    table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
+  end)
   
   task.spawn(function()
     local DeathM = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
