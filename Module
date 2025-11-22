@@ -516,7 +516,7 @@ Module.Sea = detectSea(placeId)
     return Module.Bosses[Name] and true
   end
 
- function Module.UseSkills(Target: any?, Skills: table?): (nil)
+ function Module.UseSkills(Skills: table?): (nil)
 		local Equipped = Player.Character and Player.Character:FindFirstChildOfClass("Tool")
 		local MasteryRequirements = Module.Inventory.MasteryRequirements
 		
