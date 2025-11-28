@@ -252,7 +252,7 @@ local Module = {} do
 	}
 	
 	Module.GameData = {
-		Sea =  detectSea(placeId),
+		Sea =  detectSea(game.PlaceId),
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
 		MaxLevel = 2650
