@@ -2069,90 +2069,16 @@ local Module = {} do
 		return Hooking
 	end)()
 	
-	-- task.defer(function()
-	-- 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
-	-- 	local CameraShaker = require(WaitChilds(ReplicatedStorage, "Util", "CameraShaker"))
-	-- 	
-	-- 	if CameraShaker then
-	-- 		CameraShaker:Stop()
-	-- 	end
-	-- 	if hookfunction then
-	-- 		hookfunction(DeathEffect, function(...) return ... end)
-	-- 	end
-	-- end)
-	
 	task.defer(function()
-		local OwnersId = { 3095250, 17884881 }
-		local OwnersFriends = {}
-		
-		local LocalPlayer = Player
-		
-		local StaffsItems = {
-			["Triple Dark Blade"] = true
-		}
-		
-		local function PossibleStaff(Player)
-			return LocalPlayer:Kick(`{ Player.DisplayName }/@{ Player.Name } maybe it's a blox fruits admin`)
-		end
-		
-		local function StaffCheck(Player)
-			if Player == LocalPlayer then return end
-			
-			local Data = Player:WaitForChild("Data", 30)
-			local Level = Data:WaitForChild("Level", 10)
-			local Beli = Data:WaitForChild("Beli", 10)
-			
-			if Level.Value > Module.GameData.MaxLevel then
-				return PossibleStaff(Player)
-			elseif Beli.Value >= 3e8 and Level.Value <= 700 then
-				return PossibleStaff(Player)
-			elseif OwnersFriends[Player.UserId] then
-				return PossibleStaff(Player)
-			end
-			
-			if Level.Value < 700 and Module.GameData.Sea > 1 then
-				return PossibleStaff(Player)
-			elseif Level.Value < 1500 and Module.GameData.Sea > 2 then
-				return PossibleStaff(Player)
-			end
-			
-			if Player:GetAttribute("GANKS") or Player:GetAttribute("GANKSVolley") or Player:GetAttribute("AAIM") then
-				return PossibleStaff(Player)
-			end
-			
-			local BountyHonor = Player:WaitForChild("leaderstats"):WaitForChild("Bounty/Honor")
-			local MaxBountyHonor = 3e7 + 250000
-			
-			if BountyHonor.Value >= MaxBountyHonor or BountyHonor.Value < 0 then
-				return PossibleStaff(Player)
-			end
-		end
-		
-		task.spawn(function()
-			table.insert(Connections, Players.PlayerAdded:Connect(StaffCheck))
-			for _, Player in ipairs(Players:GetPlayers()) do task.defer(StaffCheck, Player) end
-		end)
-		
-		for i = 1, #OwnersId do
-			local FriendsPages = Players:GetFriendsAsync(OwnersId[i])
-			
-			while not FriendsPages.IsFinished do
-				local FriendsList = FriendsPages:GetCurrentPage()
-				
-				for i = 1, #FriendsList do
-					local Friend = FriendsList[i]
-					local Player = Players:GetPlayerByUserId(Friend.Id)
-					
-					if Player then
-						task.defer(PossibleStaff, Player)
-					else
-						OwnersFriends[Friend.Id] = true
-					end
-				end
-				
-				FriendsPages:AdvanceToNextPageAsync()
-			end
-		end
+	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
+	 	local CameraShaker = require(WaitChilds(ReplicatedStorage, "Util", "CameraShaker"))
+	 	
+		if CameraShaker then
+	 		CameraShaker:Stop()
+	 	end
+	 	if hookfunction then
+ 		hookfunction(DeathEffect, function(...) return ... end)
+	 	end
 	end)
 	
 	task.spawn(function()
