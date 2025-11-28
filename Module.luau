@@ -255,7 +255,7 @@ local Module = {} do
 		Sea =  detectSea(game.PlaceId),
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
-		MaxLevel = 2650
+		MaxLevel = 2800
 	}
 	
 	Module.Debounce = {
