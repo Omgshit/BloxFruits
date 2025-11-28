@@ -6,13 +6,12 @@ end
 
 local _ENV = (getgenv or getrenv or getfenv)()
 
-local VirtualInputManager: VirtualInputManager = RobloxServices.VirtualInputManager
-local CollectionService: CollectionService = RobloxServices.CollectionService
-local ReplicatedStorage: ReplicatedStorage = RobloxServices.ReplicatedStorage
-local TeleportService: TeleportService = RobloxServices.TeleportService
-local TweenService: TweenService = RobloxServices.TweenService
-local RunService: RunService = RobloxServices.RunService
-local Players: Players = RobloxServices.Players
+local VirtualInputManager: VirtualInputManager = game:GetService("VirtualInputManager")
+local CollectionService: CollectionService = game:GetService("CollectionService")
+local ReplicatedStorage: ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TeleportService: TeleportService = game:GetService("TeleportService")
+local RunService: RunService = game:GetService("RunService")
+local Players: Players = game:GetService("Players")
 
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local CommF: RemoteFunction = Remotes:WaitForChild("CommF_")
