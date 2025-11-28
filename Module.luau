@@ -1,11 +1,8 @@
-local importer = ...
-assert(type(importer) == "table", "package importer not found")
-assert(type(importer.Import) == "function", "Import not found")
+local Settings = ...
 
-local RobloxServices = importer:Import("RobloxServices")
-local Connections = importer:Import("Connections")
-local Obfuscated = importer:Import("Obfuscated")
-local Settings = importer:Import("Settings")
+if type(Settings) ~= "table" then
+  return nil
+end
 
 local _ENV = (getgenv or getrenv or getfenv)()
 
