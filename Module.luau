@@ -237,7 +237,7 @@ local Module = {} do
 	}
 	
 	Module.GameData = {
-		Sea = ({ [2753915549] = 1, [4442272183] = 2, [7449423635] = 3 })[game.PlaceId] or 0,
+		Sea = table.find({2753915549, 4442272183, 7449423635}, game.PlaceId) or 0,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
 		MaxLevel = 2650
