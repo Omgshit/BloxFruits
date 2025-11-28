@@ -3,7 +3,7 @@ local Settings, Connections = ...
 local _ENV = (getgenv or getrenv or getfenv)()
 
 if type(Settings) ~= "table" or type(Connections) ~= "table" then
-	return {}
+	return nil
 end
 
 local VirtualInputManager: VirtualInputManager = game:GetService("VirtualInputManager")
