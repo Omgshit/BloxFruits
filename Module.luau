@@ -378,6 +378,21 @@ local Signal = {} do
 	})
 end
 
+local sea1 = {2753915549, 85211729168715}
+local sea2 = {4442272183, 79091703265657}
+local sea3 = {7449423635, 100117331123089}
+
+local function detectSea(placeId)
+    if table.find(sea1, placeId) then
+        return 1
+    elseif table.find(sea2, placeId) then
+        return 2
+    elseif table.find(sea3, placeId) then
+        return 3
+    end
+    return 0
+end
+
 local Module = {} do
 	Module.HookManager = HookManager
 	
@@ -400,7 +415,7 @@ local Module = {} do
 	}
 	
 	Module.GameData = {
-		Sea = ({ [2753915549] = 1, [4442272183] = 2, [7449423635] = 3 })[game.PlaceId] or 0;
+		Sea =  detectSea(game.PlaceId);
 		SeasName = { "Main", "Dressrosa", "Zou" };
 		MaxMastery = 600;
 		MaxLevel = 2800;
