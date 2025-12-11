@@ -56,7 +56,6 @@ local BRING_TAG: string = _ENV._Bring_Tag or `b{math.random(80, 2e4)}t`
 local KILLAURA_TAG: string = _ENV._KillAura_Tag or `k{math.random(120, 2e4)}t`
 
 local HIDDEN_SETTINGS: { [string]: any } = {
-	SKILL_COOLDOWN = 0.5,
 	CLEAR_AFTER = 50
 }
 
@@ -812,12 +811,10 @@ local Module = {} do
             if Mastery and not Mastery[Skill] then continue end
             if Mastery and Level < Mastery[Skill] then continue end
             
-            local Debounce = Module.Debounce.Skills[Skill]
-            
-            if Enabled and (not Debounce or (tick() - Debounce) >= HIDDEN_SETTINGS.SKILL_COOLDOWN) then
+            if Enabled then
                 VirtualInputManager:SendKeyEvent(true, Skill, false, game)
+                task.wait(0.5)
                 VirtualInputManager:SendKeyEvent(false, Skill, false, game)
-                Module.Debounce.Skills[Skill] = tick()
             end
         end
     end
