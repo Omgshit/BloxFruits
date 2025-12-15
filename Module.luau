@@ -2079,6 +2079,18 @@ local Module = {} do
 		
 		return Hooking
 	end)()
+
+  task.defer(function()
+	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
+	 	local CameraShaker = require(WaitChilds(ReplicatedStorage, "Util", "CameraShaker"))
+	 	
+		if CameraShaker then
+	 		CameraShaker:Stop()
+	 	end
+	 	if hookfunction then
+ 		hookfunction(DeathEffect, function(...) return ... end)
+	 	end
+	end)
 	
 	task.spawn(function()
 		local SpawnLocations = Module.SpawnLocations
