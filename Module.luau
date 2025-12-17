@@ -909,29 +909,28 @@ local Module = {} do
 				Cached.Bring[BringPositionTag] = Target
 			end
 			
-			local EnemyList = (not SuperBring and self.Enemies:GetTagged(Name)) or Enemies:GetChildren()
+	local EnemyList = (not SuperBring and self.Enemies:GetTagged(Name)) or Enemies:GetChildren()
 			
-			for i = 1, #EnemyList do
-				local Enemy = EnemyList[i]
-				if not SuperBring and Enemy.Name ~= Name then continue end
-				if Enemy.Parent ~= Enemies or Enemy:HasTag(BRING_TAG) then continue end
-				if not Enemy:FindFirstChild("CharacterReady") then continue end
-				
-				local PrimaryPart = Enemy.PrimaryPart
-				if self.IsAlive(Enemy) and PrimaryPart then
-					if (Position - PrimaryPart.Position).Magnitude < Settings.BringDistance then
-						Enemy:AddTag(BRING_TAG)
-					end
-				end
-			end
-		else
-			if not Cached.Bring[ToEnemy] then
-				Cached.Bring[ToEnemy] = ToEnemy.PrimaryPart.CFrame
-			end
-			
-			ToEnemy.PrimaryPart.CFrame = Cached.Bring[ToEnemy]
-		end
-	end
+	    for i = 1, #EnemyList do
+        local Enemy = EnemyList[i]
+        if Enemy.Parent ~= Enemies or Enemy:HasTag(BRING_TAG) then continue end
+        if not Enemy:FindFirstChild("CharacterReady") then continue end
+        
+        local PrimaryPart = Enemy.PrimaryPart
+        if self.IsAlive(Enemy) and PrimaryPart then
+          if (Position - PrimaryPart.Position).Magnitude < Settings.BringDistance then
+            Enemy:AddTag(BRING_TAG)
+          end
+        end
+      end
+    else
+      if not CachedBring[ToEnemy] then
+        CachedBring[ToEnemy] = ToEnemy.PrimaryPart.CFrame
+      end
+      
+      ToEnemy.PrimaryPart.CFrame = CachedBring[ToEnemy]
+    end
+  end
 	
 	function Module:GetRaidIsland(): Instance?
 		if Cached.RaidIsland and Cached.RaidIsland:IsDescendantOf(Locations) then
