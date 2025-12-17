@@ -891,46 +891,45 @@ local Module = {} do
 	end
 
   function Module:BringEnemies(ToEnemy: Instance, SuperBring: boolean?): (nil)
-    if not self.IsAlive(ToEnemy) or not ToEnemy.PrimaryPart then
-      return nil
-    end
-    
-    pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
-    
-    if Settings.BringMobs then
-      Module.IsSuperBring = if SuperBring then true else false
-      
-      local Name = ToEnemy.Name
-      local Position = (Player.Character or Player.CharacterAdded:Wait()):GetPivot().Position
-      local Target = ToEnemy.PrimaryPart.CFrame
-      local BringPositionTag = if SuperBring then "ALL_MOBS" else Name
-      
-      if not CachedBring[BringPositionTag] or (Target.Position - CachedBring[BringPositionTag].Position).Magnitude > 25 then
-        CachedBring[BringPositionTag] = Target
-      end
-      
-      local EnemyList = if SuperBring then Enemies:GetChildren() else self.allMobs[Name]
-      
-      for i = 1, #EnemyList do
-        local Enemy = EnemyList[i]
-        if Enemy.Parent ~= Enemies or Enemy:HasTag(BRING_TAG) then continue end
-        if not Enemy:FindFirstChild("CharacterReady") then continue end
-        
-        local PrimaryPart = Enemy.PrimaryPart
-        if self.IsAlive(Enemy) and PrimaryPart then
-          if (Position - PrimaryPart.Position).Magnitude < Settings.BringDistance then
-            Enemy:AddTag(BRING_TAG)
-          end
-        end
-      end
-    else
-      if not CachedBring[ToEnemy] then
-        CachedBring[ToEnemy] = ToEnemy.PrimaryPart.CFrame
-      end
-      
-      ToEnemy.PrimaryPart.CFrame = CachedBring[ToEnemy]
-    end
-  end
+		if not self.IsAlive(ToEnemy) or not ToEnemy.PrimaryPart then
+			return nil
+		end
+		
+		if Settings.BringMobs then
+			Module.IsSuperBring = if SuperBring then true else false
+			
+			local Name = ToEnemy.Name
+			local Position = (Player.Character or Player.CharacterAdded:Wait()):GetPivot().Position
+			local Target = ToEnemy.PrimaryPart.CFrame
+			local BringPositionTag = if SuperBring then "ALL_MOBS" else Name
+			
+			if not Cached.Bring[BringPositionTag] or (Target.Position - Cached.Bring[BringPositionTag].Position).Magnitude > 25 then
+				Cached.Bring[BringPositionTag] = Target
+			end
+			
+			local EnemyList = (not SuperBring and self.Enemies:GetTagged(Name)) or Enemies:GetChildren()
+			
+			for i = 1, #EnemyList do
+				local Enemy = EnemyList[i]
+				if not SuperBring and Enemy.Name ~= Name then continue end
+				if Enemy.Parent ~= Enemies or Enemy:HasTag(BRING_TAG) then continue end
+				if not Enemy:FindFirstChild("CharacterReady") then continue end
+				
+				local PrimaryPart = Enemy.PrimaryPart
+				if self.IsAlive(Enemy) and PrimaryPart then
+					if (Position - PrimaryPart.Position).Magnitude < Settings.BringDistance then
+						Enemy:AddTag(BRING_TAG)
+					end
+				end
+			end
+		else
+			if not Cached.Bring[ToEnemy] then
+				Cached.Bring[ToEnemy] = ToEnemy.PrimaryPart.CFrame
+			end
+			
+			ToEnemy.PrimaryPart.CFrame = Cached.Bring[ToEnemy]
+		end
+	end
 	
 	function Module:GetRaidIsland(): Instance?
 		if Cached.RaidIsland and Cached.RaidIsland:IsDescendantOf(Locations) then
@@ -1292,37 +1291,33 @@ local Module = {} do
 			return NewTag
 		end
 		
-	local function Bring(Enemy)
-      local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChild("HumanoidRootPart")
-      local RootPart = Enemy:WaitForChild("HumanoidRootPart")
-      local Humanoid = Enemy:WaitForChild("Humanoid")
-      local EnemyName = Enemy.Name
-      
-      local BodyVelocity = Instance.new("BodyVelocity", RootPart)
-      BodyVelocity.Velocity = Vector3.zero
-      BodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-      
-      local BodyPosition = Instance.new("BodyPosition", RootPart)
-      BodyPosition.Position = RootPart.Position
-      BodyPosition.P, BodyPosition.D = 1e4, 1e3
-      BodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-      
-      while PlayerRootPart and RootPart and Humanoid and Humanoid.Health > 0 and Enemy do
-        local Target = CachedBring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
-        
-        if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
-          if (RootPart.Position - Target.Position).Magnitude <= 5 then
-            RootPart.CFrame = Target
-          else
-            BodyPosition.Position = Target.Position
-          end
-        end;task.wait()
-      end
-      
-      if BodyVelocity then BodyVelocity:Destroy() end
-      if BodyPosition then BodyPosition:Destroy() end
-      if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
-    end
+		local function Bring(Enemy)
+			local RootPart = Enemy:WaitForChild("HumanoidRootPart")
+			local Humanoid = Enemy:WaitForChild("Humanoid")
+			local EnemyName = Enemy.Name
+			
+			local CloneAttachment = Attachment:Clone()
+			local AlignPosition = CloneAttachment.AlignPosition
+			CloneAttachment.Parent = RootPart
+			
+			while Enemy and Enemy.Parent == Enemies and Enemy:HasTag(BRING_TAG) do
+				if not Humanoid or Humanoid.Health <= 0 then break end
+				if not RootPart or RootPart.Parent ~= Enemy then break end
+				
+				local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
+				
+				if Target and (Target.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
+					if AlignPosition.Position ~= Target.Position then
+						AlignPosition.Position = Target.Position
+					end
+				else
+					break
+				end;task.wait()
+			end
+			
+			if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
+			if CloneAttachment then CloneAttachment:Destroy() end
+		end
 		
 		local function KillAura(Enemy)
 			local Humanoid = Enemy:FindFirstChild("Humanoid")
