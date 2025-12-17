@@ -1293,53 +1293,36 @@ local Module = {} do
 		end
 		
 	local function Bring(Enemy)
-    local PlayerRootPart = (Player.Character or Player.CharacterAdded:Wait()):WaitForChild("HumanoidRootPart")
-    local RootPart = Enemy:WaitForChild("HumanoidRootPart")
-    local Humanoid = Enemy:WaitForChild("Humanoid")
-    local EnemyName = Enemy.Name
-
-    local CloneAttachment = Attachment:Clone()
-    CloneAttachment.Parent = RootPart
-
-    local AlignPosition = CloneAttachment.AlignPosition
-    AlignPosition.Position = RootPart.Position
-    AlignPosition.MaxForce = math.huge
-    AlignPosition.Responsiveness = 200
-    AlignPosition.RigidityEnabled = false
-
-    while PlayerRootPart
-        and Enemy
-        and Enemy.Parent == Enemies
-        and Enemy:HasTag(BRING_TAG)
-        and Humanoid
-        and Humanoid.Health > 0
-        and RootPart
-        and RootPart.Parent == Enemy do
-
-        local Target = CachedBring[Module.IsSuperBring and "ALL_MOBS" or EnemyName]
-
-        if Target
-        and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
-            if (RootPart.Position - Target.Position).Magnitude <= 5 then
-                RootPart.CFrame = Target
-            else
-                AlignPosition.Position = Target.Position
-            end
-        else
-            break
-        end
-
-        task.wait()
+      local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChild("HumanoidRootPart")
+      local RootPart = Enemy:WaitForChild("HumanoidRootPart")
+      local Humanoid = Enemy:WaitForChild("Humanoid")
+      local EnemyName = Enemy.Name
+      
+      local BodyVelocity = Instance.new("BodyVelocity", RootPart)
+      BodyVelocity.Velocity = Vector3.zero
+      BodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+      
+      local BodyPosition = Instance.new("BodyPosition", RootPart)
+      BodyPosition.Position = RootPart.Position
+      BodyPosition.P, BodyPosition.D = 1e4, 1e3
+      BodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+      
+      while PlayerRootPart and RootPart and Humanoid and Humanoid.Health > 0 and Enemy do
+        local Target = CachedBring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
+        
+        if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
+          if (RootPart.Position - Target.Position).Magnitude <= 5 then
+            RootPart.CFrame = Target
+          else
+            BodyPosition.Position = Target.Position
+          end
+        end;task.wait()
+      end
+      
+      if BodyVelocity then BodyVelocity:Destroy() end
+      if BodyPosition then BodyPosition:Destroy() end
+      if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
     end
-
-    if Enemy and Enemy:HasTag(BRING_TAG) then
-        Enemy:RemoveTag(BRING_TAG)
-    end
-
-    if CloneAttachment then
-        CloneAttachment:Destroy()
-    end
-end
 		
 		local function KillAura(Enemy)
 			local Humanoid = Enemy:FindFirstChild("Humanoid")
