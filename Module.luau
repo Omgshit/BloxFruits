@@ -783,13 +783,8 @@ local Module = {} do
 		return Module.Bosses[Name] and true or false
 	end
 
-  function Module.UseSkills(Target: any?, Skills: table?): (nil)
-		if Player:DistanceFromCharacter(Target.Position) >= 60 then
-			return nil
-		end
-		
-		local Equipped = Player.Character and Player.Character:FindFirstChildOfClass("Tool")
-		
+  function Module.UseSkills(Target: any?, Skills: table?): (nil)	
+		local Equipped = Player.Character and Player.Character:FindFirstChildOfClass("Tool")	
 		if Equipped then	
 			for Skill, Enabled in Skills do
 				if Enabled then
