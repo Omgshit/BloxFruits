@@ -783,18 +783,6 @@ local Module = {} do
 		return Module.Bosses[Name] and true or false
 	end
 
-  function Module.UseSkills(Target: any?, Skills: table?): (nil)	
-		local Equipped = Player.Character and Player.Character:FindFirstChildOfClass("Tool")	
-		if Equipped then	
-			for Skill, Enabled in Skills do
-				if Enabled then
-					VirtualInputManager:SendKeyEvent(true, Skill, false, game)
-					VirtualInputManager:SendKeyEvent(false, Skill, false, game)
-				end
-			end
-		end
-	end
-	
 	function Module.Rejoin(): (nil)
 		task.spawn(TeleportService.TeleportToPlaceInstance, TeleportService, game.PlaceId, game.JobId, Player)
 	end
