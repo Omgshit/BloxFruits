@@ -786,26 +786,9 @@ local Module = {} do
 	function Module.UseSkills(Target: any?, Skills: table?): (nil)
 		if Player:DistanceFromCharacter(Target.Position) <= 60 then
 		local Equipped = Player.Character and Player.Character:FindFirstChildOfClass("Tool")
-		local MasteryRequirements = Module.Inventory.MasteryRequirements
 		
 		if Equipped then
-			local Level = Equipped:GetAttribute("Level") or 0
-			local Mastery = MasteryRequirements[Equipped.Name]
-			
-			if Mastery == nil and Equipped:FindFirstChild("Data") then
-				local Success, Requirements = pcall(require, Equipped.Data)
-				
-				if Success and type(Requirements) == "table" then
-					MasteryRequirements[Equipped.Name] = Requirements.Lvl or false
-				else
-					MasteryRequirements[Equipped.Name] = false
-				end
-			end
-			
 			for Skill, Enabled in Skills do
-				if Mastery and not Mastery[Skill] then continue end
-				if Mastery and Level < Mastery[Skill] then continue end
-				
 				local Debounce = Module.Debounce.Skills[Skill]
 				
 				if Enabled and (not Debounce or (tick() - Debounce) >= HIDDEN_SETTINGS.SKILL_COOLDOWN) then
