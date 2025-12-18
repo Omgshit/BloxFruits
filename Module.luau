@@ -788,12 +788,15 @@ local Module = {} do
         return nil
     end
 
-    if Player:DistanceFromCharacter(Target.Position) >= 60 then
-        return nil
-    end
-
     local Character = Player.Character
     if not Character then return nil end
+
+    local Root = Character:FindFirstChild("HumanoidRootPart")
+    if not Root then return nil end
+
+    if (Root.Position - Target.Position).Magnitude >= 60 then
+        return nil
+    end
 
     local Equipped = Character:FindFirstChildOfClass("Tool")
     if not Equipped then return nil end
@@ -803,12 +806,8 @@ local Module = {} do
     local Mastery = MasteryRequirements[Equipped.Name]
 
     if Mastery == nil and Equipped:FindFirstChild("Data") then
-        local Success, Requirements = pcall(require, Equipped.Data)
-        if Success and type(Requirements) == "table" then
-            MasteryRequirements[Equipped.Name] = Requirements.Lvl or false
-        else
-            MasteryRequirements[Equipped.Name] = false
-        end
+        local ok, Requirements = pcall(require, Equipped.Data)
+        MasteryRequirements[Equipped.Name] = (ok and type(Requirements) == "table" and Requirements.Lvl) or false
         Mastery = MasteryRequirements[Equipped.Name]
     end
 
