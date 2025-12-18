@@ -1526,6 +1526,7 @@ local Module = {} do
 			Distance = Distance or self.Distance
 			
 			self:Process(self.attackMobs, Enemies, BladeHits, Position, Distance)
+            self:Process(self.attackMobs, SeaBeasts, BladeHits, Position, Distance)
 			self:Process(self.attackPlayers, Characters, BladeHits, Position, Distance)
 			
 			return BladeHits
