@@ -805,10 +805,10 @@ local Module = {} do
         if not Enabled then continue end
 
         local LastUse = Debounces.Skills[Skill]
-        if not LastUse or (tick() - LastUse) >= HIDDEN_SETTINGS.SKILL_COOLDOWN then
+        if not LastUse or (os.clock() - LastUse) >= (HIDDEN_SETTINGS and HIDDEN_SETTINGS.SKILL_COOLDOWN or 0.15) then
             VirtualInputManager:SendKeyEvent(true, Skill, false, game)
             VirtualInputManager:SendKeyEvent(false, Skill, false, game)
-            Debounces.Skills[Skill] = tick()
+            Debounces.Skills[Skill] = os.clock()
         end
     end
 end
