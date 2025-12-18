@@ -815,24 +815,6 @@ function Module.UseSkills(Skills: table?): (nil)
 			end
 		end
 	end
-
-	function Module.UseSkills(Target: any?, Skills: table?): (nil)
-		if Player:DistanceFromCharacter(Target.Position) <= 60 then
-		local Equipped = Player.Character and Player.Character:FindFirstChildOfClass("Tool")
-		
-		if Equipped then
-			for Skill, Enabled in Skills do
-				local Debounce = Module.Debounce.Skills[Skill]
-				
-				if Enabled and (not Debounce or (tick() - Debounce) >= HIDDEN_SETTINGS.SKILL_COOLDOWN) then
-					VirtualInputManager:SendKeyEvent(true, Skill, false, game)
-					VirtualInputManager:SendKeyEvent(false, Skill, false, game)
-					Module.Debounce.Skills[Skill] = tick()
-				end
-			end
-		end
-    end
-end
 	
 	function Module.Rejoin(): (nil)
 		task.spawn(TeleportService.TeleportToPlaceInstance, TeleportService, game.PlaceId, game.JobId, Player)
