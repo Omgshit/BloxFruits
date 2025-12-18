@@ -802,13 +802,10 @@ local Module = {} do
     if not Equipped then return nil end
 
     for Skill, Enabled in pairs(Skills) do
-        if not Enabled then continue end
-
-        local LastUse = Debounces.Skills[Skill]
-        if not LastUse or (os.clock() - LastUse) >= (HIDDEN_SETTINGS and HIDDEN_SETTINGS.SKILL_COOLDOWN or 0.15) then
+        if Enabled then
             VirtualInputManager:SendKeyEvent(true, Skill, false, game)
             VirtualInputManager:SendKeyEvent(false, Skill, false, game)
-            Debounces.Skills[Skill] = os.clock()
+            task.wait(0.15)
         end
     end
 end
