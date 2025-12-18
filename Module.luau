@@ -801,23 +801,8 @@ local Module = {} do
     local Equipped = Character:FindFirstChildOfClass("Tool")
     if not Equipped then return nil end
 
-    local MasteryRequirements = Module.Inventory.MasteryRequirements
-    local Level = Equipped:GetAttribute("Level") or 0
-    local Mastery = MasteryRequirements[Equipped.Name]
-
-    if Mastery == nil and Equipped:FindFirstChild("Data") then
-        local ok, Requirements = pcall(require, Equipped.Data)
-        MasteryRequirements[Equipped.Name] = (ok and type(Requirements) == "table" and Requirements.Lvl) or false
-        Mastery = MasteryRequirements[Equipped.Name]
-    end
-
     for Skill, Enabled in pairs(Skills) do
         if not Enabled then continue end
-
-        if Mastery and Mastery ~= false then
-            if not Mastery[Skill] then continue end
-            if Level < Mastery[Skill] then continue end
-        end
 
         local LastUse = Debounces.Skills[Skill]
         if not LastUse or (tick() - LastUse) >= HIDDEN_SETTINGS.SKILL_COOLDOWN then
