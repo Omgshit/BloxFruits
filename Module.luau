@@ -56,6 +56,7 @@ local BRING_TAG: string = _ENV._Bring_Tag or `b{math.random(80, 2e4)}t`
 local KILLAURA_TAG: string = _ENV._KillAura_Tag or `k{math.random(120, 2e4)}t`
 
 local HIDDEN_SETTINGS: { [string]: any } = {
+	SKILL_COOLDOWN = 0.5,
 	CLEAR_AFTER = 50
 }
 
