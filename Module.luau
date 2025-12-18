@@ -783,7 +783,10 @@ local Module = {} do
 	end
 	
 	function Module.UseSkills(Target: any?, Skills: table?): (nil)
-		if Player:DistanceFromCharacter(Target.Position) <= 60 then		
+		if Player:DistanceFromCharacter(Target.Position) >= 60 then
+			return nil
+		end
+		
 		local Equipped = Player.Character and Player.Character:FindFirstChildOfClass("Tool")
 		local MasteryRequirements = Module.Inventory.MasteryRequirements
 		
@@ -805,16 +808,15 @@ local Module = {} do
 				if Mastery and not Mastery[Skill] then continue end
 				if Mastery and Level < Mastery[Skill] then continue end
 				
-				local Debounce = Module.Debounce.Skills[Skill]
+				local Debounce = Debounces.Skills[Skill]
 				
 				if Enabled and (not Debounce or (tick() - Debounce) >= HIDDEN_SETTINGS.SKILL_COOLDOWN) then
 					VirtualInputManager:SendKeyEvent(true, Skill, false, game)
 					VirtualInputManager:SendKeyEvent(false, Skill, false, game)
-					Module.Debounce.Skills[Skill] = tick()
+					Debounces.Skills[Skill] = tick()
 				end
 			end
 		end
-      end
 	end
 	
 	function Module.Rejoin(): (nil)
