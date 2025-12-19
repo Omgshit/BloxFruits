@@ -118,52 +118,6 @@ BackgroundTransparency=0.03
 }
 }
 
-
-r.Green = {
-    Colors = {
-        Background = ColorSequence.new {
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(18, 36, 18)),
-            ColorSequenceKeypoint.new(0.50, Color3.fromRGB(18, 36, 18)),
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(18, 36, 18))
-        },
-        Primary = Color3.fromRGB(57, 200, 57),
-        OnPrimary = Color3.fromRGB(60, 200, 60),
-        ScrollBar = Color3.fromRGB(57, 200, 57),
-        Stroke = Color3.fromRGB(30, 60, 30),
-
-        Error = Color3.fromRGB(255, 100, 100),
-        Icons = Color3.fromRGB(200, 255, 200),
-
-        JoinButton = Color3.fromRGB(60, 200, 60),
-        Link = Color3.fromRGB(57, 200, 57),
-
-        Dialog = {
-            Background = Color3.fromRGB(10, 20, 10)
-        },
-        Buttons = {
-            Holding = Color3.fromRGB(57, 200, 57),
-            Default = Color3.fromRGB(60, 200, 60)
-        },
-        Border = {
-            Holding = Color3.fromRGB(60, 200, 60),
-            Default = Color3.fromRGB(57, 200, 57)
-        },
-        Text = {
-            Default = Color3.fromRGB(10, 10, 10),
-            Dark = Color3.fromRGB(180, 255, 180),
-            Darker = Color3.fromRGB(200, 255, 200)
-        },
-        Slider = {
-            SliderBar = Color3.fromRGB(57, 200, 57),
-            SliderNumber = Color3.fromRGB(200, 255, 200)
-        },
-        Dropdown = {
-            Holder = Color3.fromRGB(18, 36, 18)
-        }
-    },
-    BackgroundTransparency = 0.03
-}
-
 for s,t in r do
 t.Name=s
 table.freeze(t)
@@ -175,7 +129,7 @@ Version="v2.0.1",
 GitHubOwner="tlredz"
 },
 Default={
-Theme="Green",
+Theme="Darker",
 UISize=UDim2.fromOffset(550,380),
 TabSize=160
 },
@@ -4108,59 +4062,3 @@ return as
 end
 
 return s
-
-
-
--- Tema Green corrigido (inclui Font)
-r.Green = {
-    Colors = {
-        Background = ColorSequence.new {
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(18, 36, 18)),
-            ColorSequenceKeypoint.new(0.50, Color3.fromRGB(18, 36, 18)),
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(18, 36, 18))
-        },
-        Primary = Color3.fromRGB(57, 200, 57),
-        OnPrimary = Color3.fromRGB(60, 200, 60),
-        ScrollBar = Color3.fromRGB(57, 200, 57),
-        Stroke = Color3.fromRGB(30, 60, 30),
-
-        Error = Color3.fromRGB(255, 100, 100),
-        Icons = Color3.fromRGB(200, 255, 200),
-
-        JoinButton = Color3.fromRGB(60, 200, 60),
-        Link = Color3.fromRGB(57, 200, 57),
-
-        Dialog = {
-            Background = Color3.fromRGB(10, 20, 10)
-        },
-        Buttons = {
-            Holding = Color3.fromRGB(57, 200, 57),
-            Default = Color3.fromRGB(60, 200, 60)
-        },
-        Border = {
-            Holding = Color3.fromRGB(60, 200, 60),
-            Default = Color3.fromRGB(57, 200, 57)
-        },
-        Text = {
-            Default = Color3.fromRGB(10, 10, 10),
-            Dark = Color3.fromRGB(180, 255, 180),
-            Darker = Color3.fromRGB(200, 255, 200)
-        },
-        Slider = {
-            SliderBar = Color3.fromRGB(57, 200, 57),
-            SliderNumber = Color3.fromRGB(200, 255, 200)
-        },
-        Dropdown = {
-            Holder = Color3.fromRGB(18, 36, 18)
-        }
-    },
-    Font = {
-        Normal = Enum.Font.BuilderSans,
-        Medium = Enum.Font.BuilderSansMedium,
-        Bold = Enum.Font.BuilderSansBold,
-        ExtraBold = Enum.Font.BuilderSansExtraBold,
-        SliderValue = Enum.Font.FredokaOne
-    },
-    BackgroundTransparency = 0.03
-}
--- Fim do tema Green corrigido
