@@ -508,20 +508,6 @@ local Module = {} do
 		
 		Module.Shop = {
 			{"Frags", {{"Race Reroll", {"BlackbeardReward", "Reroll", "2"}}, {"Reset Stats", {"BlackbeardReward", "Refund", "2"}}}},
-			{"Fighting Style", {
-				{"Buy Black Leg", {"BuyBlackLeg"}, {"Dark Step Teacher"}},
-				{"Buy Electro", {"BuyElectro"}, {"Mad Scientist"}},
-				{"Buy Fishman Karate", {"BuyFishmanKarate"}, {"Water Kung-fu Teacher"}},
-				{"Buy Dragon Claw", {"BlackbeardReward", "DragonClaw", "2"}, {"Sabi"}},
-				{"Buy Superhuman", {"BuySuperhuman"}, {"Martial Arts Master"}},
-				{"Buy Death Step", {"BuyDeathStep"}, {"Phoeyu, the Reformed"}},
-				{"Buy Sharkman Karate", {"BuySharkmanKarate"}, {"Sharkman Teacher"}},
-				{"Buy Electric Claw", {"BuyElectricClaw"}, {"Previous Hero"}},
-				{"Buy Dragon Talon", {"BuyDragonTalon"}, {"Uzoth"}},
-				{"Buy GodHuman", {"BuyGodhuman"}, {"Ancient Monk"}},
-				{"Buy Sanguine Art", {"BuySanguineArt"}, {"Shafi"}}
-				-- {"Buy Divine Art", {"BuyDivineArt"}}
-			}},
 			{"Ability Teacher", {
 				{"Buy Geppo", {"BuyHaki", "Geppo"}},
 				{"Buy Buso", {"BuyHaki", "Buso"}},
