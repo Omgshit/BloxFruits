@@ -2087,12 +2087,13 @@ end
 
 function GetToolByName(Name)
 	local Cached = Module.Cached.Tools[Name]
-	
+	local Character = Module.IsAlive(Player.Character) and Player.Character
+
 	if Cached and (Cached.Parent == Player.Character or Cached.Parent == Player.Backpack) then
 		return Cached
 	end
 	
-	if Player.Character then
+	if Character then
 		local HasTool = Player.Character:FindFirstChild(Name) or Player.Backpack:FindFirstChild(Name)
 		
 		if HasTool then
