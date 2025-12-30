@@ -786,36 +786,49 @@ local Module = {} do
 		Module.FireRemote(`Travel{self.GameData.SeasName[Sea]}`)
 	end
 
-   function Module:ServerHop(MaxPlayers: number?, Region: string?): (nil)
-		self.RejoinBlocked = true 
+  function Module:ServerHop(MaxPlayers: number?, Region: string?)
+    self.RejoinBlocked = true
 
-		MaxPlayers = math.min(MaxPlayers or self.SH_MaxPlrs or 8, 11)
-		
-		local ServerBrowser = ReplicatedStorage.__ServerBrowser;
-		local InvokeServer = ServerBrowser.InvokeServer; 
-		local MyJobId = game.JobId;
-		local CurrentPage = 1;
-		
-			local Success, Servers = pcall(InvokeServer, ServerBrowser, CurrentPage)
-			CurrentPage += 1
-			
-			if Success ~= true then return end
-			if type(Servers) ~= "table" then return end
-			
-			local lowServerCount, lowServerId = MaxPlayers;
-			
-			for id, data in Servers do
-				if id ~= MyJobId and data.Count <= lowServerCount then
-					lowServerCount, lowServerId = data.Count, id;
-				end
-			end
-			
-			if lowServerId then
-            while wait() do
-				TeleportService:TeleportToPlaceInstance(game.PlaceId, lowServerId, Player)
-			end
+    MaxPlayers = math.min(MaxPlayers or self.SH_MaxPlrs or 8, 11)
+
+    local Player = game.Players.LocalPlayer
+    local TeleportService = game:GetService("TeleportService")
+    local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+    local ServerBrowser = ReplicatedStorage:WaitForChild("__ServerBrowser")
+    local InvokeServer = ServerBrowser.InvokeServer
+
+    local MyJobId = game.JobId
+    local CurrentPage = 1
+
+    for _ = 1, 100 do
+        local Success, Servers = pcall(function()
+            return InvokeServer(ServerBrowser, CurrentPage)
+        end)
+
+        CurrentPage += 1
+
+        if Success and type(Servers) == "table" then
+            local lowServerCount = MaxPlayers
+            local lowServerId = nil
+
+            for id, data in pairs(Servers) do
+                if id ~= MyJobId
+                    and data.Count <= lowServerCount
+                    and (not Region or data.Region == Region) then
+
+                    lowServerCount = data.Count
+                    lowServerId = id
+                end
+            end
+            if lowServerId then
+                TeleportService:TeleportToPlaceInstance(game.PlaceId,lowServerId,Player)
+                return
+            end
         end
-	  end
+        task.wait(0.1)
+    end
+end
 	
 	function Module.EquipTool(ToolName: string, ByType: boolean?): (nil)
 		ByType = if not ToolName then true else ByType
