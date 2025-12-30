@@ -507,9 +507,9 @@ local Module = {} do
 		}
 		
 		Module.Shop = {
-            {"Magic Elf", {{"Buy 2x EXP", {"Candy", "Buy", 1, 1}}, {"Buy Stats Refund", {"Candy", "Buy", 1, 2}}, {"Buy Race Reroll", {"Candy", "Buy", 1, 3}}}},
-            {"Greedy Elf", {{"Buy 200 Fragments", {"Candy", "Buy", 2, 1}}, {"Buy 500 Fragments", {"Candy", "Buy", 2, 2}}}},
-            {"Santa Claws", {{"Buy Elf Hat", {"Candy", "Buy", 3, 1}}, {"Buy Santa Hat", {"Candy", "Buy", 3, 2}}, {"Buy Sleigh", {"Candy", "Buy", 3, 3}}}},
+            {"Magic Elf", {{"Buy 2x EXP", {"Candies", "Buy", 1, 1}}, {"Buy Stats Refund", {"Candies", "Buy", 1, 2}}, {"Buy Race Reroll", {"Candies", "Buy", 1, 3}}}},
+            {"Greedy Elf", {{"Buy 200 Fragments", {"Candies", "Buy", 2, 1}}, {"Buy 500 Fragments", {"Candies", "Buy", 2, 2}}}},
+            {"Santa Claws", {{"Buy Elf Hat", {"Candies", "Buy", 3, 1}}, {"Buy Santa Hat", {"Candies", "Buy", 3, 2}}, {"Buy Sleigh", {"Candies", "Buy", 3, 3}}}},
 			{"Frags", {{"Race Reroll", {"BlackbeardReward", "Reroll", "2"}}, {"Reset Stats", {"BlackbeardReward", "Refund", "2"}}}},
 			{"Ability Teacher", {
 				{"Buy Geppo", {"BuyHaki", "Geppo"}},
