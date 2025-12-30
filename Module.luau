@@ -785,20 +785,39 @@ local Module = {} do
 	function Module:TravelTo(Sea: number?): (nil)
 		Module.FireRemote(`Travel{self.GameData.SeasName[Sea]}`)
 	end
-	
-	function Module:ServerHop(MaxPlayers: number?, Region: string?): (nil)
-		MaxPlayers = MaxPlayers or self.SH_MaxPlrs or 8
-		-- Region = Region or self.SH_Region or "Singapore"
+
+  function Module:ServerHop(MaxPlayers: number?, Region: string?): (nil)
+		self.RejoinBlocked = true -- bloqueia o Auto Rejoin
 		
-		local ServerBrowser = ReplicatedStorage.__ServerBrowser
+		MaxPlayers = math.min(MaxPlayers or self.SH_MaxPlrs or 8, 11)
 		
-		for i = 1, 100 do
-			local Servers = ServerBrowser:InvokeServer(i)
-			for id,info in pairs(Servers) do
-				if id ~= game.JobId and info["Count"] <= MaxPlayers then
-					task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", id)
+		local ServerBrowser = ReplicatedStorage.__ServerBrowser;
+		local InvokeServer = ServerBrowser.InvokeServer; 
+		local MyJobId = game.JobId;
+		local CurrentPage = 1;
+		
+		local function nextPage()
+			local Success, Servers = pcall(InvokeServer, ServerBrowser, CurrentPage)
+			CurrentPage += 1
+			
+			if Success ~= true then return end
+			if type(Servers) ~= "table" then return end
+			
+			local lowServerCount, lowServerId = MaxPlayers;
+			
+			for id, data in Servers do
+				if id ~= MyJobId and data.Count <= lowServerCount then
+					lowServerCount, lowServerId = data.Count, id;
 				end
 			end
+			
+			if lowServerId then
+				TeleportService:TeleportToPlaceInstance(game.PlaceId, lowServerId, Player)
+			end
+		end
+		
+		for index = 1, 100 do
+			task.delay(index / 50, nextPage)
 		end
 	end
 	
