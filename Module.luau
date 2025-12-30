@@ -786,39 +786,66 @@ local Module = {} do
 		Module.FireRemote(`Travel{self.GameData.SeasName[Sea]}`)
 	end
 
-  function Module:ServerHop(MaxPlayers: number?, Region: string?): (nil)
-		self.RejoinBlocked = true 
-		
-		MaxPlayers = math.min(MaxPlayers or self.SH_MaxPlrs or 8, 11)
-		
-		local ServerBrowser = ReplicatedStorage.__ServerBrowser;
-		local InvokeServer = ServerBrowser.InvokeServer; 
-		local MyJobId = game.JobId;
-		local CurrentPage = 1;
-		
-		local function nextPage()
-			local Success, Servers = pcall(InvokeServer, ServerBrowser, CurrentPage)
-			CurrentPage += 1
-			
-			if Success ~= true then return end
-			if type(Servers) ~= "table" then return end
-			
-			local lowServerCount, lowServerId = MaxPlayers;
-			
-			for id, data in Servers do
-				if id ~= MyJobId and data.Count <= lowServerCount then
-					lowServerCount, lowServerId = data.Count, id;
-				end
-			end
-			
-			if lowServerId then
-				TeleportService:TeleportToPlaceInstance(game.PlaceId, lowServerId, Player)
-			end
-		end
-		
-		for index = 1, 100 do
-			task.delay(index / 50, nextPage)
-		end
+  function Module:ServerHop()
+	local PlaceID = game.PlaceId
+        local AllIDs = {}
+        local foundAnything = ""
+        local actualHour = os.date("!*t").hour
+        local Deleted = false
+        function TPReturner()
+            local Site;
+            if foundAnything == "" then
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+            else
+                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+            end
+            local ID = ""
+            if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+                foundAnything = Site.nextPageCursor
+            end
+            local num = 0;
+            for i,v in pairs(Site.data) do
+                local Possible = true
+                ID = tostring(v.id)
+                if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                    for _,Existing in pairs(AllIDs) do
+                        if num ~= 0 then
+                            if ID == tostring(Existing) then
+                                Possible = false
+                            end
+                        else
+                            if tonumber(actualHour) ~= tonumber(Existing) then
+                                local delFile = pcall(function()
+                                    AllIDs = {}
+                                    table.insert(AllIDs, actualHour)
+                                end)
+                            end
+                        end
+                        num = num + 1
+                    end
+                    if Possible == true then
+                        table.insert(AllIDs, ID)
+                        wait()
+                        pcall(function()
+                            wait()
+                            game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                        end)
+                        wait(4)
+                    end
+                end
+            end
+        end
+        function Teleport() 
+            while wait(5) do
+                pcall(function()
+                    TPReturner()
+                    if foundAnything ~= "" then
+                        TPReturner()
+                    end
+                end)
+            end
+        end
+        Teleport()
 	end
 	
 	function Module.EquipTool(ToolName: string, ByType: boolean?): (nil)
