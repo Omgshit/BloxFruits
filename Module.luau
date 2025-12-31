@@ -1751,7 +1751,7 @@ end
 						return self:UseFruitM1(Character, Equipped, Combo)
 					end
 				elseif ToolTip == "Gun" then
-					if SUCCESS_SHOOT and SHOOT_FUNCTION and Settings.AutoShoot then
+					if SUCCESS_SHOOT and SHOOT_FUNCTION then
 						return self:UseGunShoot(Character, Equipped)
 					end
 				else
