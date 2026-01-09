@@ -895,7 +895,7 @@ end
 		if not Enemy.PrimaryPart then continue end
 		if not self.IsAlive(Enemy) then continue end
  
-		Enemy:SetPrimaryPartCFrame(targetCF)) 
+		Enemy:SetPrimaryPartCFrame(targetCF) 
 	end
 end
 	
