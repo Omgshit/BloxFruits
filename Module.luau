@@ -1292,7 +1292,7 @@ end
       BodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
       
       while PlayerRootPart and RootPart and Humanoid and Humanoid.Health > 0 and Enemy do
-        local Target = CachedBring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
+        local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
         
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
           if (RootPart.Position - Target.Position).Magnitude <= 5 then
