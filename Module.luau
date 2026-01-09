@@ -887,10 +887,10 @@ end
       local Position = (Player.Character or Player.CharacterAdded:Wait()):GetPivot().Position
       local Target = ToEnemy.PrimaryPart.CFrame
       local BringPositionTag = if SuperBring then "ALL_MOBS" else Name
-      
-      if not CachedBring[BringPositionTag] or (Target.Position - CachedBring[BringPositionTag].Position).Magnitude > 25 then
-        CachedBring[BringPositionTag] = Target
-      end
+			
+		if not Cached.Bring[BringPositionTag] or (Target.Position - Cached.Bring[BringPositionTag].Position).Magnitude > 25 then
+				Cached.Bring[BringPositionTag] = Target
+		end
       
      local EnemyList = (not SuperBring and self.Enemies:GetTagged(Name)) or Enemies:GetChildren()
 
