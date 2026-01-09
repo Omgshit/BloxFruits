@@ -880,7 +880,6 @@ end
     
     if Settings.BringMobs then
       Module.IsSuperBring = if SuperBring then true else false
-      pcall(sethiddenproperty, Player, "SimulationRadius", 112412400000)
       
       local Name = ToEnemy.Name
       local Position = (Player.Character or Player.CharacterAdded:Wait()):GetPivot().Position
@@ -1274,28 +1273,30 @@ end
 			return NewTag
 		end
 		
-	local function Bring(Enemy)
-    if not Enemy or not Enemy.Parent then return end
-
-    local Character = Player.Character or Player.CharacterAdded:Wait()
-    local PlayerRootPart = Character:WaitForChild("HumanoidRootPart")
-
-    local RootPart = Enemy:FindFirstChild("HumanoidRootPart")
-    local Humanoid = Enemy:FindFirstChild("Humanoid")
-    if not RootPart or not Humanoid or Humanoid.Health <= 0 then return end
-
-    local EnemyName = Enemy.Name
-    local Target = Cached.Bring[Module.IsSuperBring and "ALL_MOBS" or EnemyName]
-    if not Target then return end
-
-    RootPart.AssemblyLinearVelocity = Vector3.zero
-    RootPart.AssemblyAngularVelocity = Vector3.zero
-    RootPart.CFrame = Target
-
-    if Enemy:HasTag(BRING_TAG) then
-        Enemy:RemoveTag(BRING_TAG)
+  local function Bring(Enemy)
+      local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChild("HumanoidRootPart")
+      local RootPart = Enemy:WaitForChild("HumanoidRootPart")
+      local Humanoid = Enemy:WaitForChild("Humanoid")
+      local EnemyName = Enemy.Name
+      
+      local BodyVelocity = Instance.new("BodyVelocity", RootPart)
+      BodyVelocity.Velocity = Vector3.zero
+      BodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+      
+      local BodyPosition = Instance.new("BodyPosition", RootPart)
+      BodyPosition.Position = RootPart.Position
+      BodyPosition.P, BodyPosition.D = 3e4, 3e3
+      BodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+      
+      while PlayerRootPart and RootPart and Humanoid and Humanoid.Health > 0 and Enemy do
+        local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
+        
+        if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
+            BodyPosition.Position = Target.Position
+        end;task.wait()
+      end
+      if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
     end
-end
 		
 		local function KillAura(Enemy)
 			local Humanoid = Enemy:FindFirstChild("Humanoid")
