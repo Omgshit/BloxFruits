@@ -878,8 +878,6 @@ end
       return nil
     end
     
-    pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
-    
     if Settings.BringMobs then
       Module.IsSuperBring = if SuperBring then true else false
       
