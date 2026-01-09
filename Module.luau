@@ -1276,36 +1276,38 @@ end
 		end
 		
 	local function Bring(Enemy)
-      local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChild("HumanoidRootPart")
-      local RootPart = Enemy:WaitForChild("HumanoidRootPart")
-      local Humanoid = Enemy:WaitForChild("Humanoid")
-      local EnemyName = Enemy.Name
-      
-      local BodyVelocity = Instance.new("BodyVelocity", RootPart)
-      BodyVelocity.Velocity = Vector3.zero
-      BodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-      
-      local BodyPosition = Instance.new("BodyPosition", RootPart)
-      BodyPosition.Position = RootPart.Position
-      BodyPosition.P, BodyPosition.D = 3e5, 3e3
-      BodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-      
-      while PlayerRootPart and RootPart and Humanoid and Humanoid.Health > 0 and Enemy do
-        local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
-        
-        if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
-          if (RootPart.Position - Target.Position).Magnitude <= 5 then
+    local PlayerRootPart = (Player.Character or Player.CharacterAdded:Wait()):WaitForChild("HumanoidRootPart")
+    local RootPart = Enemy:WaitForChild("HumanoidRootPart")
+    local Humanoid = Enemy:WaitForChild("Humanoid")
+    local EnemyName = Enemy.Name
+
+    local BodyPosition = Instance.new("BodyPosition")
+    BodyPosition.P = 3e5
+    BodyPosition.D = 3e3
+    BodyPosition.MaxForce = Vector3.new(5e5, 5e5, 5e5)
+    BodyPosition.Parent = RootPart
+
+    local startTime = tick()
+
+    while Enemy.Parent == Enemies and Humanoid.Health > 0 do
+        if tick() - startTime > 10 then break end
+
+        local Target = Cached.Bring[Module.IsSuperBring and "ALL_MOBS" or EnemyName]
+        if not Target then break end
+
+        if (RootPart.Position - Target.Position).Magnitude <= 12 then
             RootPart.CFrame = Target
-          else
+            break
+        else
             BodyPosition.Position = Target.Position
-          end
-        end;task.wait()
-      end
-      
-      if BodyVelocity then BodyVelocity:Destroy() end
-      if BodyPosition then BodyPosition:Destroy() end
-      if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
+        end
+
+        task.wait(0.03)
     end
+
+    BodyPosition:Destroy()
+    if Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
+end
 		
 		local function KillAura(Enemy)
 			local Humanoid = Enemy:FindFirstChild("Humanoid")
