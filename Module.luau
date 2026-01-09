@@ -874,52 +874,28 @@ end
 	end
 
   function Module:BringEnemies(ToEnemy: Instance, SuperBring: boolean?)
-	if not Settings.BringMobs then return end
-	if not ToEnemy or not ToEnemy.PrimaryPart then return end
-	local Player = game.Players.LocalPlayer
-	local Character = Player.Character or Player.CharacterAdded:Wait()
-	local Root = Character:WaitForChild("HumanoidRootPart")
+	if not self.IsAlive(ToEnemy) or not ToEnemy.PrimaryPart then
+		return
+	end
+
 	pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
-	local EnemiesFolder = workspace:FindFirstChild("Enemies")
-	if not EnemiesFolder then return end
-	local TargetName = ToEnemy.Name
-	local TargetPos = Root.Position
-	local BringDistance = Settings.BringDistance or 500
-	local Speed = 100
-	for _, Enemy in pairs(EnemiesFolder:GetChildren()) do
-		if not SuperBring and Enemy.Name ~= TargetName then
-			continue
-		end
-		if not self.IsAlive(Enemy) then
-			continue
-		end
-		local HRP = Enemy:FindFirstChild("RootPart") or Enemy:FindFirstChild("HumanoidRootPart")
-		if not HRP then
-			continue
-		end
-		local Distance = (HRP.Position - TargetPos).Magnitude
-		if Distance > BringDistance then
-			continue
-		end
-		task.spawn(function()
-			for _, part in pairs(Enemy:GetDescendants()) do
-				if part:IsA("BasePart") then
-					part.CanCollide = false
-				end
-			end
-		end)
-		local BV = HRP:FindFirstChild("BodyVelocity")
-		if not BV then
-			BV = Instance.new("BodyVelocity")
-			BV.Name = "BodyVelocity"
-			BV.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-			BV.Velocity = Vector3.zero
-			BV.Parent = HRP
-		end
-		local Time = math.clamp(Distance / Speed, 0.05, 2)
-		local TweenInfo_ = TweenInfo.new(Time, Enum.EasingStyle.Linear)
-		local Tween = game:GetService("TweenService"):Create(HRP,TweenInfo_,	{ CFrame = CFrame.new(TargetPos) })
-		Tween:Play()
+
+	local hrp = (Player.Character or Player.CharacterAdded:Wait()):WaitForChild("HumanoidRootPart")
+	local targetCF = hrp.CFrame
+
+	local EnemyList
+	if SuperBring then
+		EnemyList = Enemies:GetChildren()
+	else
+		EnemyList = self.Enemies:GetTagged(ToEnemy.Name)
+	end
+
+	for _, Enemy in ipairs(EnemyList) do
+		if Enemy.Parent ~= Enemies then continue end
+		if not Enemy.PrimaryPart then continue end
+		if not self.IsAlive(Enemy) then continue end
+ 
+		Enemy:SetPrimaryPartCFrame(targetCF)) 
 	end
 end
 	
