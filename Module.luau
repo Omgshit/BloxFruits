@@ -1287,7 +1287,7 @@ end
       
       local BodyPosition = Instance.new("BodyPosition", RootPart)
       BodyPosition.Position = RootPart.Position
-      BodyPosition.P, BodyPosition.D = 2e3, 2e3
+      BodyPosition.P, BodyPosition.D = 3e5, 1e3
       BodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
       
       while PlayerRootPart and RootPart and Humanoid and Humanoid.Health > 0 and Enemy do
