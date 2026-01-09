@@ -880,7 +880,7 @@ end
     
     if Settings.BringMobs then
       Module.IsSuperBring = if SuperBring then true else false
-      pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
+      pcall(sethiddenproperty, Player, "SimulationRadius", 112412400000)
       
       local Name = ToEnemy.Name
       local Position = (Player.Character or Player.CharacterAdded:Wait()):GetPivot().Position
