@@ -889,6 +889,9 @@ end
       if not Cached.Bring[BringPositionTag] or (Target.Position - Cached.Bring[BringPositionTag].Position).Magnitude > 25 then
         Cached.Bring[BringPositionTag] = Target
       end
+
+      pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
+            task.wait(0.1)
       
       local EnemyList = (not SuperBring and self.Enemies:GetTagged(Name)) or Enemies:GetChildren()
       
@@ -901,7 +904,6 @@ end
         if self.IsAlive(Enemy) and PrimaryPart then
           if (Position - PrimaryPart.Position).Magnitude < Settings.BringDistance then
             Enemy:AddTag(BRING_TAG)
-            pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
           end
         end
       end
