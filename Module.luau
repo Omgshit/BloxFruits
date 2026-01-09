@@ -1288,7 +1288,7 @@ end
       local BodyPosition = Instance.new("BodyPosition", RootPart)
       BodyPosition.Position = RootPart.Position
       BodyPosition.P, BodyPosition.D = 3e5, 2e3
-      BodyPosition.MaxForce = Vector3.new(1e7, 1e7, 1e7)
+      BodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
       
       while PlayerRootPart and RootPart and Humanoid and Humanoid.Health > 0 and Enemy do
         local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
