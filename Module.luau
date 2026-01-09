@@ -880,6 +880,7 @@ end
     
     if Settings.BringMobs then
       Module.IsSuperBring = if SuperBring then true else false
+      pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
       
       local Name = ToEnemy.Name
       local Position = (Player.Character or Player.CharacterAdded:Wait()):GetPivot().Position
@@ -889,9 +890,6 @@ end
       if not Cached.Bring[BringPositionTag] or (Target.Position - Cached.Bring[BringPositionTag].Position).Magnitude > 25 then
         Cached.Bring[BringPositionTag] = Target
       end
-
-      pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
-            task.wait(0.1)
       
       local EnemyList = (not SuperBring and self.Enemies:GetTagged(Name)) or Enemies:GetChildren()
       
