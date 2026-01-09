@@ -888,7 +888,7 @@ end
       local Target = ToEnemy.PrimaryPart.CFrame
       local BringPositionTag = if SuperBring then "ALL_MOBS" else Name
       
-      if not CachedBring[BringPositionTag] or (Target.Position - Cached.Bring[BringPositionTag].Position).Magnitude > 25 then
+      if not Cached.Bring[BringPositionTag] or (Target.Position - Cached.Bring[BringPositionTag].Position).Magnitude > 25 then
         Cached.Bring[BringPositionTag] = Target
       end
       
@@ -907,7 +907,7 @@ end
         end
       end
     else
-      if not CachedBring[ToEnemy] then
+      if not Cached.Bring[ToEnemy] then
         Cached.Bring[ToEnemy] = ToEnemy.PrimaryPart.CFrame
       end
       
