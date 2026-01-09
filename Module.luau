@@ -877,6 +877,8 @@ end
     if not self.IsAlive(ToEnemy) or not ToEnemy.PrimaryPart then
       return nil
     end
+
+   pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
     
     if Settings.BringMobs then
       Module.IsSuperBring = if SuperBring then true else false
@@ -904,12 +906,6 @@ end
           end
         end
       end
-    else
-      if not Cached.Bring[ToEnemy] then
-        Cached.Bring[ToEnemy] = ToEnemy.PrimaryPart.CFrame
-      end
-      
-      ToEnemy.PrimaryPart.CFrame = Cached.Bring[ToEnemy]
     end
   end
 	
