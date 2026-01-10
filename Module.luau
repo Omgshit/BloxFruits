@@ -1273,7 +1273,7 @@ end
 			return NewTag
 		end
 		
-        local function Bring(Enemy)
+   local function Bring(Enemy)
     if not Enemy or not Enemy.Parent then
         return
     end
@@ -1288,18 +1288,8 @@ end
     if not Target then
         return
     end
-    if isnetworkowner(RootPart) then
-    for _, part in ipairs(Enemy:GetDescendants()) do
-        if part:IsA("BasePart") then
-            part.CanCollide = false
-        end
-      end
-    end
     RootPart.CFrame = Target
     sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-    if Enemy:HasTag(BRING_TAG) then
-        Enemy:RemoveTag(BRING_TAG)
-    end
 end
 		
 		local function KillAura(Enemy)
