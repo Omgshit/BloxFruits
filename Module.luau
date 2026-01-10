@@ -1598,6 +1598,13 @@ end
 				end
 			end
 		end
+
+      Actived=function()local a=game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")for b,c in next,getconnections(a.Activated)do if typeof(c.Function)=='function' then getupvalues(c.Function) end end end 
+      LeftClick = function()      
+          local Pretool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+          local LeftClickRemote = Pretool:FindFirstChild('LeftClickRemote');
+          if LeftClickRemote then Actived() LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true);LeftClickRemote:FireServer(false)end     		                   
+      end
 		
 		function FastAttack:UseNormalClick(Humanoid: Humanoid, Character: Character, Cooldown: number): (nil)
 			self.EnemyRootPart = nil
@@ -1743,11 +1750,12 @@ end
 				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then (tick() + 0.05) else tick()
 					
 				if ToolTip == "Blox Fruit" then
-					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
+					if ToolName == "Ice-Ice" or ToolName == "Light-Light" or ToolName == "Gas-Gas" then
 						return self:UseNormalClick(Humanoid, Character, Cooldown)
 					elseif Equipped:FindFirstChild("LeftClickRemote") then
-						return self:UseFruitM1(Character, Equipped, Combo)
+						return LeftClick()
 					end
+
 				elseif ToolTip == "Gun" then
 					if SUCCESS_SHOOT and SHOOT_FUNCTION then
 						return self:UseGunShoot(Character, Equipped)
