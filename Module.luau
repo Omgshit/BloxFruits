@@ -1284,20 +1284,15 @@ end
     if not RootPart or not Humanoid or Humanoid.Health <= 0 then
         return
     end
-   local BodyVelocity = RootPart:FindFirstChild("BodyVelocity")
-   if not BodyVelocity then
-  BodyVelocity = Instance.new("BodyVelocity")
-  BodyVelocity.Parent = RootPart
-  BodyVelocity.Name = "BodyVelocity"
-  BodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-  BodyVelocity.Velocity = Vector3.new(0, 0, 0)
-   end
     local Target = Cached.Bring[Module.IsSuperBring and "ALL_MOBS" or Enemy.Name]
     if not Target then
         return
     end
     RootPart.CFrame = Target
     sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+   if Enemy:HasTag(BRING_TAG) then
+        Enemy:RemoveTag(BRING_TAG)
+    end
 end
 		
 		local function KillAura(Enemy)
