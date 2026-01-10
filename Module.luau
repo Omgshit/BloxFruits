@@ -1747,7 +1747,11 @@ end
 					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
                        return self:UseNormalClick(Humanoid, Character, Cooldown)
                     elseif Equipped:FindFirstChild("LeftClickRemote") then
+                        if ToolName == "Blade-Blade or ToolName == "Gas-Gas" then
 						return self:UseFruitM1(Character, Equipped, Combo)
+                       else 
+                      return Equipped:FindFirstChild("LeftClickRemote")
+                     end
 					end
 
 				elseif ToolTip == "Gun" then
