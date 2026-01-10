@@ -1272,28 +1272,35 @@ end
 			
 			return NewTag
 		end
-		
+
    local function Bring(Enemy)
-    if not Enemy or not Enemy.Parent then
-        return
+      local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChild("HumanoidRootPart")
+      local RootPart = Enemy:WaitForChild("HumanoidRootPart")
+      local Humanoid = Enemy:WaitForChild("Humanoid")
+      local EnemyName = Enemy.Name
+      sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
+      
+      local BodyVelocity = Instance.new("BodyVelocity", RootPart)
+      BodyVelocity.Velocity = Vector3.zero
+      BodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+      
+      local BodyPosition = Instance.new("BodyPosition", RootPart)
+      BodyPosition.Position = RootPart.Position
+      BodyPosition.P, BodyPosition.D = 3e4, 3e3
+      BodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+      
+      while PlayerRootPart and RootPart and Humanoid and Humanoid.Health > 0 and Enemy do
+        local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
+        
+        if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
+          if (RootPart.Position - Target.Position).Magnitude <= 5 then
+            RootPart.CFrame = Target
+          else
+            BodyPosition.Position = Target.Position
+          end
+        end;task.wait()
+      end
     end
-    local Character = Player.Character or Player.CharacterAdded:Wait()
-    local PlayerRootPart = Character:WaitForChild("HumanoidRootPart")
-    local RootPart = Enemy:FindFirstChild("HumanoidRootPart") or Enemy:FindFirstChild("RootPart")
-    local Humanoid = Enemy:FindFirstChild("Humanoid")
-    if not RootPart or not Humanoid or Humanoid.Health <= 0 then
-        return
-    end
-    local Target = Cached.Bring[Module.IsSuperBring and "ALL_MOBS" or Enemy.Name]
-    if not Target then
-        return
-    end
-    RootPart.CFrame = Target
-    sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-   if Enemy:HasTag(BRING_TAG) then
-        Enemy:RemoveTag(BRING_TAG)
-    end
-end
 		
 		local function KillAura(Enemy)
 			local Humanoid = Enemy:FindFirstChild("Humanoid")
