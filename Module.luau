@@ -1750,7 +1750,7 @@ end
                         if ToolName == "Blade-Blade or ToolName == "Gas-Gas" then
 						return self:UseFruitM1(Character, Equipped, Combo)
                        else 
-                      return Equipped:FindFirstChild("LeftClickRemote")
+                      return Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
                      end
 					end
 
