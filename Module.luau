@@ -900,7 +900,7 @@ end
         local PrimaryPart = Enemy.PrimaryPart
         if self.IsAlive(Enemy) and PrimaryPart then
           if (Position - PrimaryPart.Position).Magnitude < Settings.BringDistance then
-
+            Enemy:AddTag(BRING_TAG)
           end
         end
       end
