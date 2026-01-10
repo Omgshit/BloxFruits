@@ -1747,7 +1747,7 @@ end
 					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
                        return self:UseNormalClick(Humanoid, Character, Cooldown)
                     elseif Equipped:FindFirstChild("LeftClickRemote") then
-                        if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" or ToolName == "Eagle-Eagle" then
+                        if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" then
 						return self:UseFruitM1(Character, Equipped, Combo)
                        else 
                       return Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
