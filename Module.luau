@@ -1293,7 +1293,7 @@ end
         local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
         
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
-          if (RootPart.Position - Target.Position).Magnitude <= 25 then
+          if (RootPart.Position - Target.Position).Magnitude <= 75 then
             RootPart.CFrame = Target
           else
             BodyPosition.Position = Target.Position
@@ -1599,13 +1599,6 @@ end
 				end
 			end
 		end
-
-      Actived=function()local a=game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")for b,c in next,getconnections(a.Activated)do if typeof(c.Function)=='function' then getupvalues(c.Function) end end end 
-      LeftClick = function()      
-          local Pretool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
-          local LeftClickRemote = Pretool:FindFirstChild('LeftClickRemote');
-          if LeftClickRemote then Actived() LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true);LeftClickRemote:FireServer(false)end     		                   
-      end
 		
 		function FastAttack:UseNormalClick(Humanoid: Humanoid, Character: Character, Cooldown: number): (nil)
 			self.EnemyRootPart = nil
@@ -1753,10 +1746,8 @@ end
 				if ToolTip == "Blox Fruit" then
 					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
                        return self:UseNormalClick(Humanoid, Character, Cooldown)
-                    elseif ToolName == "Gas-Gas" then
+                    elseif Equipped:FindFirstChild("LeftClickRemote") then
 						return self:UseFruitM1(Character, Equipped, Combo)
-					elseif Equipped:FindFirstChild("LeftClickRemote") then
-						return LeftClick()
 					end
 
 				elseif ToolTip == "Gun" then
