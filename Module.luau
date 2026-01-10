@@ -901,6 +901,7 @@ end
         if self.IsAlive(Enemy) and PrimaryPart then
           if (Position - PrimaryPart.Position).Magnitude < Settings.BringDistance then
             Enemy:AddTag(BRING_TAG)
+            pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
           end
         end
       end
@@ -1287,7 +1288,6 @@ end
     local Target = Cached.Bring[Module.IsSuperBring and "ALL_MOBS" or EnemyName]
     if not Target then return end
 
-    pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
     RootPart.AssemblyLinearVelocity = Vector3.zero
     RootPart.AssemblyAngularVelocity = Vector3.zero
     RootPart.CFrame = Target
