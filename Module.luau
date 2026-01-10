@@ -1293,7 +1293,7 @@ end
         local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
         
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
-          if (RootPart.Position - Target.Position).Magnitude <= 75 then
+          if (RootPart.Position - Target.Position).Magnitude <= 100 then
             RootPart.CFrame = Target
           else
             BodyPosition.Position = Target.Position
