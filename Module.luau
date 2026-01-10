@@ -891,7 +891,7 @@ end
         Cached.Bring[BringPositionTag] = Target
       end
       
-      local EnemyList = (not SuperBring and self.Enemies:GetTagged(Name)) or Enemies:GetChildren()
+      local EnemyList = self.Enemies:GetTagged(Name)
       
       for i = 1, #EnemyList do
         local Enemy = EnemyList[i]
