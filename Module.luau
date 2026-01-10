@@ -1750,8 +1750,10 @@ end
 				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then (tick() + 0.05) else tick()
 					
 				if ToolTip == "Blox Fruit" then
-					if ToolName == "Ice-Ice" or ToolName == "Light-Light" or ToolName == "Gas-Gas" then
-						return self:UseNormalClick(Humanoid, Character, Cooldown)
+					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
+                       return self:UseNormalClick(Humanoid, Character, Cooldown)
+                    elseif ToolName == "Gas-Gas" then
+						return self:UseFruitM1(Character, Equipped, Combo)
 					elseif Equipped:FindFirstChild("LeftClickRemote") then
 						return LeftClick()
 					end
