@@ -1275,22 +1275,22 @@ end
 		end
 		
 	local function Bring(Enemy)
-    if not Enemy or not Enemy.Parent then return end
-
-    local Character = Player.Character or Player.CharacterAdded:Wait()
-    local PlayerRootPart = Character:WaitForChild("HumanoidRootPart")
+    if not Enemy or Enemy.Parent ~= Enemies then return end
 
     local RootPart = Enemy:FindFirstChild("HumanoidRootPart")
     local Humanoid = Enemy:FindFirstChild("Humanoid")
     if not RootPart or not Humanoid or Humanoid.Health <= 0 then return end
 
-    local EnemyName = Enemy.Name
-    local Target = Cached.Bring[Module.IsSuperBring and "ALL_MOBS" or EnemyName]
+    local key = Module.IsSuperBring and "ALL_MOBS" or Enemy.Name
+    local Target = Cached.Bring[key]
     if not Target then return end
 
-    RootPart.AssemblyLinearVelocity = Vector3.zero
-    RootPart.AssemblyAngularVelocity = Vector3.zero
-    RootPart.CFrame = Target
+    local dist = (RootPart.Position - Target.Position).Magnitude
+    if dist > 5 then
+        RootPart.AssemblyLinearVelocity = Vector3.zero
+        RootPart.AssemblyAngularVelocity = Vector3.zero
+        RootPart.CFrame = Target
+    end
 
     if Enemy:HasTag(BRING_TAG) then
         Enemy:RemoveTag(BRING_TAG)
