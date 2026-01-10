@@ -880,6 +880,7 @@ end
     
     if Settings.BringMobs then
       Module.IsSuperBring = if SuperBring then true else false
+      pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
       
       local Name = ToEnemy.Name
       local Position = (Player.Character or Player.CharacterAdded:Wait()):GetPivot().Position
@@ -901,7 +902,6 @@ end
         if self.IsAlive(Enemy) and PrimaryPart then
           if (Position - PrimaryPart.Position).Magnitude < Settings.BringDistance then
             Enemy:AddTag(BRING_TAG)
-            pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
           end
         end
       end
