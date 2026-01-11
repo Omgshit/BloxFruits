@@ -1812,7 +1812,7 @@ end
                      end
                     end
 				elseif ToolTip == "Gun" then
-					if SUCCESS_SHOOT and SHOOT_FUNCTION and (Settings.AutoShoot or Settings.dStormSea) then
+					if SUCCESS_SHOOT and SHOOT_FUNCTION then
 						self:UseGunShoot(Character, Equipped)
 					end
 				else
