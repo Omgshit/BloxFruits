@@ -1387,7 +1387,7 @@ end
 	
 	Module.FastAttack = (function()
 		local FastAttack = {
-			Distance = 500,
+			Distance = 50,
 			attackMobs = true,
 			attackPlayers = true,
 			Equipped = nil,
@@ -1750,11 +1750,9 @@ end
                         if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" then
 						return self:UseFruitM1(Character, Equipped, Combo)
                        else 
-                       if not _G.AutoAttack then
                       return Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
                      end
 					end
-                   end
 
 				elseif ToolTip == "Gun" then
 					if SUCCESS_SHOOT and SHOOT_FUNCTION then
