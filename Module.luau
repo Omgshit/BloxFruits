@@ -789,7 +789,7 @@ local Module = {} do
 		Module.FireRemote(`Travel{self.GameData.SeasName[Sea]}`)
 	end
 
-  function Module.ServerHop(): (nil)
+  function Module:ServerHop(): (nil)
 		task.spawn(TeleportService.TeleportToPlaceInstance, TeleportService, game.PlaceId, Player)
 	end
 	
