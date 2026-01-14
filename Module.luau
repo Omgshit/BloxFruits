@@ -789,6 +789,75 @@ local Module = {} do
 		Module.FireRemote(`Travel{self.GameData.SeasName[Sea]}`)
 	end
 
+   function Module:ServerHop(): nil
+    local taskWait = task
+    local PlaceID = game.PlaceId
+    local HttpService = game:GetService("HttpService")
+
+    local AllIDs = {}
+    local foundAnything = ""
+    local actualHour = os.date("!*t").hour
+
+    local success = pcall(function()
+        AllIDs = HttpService:JSONDecode(readfile("NotSameServers.json"))
+    end)
+
+    if not success then
+        AllIDs = { actualHour }
+        writefile("NotSameServers.json", HttpService:JSONEncode(AllIDs))
+    end
+
+    local function TPReturner()
+        local Site
+        if foundAnything == "" then
+            Site = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" ..PlaceID .. "/servers/Public?sortOrder=Asc&limit=100"))
+        else
+            Site = HttpService:JSONDecode(game:HttpGet("https://games.roblox.com/v1/games/" ..PlaceID .. "/servers/Public?sortOrder=Asc&limit=100&cursor=" .. foundAnything))
+        end
+        if Site.nextPageCursor and Site.nextPageCursor ~= "null" then
+            foundAnything = Site.nextPageCursor
+        end
+        for _, v in pairs(Site.data) do
+            local ID = tostring(v.id)
+            local Possible = true
+            if v.maxPlayers > v.playing then
+                for i, Existing in pairs(AllIDs) do
+                    if i == 1 and tonumber(Existing) ~= actualHour then
+                        pcall(function()
+                            delfile("NotSameServers.json")
+                        end)
+                        AllIDs = { actualHour }
+                        break
+                    end
+                    if ID == tostring(Existing) then
+                        Possible = false
+                        break
+                    end
+                end
+                if Possible then
+                    table.insert(AllIDs, ID)
+                    pcall(function()
+                        writefile("NotSameServers.json", HttpService:JSONEncode(AllIDs))
+                        game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer("teleport",ID)
+                    end)
+                    taskWait.wait(0.5)
+                end
+            end
+        end
+    end
+    local function Teleport()
+        while taskWait.wait() do
+            pcall(function()
+                TPReturner()
+                if foundAnything ~= "" then
+                    TPReturner()
+                end
+            end)
+        end
+    end
+    Teleport()
+end
+
   function Module:ServerHop(): (nil)
 fask = task
 local PlaceID = game.PlaceId
