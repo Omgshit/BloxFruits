@@ -689,31 +689,33 @@ local Module = {} do
 				})
 			end
 		end
-		
-		Module.RunFunctions.FarmQueue = function(Options)
-			local Success, ErrorMessage = pcall(function()
-				while task.wait(Settings.SmoothMode and 0.25 or 0) do
-					local Enabled = false
-					
-					for _, Option in Options do
-						Settings.RunningOption = Option.Name
-						local Method = Option.Function()
-						
-						if Method then
-							Settings.RunningMethod = type(Method) == "string" and Method
-							Enabled = true; break
-						else
-							Settings.RunningOption, Settings.RunningMethod = nil, nil
-						end
-					end
-					
-					_ENV.OnFarm = (_ENV.teleporting or Enabled)
-				end
-			end)
-		end
-	end
+
+ Module.RunFunctions.FarmQueue = function(Options)
+    task.spawn(function()
+        while task.wait(Settings.SmoothMode and 0.25 or 0) do
+            local Enabled = false
+
+            for _, Option in ipairs(Options) do
+                local ok, Method = pcall(Option.Function)
+
+                if ok and Method then
+                    Settings.RunningOption = Option.Name
+                    Settings.RunningMethod = type(Method) == "string" and Method or nil
+                    Enabled = true
+                end
+            end
+
+            if not Enabled then
+                Settings.RunningOption = nil
+                Settings.RunningMethod = nil
+            end
+
+            _ENV.OnFarm = (_ENV.teleporting or Enabled)
+        end
+    end)
+end		
 	
-	function Module.FireRemote(...)
+function Module.FireRemote(...)
 		return CommF:InvokeServer(...)
 	end
 	
