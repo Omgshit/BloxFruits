@@ -564,23 +564,13 @@ local Module = {} do
 	end
 	
 	Module.Signals = {} do
-		local Signals = Module.Signals
-		
+		local Signals = Module.Signals	
 		Signals.PossibleStaff = Signal.new()
 		Signals.OptionChanged = Signal.new()
 		Signals.EnemyAdded = Signal.new()
 		Signals.EnemyDied = Signal.new()
 		Signals.Notify = Signal.new()
 		Signals.Error = Signal.new()
-
-		Signals.Error:Connect(function(ErrorMessage)
-			_ENV.loadedFarm = false
-			_ENV.OnFarm = false
-			
-			local Message = Instance.new("Message", workspace)
-			_ENV.redz_hub_error = Message
-			Message.Text = (`redz-Hub error [ {Settings.RunningOption or "Null"} ] {ErrorMessage}`)
-		end)
 	end
 	
 	Module.RunFunctions = {} do
