@@ -564,12 +564,23 @@ local Module = {} do
 	end
 	
 	Module.Signals = {} do
-		local Signals = Module.Signals	
+		local Signals = Module.Signals
+		
 		Signals.PossibleStaff = Signal.new()
 		Signals.OptionChanged = Signal.new()
 		Signals.EnemyAdded = Signal.new()
 		Signals.EnemyDied = Signal.new()
 		Signals.Notify = Signal.new()
+		Signals.Error = Signal.new()
+
+		Signals.Error:Connect(function(ErrorMessage)
+			_ENV.loadedFarm = false
+			_ENV.OnFarm = false
+			
+			local Message = Instance.new("Message", workspace)
+			_ENV.redz_hub_error = Message
+			Message.Text = (`redz-Hub error [ {Settings.RunningOption or "Null"} ] {ErrorMessage}`)
+		end)
 	end
 	
 	Module.RunFunctions = {} do
@@ -689,7 +700,7 @@ local Module = {} do
 				})
 			end
 		end
-
+		
 		Module.RunFunctions.FarmQueue = function(Options)
 			local Success, ErrorMessage = pcall(function()
 				while task.wait(Settings.SmoothMode and 0.25 or 0) do
@@ -702,16 +713,20 @@ local Module = {} do
 						if Method then
 							Settings.RunningMethod = type(Method) == "string" and Method
 							Enabled = true; break
+						else
+							Settings.RunningOption, Settings.RunningMethod = nil, nil
 						end
 					end
 					
 					_ENV.OnFarm = (_ENV.teleporting or Enabled)
 				end
 			end)
+			
+			Module.Signals.Error:Fire(ErrorMessage)
 		end
 	end
 	
- function Module.FireRemote(...)
+	function Module.FireRemote(...)
 		return CommF:InvokeServer(...)
 	end
 	
