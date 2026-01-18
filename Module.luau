@@ -690,30 +690,26 @@ local Module = {} do
 			end
 		end
 
-	Module.RunFunctions.FarmQueue = function(Options)
-      local Success, ErrorMessage = pcall(function()
-        while task.wait(Settings.SmoothMode and 0.25 or 0) do
-            local Enabled = false
-
-            for _, Option in pairs(Options) do
-                Settings.RunningOption = Option.Name
-
-                local ok, Method = pcall(Option.Function)
-                if ok and Method then
-                    Settings.RunningMethod = type(Method) == "string" and Method
-                    Enabled = true
-                    break
-                end
-            end
-
-            _ENV.OnFarm = (_ENV.teleporting or Enabled)
-        end
-    end)
-
-    if not Success then
-        warn("[FarmQueue Error]:", ErrorMessage)
-    end
-end
+		Module.RunFunctions.FarmQueue = function(Options)
+			local Success, ErrorMessage = pcall(function()
+				while task.wait(Settings.SmoothMode and 0.25 or 0) do
+					local Enabled = false
+					
+					for _, Option in Options do
+						Settings.RunningOption = Option.Name
+						local Method = Option.Function()
+						
+						if Method then
+							Settings.RunningMethod = type(Method) == "string" and Method
+							Enabled = true; break
+						end
+					end
+					
+					_ENV.OnFarm = (_ENV.teleporting or Enabled)
+				end
+			end)
+		end
+	end
 	
  function Module.FireRemote(...)
 		return CommF:InvokeServer(...)
