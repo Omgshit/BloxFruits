@@ -702,8 +702,7 @@ local Module = {} do
                 if ok and Method then
                     Settings.RunningMethod = type(Method) == "string" and Method
                     Enabled = true
-                else
-                    Settings.RunningOption, Settings.RunningMethod = nil, nil
+                    break
                 end
             end
 
