@@ -570,7 +570,6 @@ local Module = {} do
 		Signals.EnemyAdded = Signal.new()
 		Signals.EnemyDied = Signal.new()
 		Signals.Notify = Signal.new()
-		Signals.Error = Signal.new()
 	end
 	
 	Module.RunFunctions = {} do
