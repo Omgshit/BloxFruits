@@ -710,8 +710,6 @@ local Module = {} do
 					_ENV.OnFarm = (_ENV.teleporting or Enabled)
 				end
 			end)
-			
-			Module.Signals.Error:Fire(ErrorMessage)
 		end
 	end
 	
