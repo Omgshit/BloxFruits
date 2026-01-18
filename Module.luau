@@ -1115,7 +1115,7 @@ end
 		local SeaCastle = CFrame.new(-5556, 314, -2988)
 		
 		local TagsMobs = {
-			__Elite = CreateDictionary({ "Deandre", "Diablo", "Urban","Tyrant of Skies" }, true),
+			__Elite = CreateDictionary({ "Deandre", "Diablo", "Urban","Tyrant of the Skies" }, true),
 			__Bones = CreateDictionary({ "Reborn Skeleton", "Living Zombie", "Demonic Soul", "Posessed Mummy" }, true),
 			__CakePrince = CreateDictionary({ "Head Baker", "Baking Staff", "Cake Guard", "Cookie Crafter" }, true),
 			__TyrantSkies = CreateDictionary({ "Sun-kissed Warrior", "Skull Slayer", "Isle Champion", "Serpent Hunter" }, true)
