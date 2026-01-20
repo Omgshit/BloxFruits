@@ -1513,8 +1513,8 @@ end
 							self.ShootDebounce = tick()
 						end
 					else
-						VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1);task.wait(0.05)
-						VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1);task.wait(0.05)
+						game:GetService'VirtualUser':CaptureController()
+                        game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
 						self.ShootDebounce = tick()
 					end
 				end
@@ -1641,8 +1641,8 @@ end
 					table.insert(BladeHits, { Enemy, EnemyHitBox })
 					ExpandsHitBox(BladeHits)
 					
-					VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1);task.wait(0.05)
-					VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
+					game:GetService'VirtualUser':CaptureController()
+                    game:GetService'VirtualUser':Button1Down(Vector2.new(1280, 672))
 				end
 			end
 		end
