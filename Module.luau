@@ -1409,6 +1409,51 @@ end
 		
 		return Inventory
 	end)()
+
+  local function GetBladeHits()
+    local targets = {}
+    local function GetDistance(v)
+        return (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+    end
+    
+    for _, part in pairs({game.Workspace.Enemies, game.Workspace.Characters}) do
+        for _, v in pairs(part:GetChildren()) do
+            if v:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Head") and v:FindFirstChild("Humanoid") then
+                if GetDistance(v.HumanoidRootPart) < 60 then
+                    table.insert(targets, v)
+                end
+            end
+        end
+    end
+
+    return targets
+end
+
+local function AttackAll()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+    if not character then return end
+
+    local equippedWeapon = character:FindFirstChild("EquippedWeapon")
+    if not equippedWeapon then return end
+
+
+    local enemies = GetBladeHits()
+    if #enemies > 0 then
+        local netModule = game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Net")
+        netModule:WaitForChild("RE/RegisterAttack"):FireServer(-math.huge)
+        
+        local args = {nil, {}}
+        for i, v in pairs(enemies) do
+            if not args[1] then
+                args[1] = v.Head
+            end
+            args[2][i] = {v, v.HumanoidRootPart}
+        end
+        
+        netModule:WaitForChild("RE/RegisterHit"):FireServer(unpack(args))
+    end
+end
 	
 	Module.FastAttack = (function()
 		local FastAttack = {
@@ -1635,8 +1680,7 @@ end
 					RE_RegisterAttack:FireServer(Cooldown)
 					HIT_FUNCTION(EnemyHitBox, BladeHits)
 				elseif SUCCESS_FLAGS and not COMBAT_REMOTE_THREAD then
-					RE_RegisterAttack:FireServer(Cooldown)
-					RE_RegisterHit:FireServer(EnemyHitBox, BladeHits)
+					AttackAll()
 				else
 					table.insert(BladeHits, { Enemy, EnemyHitBox })
 					ExpandsHitBox(BladeHits)
