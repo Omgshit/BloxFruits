@@ -1434,7 +1434,7 @@ local function AttackAll()
     local character = player.Character
     if not character then return end
 
-    local equippedWeapon = character:FindFirstChild("EquippedWeapon")
+    local equippedWeapon = character:FindFirstChildOfClass("Tool")
     if not equippedWeapon then return end
 
 
