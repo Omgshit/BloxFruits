@@ -1680,13 +1680,10 @@ end
 					RE_RegisterAttack:FireServer(Cooldown)
 					HIT_FUNCTION(EnemyHitBox, BladeHits)
 				elseif SUCCESS_FLAGS and not COMBAT_REMOTE_THREAD then
-					AttackAll()
+					RE_RegisterAttack:FireServer(Cooldown)
+					RE_RegisterHit:FireServer(EnemyHitBox, BladeHits)
 				else
-					table.insert(BladeHits, { Enemy, EnemyHitBox })
-					ExpandsHitBox(BladeHits)
-					
-					VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1);task.wait(0.05)
-					VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
+				  AttackAll()
 				end
 			end
 		end
