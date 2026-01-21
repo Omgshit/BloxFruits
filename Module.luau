@@ -1441,7 +1441,7 @@ local function AttackAll()
     local enemies = GetBladeHits()
     if #enemies > 0 then
         local netModule = game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("Net")
-        netModule:WaitForChild("RE/RegisterAttack"):FireServer(-math.huge)
+        netModule:WaitForChild("RE/RegisterAttack"):FireServer(0)
         
         local args = {nil, {}}
         for i, v in pairs(enemies) do
@@ -1813,7 +1813,7 @@ end
 					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
                        return self:UseNormalClick(Humanoid, Character, Cooldown)
                     elseif Equipped:FindFirstChild("LeftClickRemote") then
-                        if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" then
+                        if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" or ToolName == "T-Rex-T-Rex" then
 						return self:UseFruitM1(Character, Equipped, Combo)
                        else 
                        if not _G.AutoAttack then
