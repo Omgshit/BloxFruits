@@ -448,10 +448,6 @@ local Module = {} do
 			},
 			
 			-- Bosses Sea 3
-			["Tyrant of the Skies"] = {
-				RaidBoss = true,
-				Position = CFrame.new(-16252, 153, 1394)
-			},
 			["Cake Prince"] = {
 				RaidBoss = true,
 				Position = CFrame.new(-2103, 70, -12165)
