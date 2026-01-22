@@ -722,9 +722,7 @@ local Module = {} do
 				end
 			end)
 			
-			if not ErrorMessage then
-                 return
-            end
+		   Module.Signals.Error:Fire(ErrorMessage)
 		end
 	end
 	
