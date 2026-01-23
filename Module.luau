@@ -432,7 +432,7 @@ local Module = {} do
 				IsBoss = true,
 				Level = 1150,
 				Position = CFrame.new(-5078, 24, -5352),
-				Quest = {"IceSideQuest", CFrame.new(-6061, 16, -4904)}
+				Quest = {"IceSideQuest", CFrame.new(-6229, 82, -4853)}
 			},
 			["Awakened Ice Admiral"] = {
 				IsBoss = true,
