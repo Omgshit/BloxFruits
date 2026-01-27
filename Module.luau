@@ -1759,8 +1759,8 @@ end
 				if ToolTip == "Blox Fruit" then
 					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
                        return self:UseNormalClick(Humanoid, Character, Cooldown)
-                    elseif Equipped:FindFirstChild("LeftClickRemote") then
-                        if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" or ToolName == "T-Rex-T-Rex" then
+                    elseif Equipped:FindFirstChild("LeftClickRemote") then      
+                        if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" or ToolName == "T-Rex-T-Rex" or ToolName == "Mammoth-Mammoth" or ToolName == "Tiger-Tiger" or ToolName == "Yeti-Yeti"
 						return self:UseFruitM1(Character, Equipped, Combo)
                        else 
                        if not _G.AutoAttack then
