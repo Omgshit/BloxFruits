@@ -579,7 +579,7 @@ local Module = {} do
 			
 			local Message = Instance.new("Message", workspace)
 			_ENV.redz_hub_error = Message
-			Message.Text = (`redz-Hub error [ {Settings.RunningOption or "Null"} ] {ErrorMessage}`)
+			Message.Text = (`OMG-Hub error [ {Settings.RunningOption or "Null"} ] {ErrorMessage}`)
 		end)
 	end
 	
