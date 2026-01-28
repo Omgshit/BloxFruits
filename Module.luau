@@ -1766,7 +1766,7 @@ end
 						return self:UseFruitM1(Character, Equipped, Combo)
                        else 
                        if not _G.AutoAttack then
-                      return Actived()Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
+                      return Actived(),Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
                      end
 					end
                    end
