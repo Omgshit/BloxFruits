@@ -1460,6 +1460,8 @@ end
 					HIT_FUNCTION = (getmenv or getsenv)(Net)._G.SendHitsToServer
 				end
 		end)
+
+        Actived=function()local a=game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")for b,c in next,getconnections(a.Activated)do if typeof(c.Function)=='function' then getupvalues(c.Function) end end end 
 		
 		local IsAlive = Module.IsAlive
 		
@@ -1764,7 +1766,7 @@ end
 						return self:UseFruitM1(Character, Equipped, Combo)
                        else 
                        if not _G.AutoAttack then
-                      return Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
+                      return Actived()Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
                      end
 					end
                    end
