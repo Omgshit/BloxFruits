@@ -1757,21 +1757,24 @@ end
 				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then (tick() + 0.05) else tick()
 					
 				if ToolTip == "Blox Fruit" then
+                 if not _G.AutoAttack then 
 					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
                        return self:UseNormalClick(Humanoid, Character, Cooldown)
-                    elseif Equipped:FindFirstChild("LeftClickRemote") and not _G.AutoAttack then    
+                    elseif Equipped:FindFirstChild("LeftClickRemote") then   
                         if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" or ToolName == "T-Rex-T-Rex" then
 						return self:UseFruitM1(Character, Equipped, Combo)
                        else 
                       return Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
                      end
 					end
+                  end
 
 				elseif ToolTip == "Gun" then
 					if SUCCESS_SHOOT and SHOOT_FUNCTION then
 						return self:UseGunShoot(Character, Equipped)
 					end
 				else
+            if not _G.Seriality then 
 					return self:UseNormalClick(Humanoid, Character, Cooldown)
 				end
 			end
