@@ -1760,7 +1760,7 @@ end
 					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
                        return self:UseNormalClick(Humanoid, Character, Cooldown)
                     elseif Equipped:FindFirstChild("LeftClickRemote") then      
-						return self:UseFruitM1(Character, Equipped, Combo),Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
+						return self:UseFruitM1(Character, Equipped, Combo)
                      end
 
 				elseif ToolTip == "Gun" then
