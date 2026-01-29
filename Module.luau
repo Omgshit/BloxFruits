@@ -1732,7 +1732,7 @@ end
 		end
 		
 		function FastAttack.attack()
-			if not Settings.AutoClick or (tick() - Module.AttackCooldown) <= 1 then return end
+			if not Settings.AutoClick or (tick() - Module.AttackCooldown) <= 0.1 then return end
 			if not IsAlive(Player.Character) then return end
 			
 			local self = FastAttack
@@ -1757,9 +1757,9 @@ end
 				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then (tick() + 0.05) else tick()
 					
 				if ToolTip == "Blox Fruit" then
-					if ToolName == "Ice-Ice" or ToolName == "Light-Light" and not _G.Seriality then
+					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
                        return self:UseNormalClick(Humanoid, Character, Cooldown)
-                    elseif Equipped:FindFirstChild("LeftClickRemote") and not _G.AutoAttack then 
+                    elseif Equipped:FindFirstChild("LeftClickRemote") then
                         if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" or ToolName == "T-Rex-T-Rex" then
 						return self:UseFruitM1(Character, Equipped, Combo)
                        else 
@@ -1772,12 +1772,10 @@ end
 						return self:UseGunShoot(Character, Equipped)
 					end
 				else
-            if not _G.Seriality then 
 					return self:UseNormalClick(Humanoid, Character, Cooldown)
 				end
 			end
 		end
-     end
 		
 		table.insert(Connections, Stepped:Connect(FastAttack.attack))
 		
