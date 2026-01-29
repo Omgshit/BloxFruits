@@ -1759,8 +1759,6 @@ end
 				if ToolTip == "Blox Fruit" then
 					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
                        return self:UseNormalClick(Humanoid, Character, Cooldown)
-                    elseif Equipped:FindFirstChild("LeftClickRemote") then      
-						return self:UseFruitM1(Character, Equipped, Combo)
                      end
 
 				elseif ToolTip == "Gun" then
