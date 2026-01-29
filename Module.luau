@@ -1751,7 +1751,7 @@ end
 			
 			if (tick() - self.Debounce) >= Cooldown and self:CheckStun(ToolTip, Character, Humanoid) then
 				local Combo = self:GetCombo()
-				Cooldown += if Combo >= 4 then 0.05 else 0
+				Cooldown += if Combo >= 4 then 0.01 else 0
 				
 				self.Equipped = Equipped
 				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then (tick() + 0.05) else tick()
