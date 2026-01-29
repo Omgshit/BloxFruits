@@ -1779,6 +1779,7 @@ end
 				end
 			end
 		end
+     end
 		
 		table.insert(Connections, Stepped:Connect(FastAttack.attack))
 		
