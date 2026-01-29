@@ -1461,8 +1461,6 @@ end
 				end
 		end)
 
-        Actived=function()local a=game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")for b,c in next,getconnections(a.Activated)do if typeof(c.Function)=='function' then getupvalues(c.Function) end end end 
-		
 		local IsAlive = Module.IsAlive
 		
 		FastAttack.ShootsFunctions = {
@@ -1762,14 +1760,8 @@ end
 					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
                        return self:UseNormalClick(Humanoid, Character, Cooldown)
                     elseif Equipped:FindFirstChild("LeftClickRemote") then      
-                        if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" or ToolName == "T-Rex-T-Rex" or ToolName == "Mammoth-Mammoth" then
-						return self:UseFruitM1(Character, Equipped, Combo)
-                       else 
-                       if not _G.AutoAttack then
-                      return Actived(),Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
+						return self:UseFruitM1(Character, Equipped, Combo),Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
                      end
-					end
-                   end
 
 				elseif ToolTip == "Gun" then
 					if SUCCESS_SHOOT and SHOOT_FUNCTION then
