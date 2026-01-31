@@ -540,7 +540,8 @@ local Module = {} do
 			{"Accessories", {
 				{"Buy Black Cape", {"BuyItem", "Black Cape"}},
 				{"Buy Swordsman Hat", {"BuyItem", "Swordsman Hat"}},
-				{"Buy Tomoe Ring", {"BuyItem", "Tomoe Ring"}}
+				{"Buy Tomoe Ring", {"BuyItem", "Tomoe Ring"}},
+                {"Buy Ghoul Mask", {"Ectoplasm", "Buy", 2}}
 			}},
 			{"Race", {{"Ghoul Race", {"Ectoplasm", "Change", 4}}, {"Cyborg Race", {"CyborgTrainer", "Buy"}}}}
 		}
