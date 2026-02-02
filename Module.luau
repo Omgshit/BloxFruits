@@ -1732,51 +1732,49 @@ end
 			end
 		end
 		
-		function FastAttack.attack()
-			if not Settings.AutoClick or (tick() - Module.AttackCooldown) <= 0.1 then return end
-			if not IsAlive(Player.Character) then return end
-			
-			local self = FastAttack
-			local Character = Player.Character
-			local Humanoid = Character.Humanoid
-			
-			local Equipped = Character:FindFirstChildOfClass("Tool")
-			local ToolTip = Equipped and Equipped.ToolTip
-			local ToolName = Equipped and Equipped.Name
-			
-			if not Equipped or (ToolTip ~= "Gun" and ToolTip ~= "Melee" and ToolTip ~= "Blox Fruit" and ToolTip ~= "Sword") then
-				return nil
-			end
-			
-			local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or 0.3
-			
-			if (tick() - self.Debounce) >= Cooldown and self:CheckStun(ToolTip, Character, Humanoid) then
-				local Combo = self:GetCombo()
-				Cooldown += if Combo >= 4 then 0.01 else 0
-				
-				self.Equipped = Equipped
-				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then (tick() + 0.05) else tick()
-					
-				if ToolTip == "Blox Fruit" then
-					if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
-                       return self:UseNormalClick(Humanoid, Character, Cooldown)
-                    elseif Equipped:FindFirstChild("LeftClickRemote") then
-                        if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" then
-						return self:UseFruitM1(Character, Equipped, Combo)
-                       else 
-                      return Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
-                     end
-					end
+   function FastAttack.attack()
+	if not Settings.AutoClick then return end
+	if not IsAlive(Player.Character) then return end
 
-				elseif ToolTip == "Gun" then
-					if SUCCESS_SHOOT and SHOOT_FUNCTION then
-						return self:UseGunShoot(Character, Equipped)
-					end
+	local self = FastAttack
+	local Character = Player.Character
+	local Humanoid = Character.Humanoid
+
+	local Equipped = Character:FindFirstChildOfClass("Tool")
+	local ToolTip = Equipped and Equipped.ToolTip
+	local ToolName = Equipped and Equipped.Name
+
+	if not Equipped or (ToolTip ~= "Gun" and ToolTip ~= "Melee" and ToolTip ~= "Blox Fruit" and ToolTip ~= "Sword") then
+		return
+	end
+
+	if self:CheckStun(ToolTip, Character, Humanoid) then
+		local Combo = self:GetCombo()
+
+		self.Equipped = Equipped
+		self.Debounce = tick() -- só mantém pra evitar erro em outras funções
+
+		if ToolTip == "Blox Fruit" then
+			if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
+				return self:UseNormalClick(Humanoid, Character, 0)
+			
+			elseif Equipped:FindFirstChild("LeftClickRemote") then
+				if ToolName == "Blade-Blade" or ToolName == "Gas-Gas" then
+					return self:UseFruitM1(Character, Equipped, 0)
 				else
-					return self:UseNormalClick(Humanoid, Character, Cooldown)
+					return Equipped.LeftClickRemote:FireServer(Vector3.new(0.01, -500, 0.01),1,true)
 				end
 			end
+
+		elseif ToolTip == "Gun" then
+			if SUCCESS_SHOOT and SHOOT_FUNCTION then
+				return self:UseGunShoot(Character, Equipped)
+			end
+		else
+			return self:UseNormalClick(Humanoid, Character, 0)
 		end
+	end
+end
 		
 		table.insert(Connections, Stepped:Connect(FastAttack.attack))
 		
