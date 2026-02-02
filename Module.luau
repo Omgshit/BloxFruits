@@ -1749,10 +1749,9 @@ end
 	end
 
 	if self:CheckStun(ToolTip, Character, Humanoid) then
-		local Combo = self:GetCombo()
 
 		self.Equipped = Equipped
-		self.Debounce = tick() -- só mantém pra evitar erro em outras funções
+		self.Debounce = tick()
 
 		if ToolTip == "Blox Fruit" then
 			if ToolName == "Ice-Ice" or ToolName == "Light-Light" then
