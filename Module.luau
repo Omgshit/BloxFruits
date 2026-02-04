@@ -1726,7 +1726,7 @@ end
 		end
 		
 		function FastAttack.attack()
-			if not Settings.AutoClick or (tick() - Module.AttackCooldown) <= 0.1 then return end
+			if not Settings.AutoClick then return end
 			if not IsAlive(Player.Character) then return end
 			
 			local self = FastAttack
