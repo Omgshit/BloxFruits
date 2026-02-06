@@ -1101,103 +1101,6 @@ end
 		end
 	})
 	
-	local function getHookManager()
-	local HookManager = {}
-	
-	local hookedProperties = {}
-	local protectedObjects = {}
-	
-	local originalIndex, originalNamecall
-	local SafeObject = _ENV.rz_obfuscated_safe_object
-	
-	local function generateIndexError(object, index)
-		local objectName = if typeof(object) == "Instance" then originalIndex(object, "ClassName") else tostring(object)
-		return `{ tostring(index) } is not a valid member of { objectName }`
-	end
-	
-	originalIndex = hookmetamethod(game, "__index", function(self, index)
-		if protectedObjects[self] then
-			if index == "Parent" then
-				return originalIndex(self, "Parent")
-			else
-				return originalIndex(SafeObject, index)
-			end
-		end
-		
-		local hookedObject = hookedProperties[self]
-		
-		if hookedObject and hookedObject[index] ~= nil then
-			return hookedObject[index]
-		end
-		
-		local success, result = pcall(originalIndex, self, index)
-		
-		if not success then
-			return error(result, 2)
-		elseif typeof(result) == "Instance" and protectedObjects[result] then
-			return error(generateIndexError(self, index), 2)
-		end
-		
-		return result
-	end)
-	
-	originalNamecall = hookmetamethod(game, "__namecall", function(self, ...)
-		local protectedErrorMessage = protectedObjects[self]
-		if protectedErrorMessage then
-			return originalNamecall(SafeObject, ...)
-		end
-		return originalNamecall(self, ...)
-	end)
-	
-	function HookManager.ProtectObject(object: Instance): (nil)
-		object.Name = SafeObject.Name
-		protectedObjects[object] = true
-	end
-	
-	function HookManager.UnprotectObject(object: Instance): (nil)
-		protectedObjects[object] = nil
-	end
-	
-	function HookManager.IsProtected(object: Instance): boolean
-		return protectedObjects[object] ~= nil
-	end
-	
-	function HookManager.HookProperty(object: Instance, property: string, value: any?): (nil)
-		if not hookedProperties[object] then
-			hookedProperties[object] = {}
-		end
-		
-		hookedProperties[object][property] = value
-	end
-	
-	function HookManager.UnhookProperty(object: Instance, property: string): (nil)
-		if hookedProperties[object] then
-			hookedProperties[object][property] = nil
-			
-			if next(hookedProperties[object]) == nil then
-				hookedProperties[object] = nil
-			end
-		end
-	end
-	
-	function HookManager.Clear()
-		table.clear(protectedObjects)
-		table.clear(hookedProperties)
-	end
-	
-	HookManager.OriginalIndex = originalIndex
-	HookManager.OriginalNamecall = originalNamecall
-	
-	return HookManager
-end
-
-if not _ENV.rz_hook_manager then
-	_ENV.rz_hook_manager = getHookManager()
-end
-
-local HookManager = _ENV.rz_hook_manager
-HookManager.Clear()
-
 Module.Enemies = (function()
 		local EnemiesModule = CreateDictionary({
 			"__CakePrince", "__PirateRaid", "__RaidBoss", "__TyrantSkies", "__Bones", "__Elite", "__Others", 
@@ -1396,7 +1299,6 @@ Module.Enemies = (function()
 			
 			local CloneAttachment = Attachment:Clone()
 			local AlignPosition = CloneAttachment.AlignPosition
-			HookManager.ProtectObject(CloneAttachment)
 			CloneAttachment.Parent = RootPart
 			
 			while Enemy and Enemy.Parent == Enemies and Enemy:HasTag(BRING_TAG) do
