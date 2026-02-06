@@ -1817,9 +1817,9 @@ end
 				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] then
                        if Equipped:FindFirstChild("LeftClickRemote") then
 					 if Equipped.Name == "Blade-Blade" or Equipped.Name == "Gas-Gas" then
-						return self:UseFruitM1(Character, Equipped, Combo)
+						self:UseFruitM1(Character, Equipped, Combo)
                        else 
-                      return Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
+                      Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
                      end
                    end
 				elseif ToolTip == "Gun" then
