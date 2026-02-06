@@ -1315,7 +1315,7 @@ Module.Enemies = (function()
           if (RootPart.Position - Target.Position).Magnitude <= 70 then
             RootPart.CFrame = Target
           else
-            RootPart.CanColide = false
+            RootPart.CanCollide = false
             BodyPosition.Position = Target.Position
           end
         end;task.wait()
