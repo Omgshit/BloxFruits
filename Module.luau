@@ -1101,13 +1101,109 @@ end
 		end
 	})
 	
-	Module.Enemies = (function()
+	local function getHookManager()
+	local HookManager = {}
+	
+	local hookedProperties = {}
+	local protectedObjects = {}
+	
+	local originalIndex, originalNamecall
+	local SafeObject = _ENV.rz_obfuscated_safe_object
+	
+	local function generateIndexError(object, index)
+		local objectName = if typeof(object) == "Instance" then originalIndex(object, "ClassName") else tostring(object)
+		return `{ tostring(index) } is not a valid member of { objectName }`
+	end
+	
+	originalIndex = hookmetamethod(game, "__index", function(self, index)
+		if protectedObjects[self] then
+			if index == "Parent" then
+				return originalIndex(self, "Parent")
+			else
+				return originalIndex(SafeObject, index)
+			end
+		end
+		
+		local hookedObject = hookedProperties[self]
+		
+		if hookedObject and hookedObject[index] ~= nil then
+			return hookedObject[index]
+		end
+		
+		local success, result = pcall(originalIndex, self, index)
+		
+		if not success then
+			return error(result, 2)
+		elseif typeof(result) == "Instance" and protectedObjects[result] then
+			return error(generateIndexError(self, index), 2)
+		end
+		
+		return result
+	end)
+	
+	originalNamecall = hookmetamethod(game, "__namecall", function(self, ...)
+		local protectedErrorMessage = protectedObjects[self]
+		if protectedErrorMessage then
+			return originalNamecall(SafeObject, ...)
+		end
+		return originalNamecall(self, ...)
+	end)
+	
+	function HookManager.ProtectObject(object: Instance): (nil)
+		object.Name = SafeObject.Name
+		protectedObjects[object] = true
+	end
+	
+	function HookManager.UnprotectObject(object: Instance): (nil)
+		protectedObjects[object] = nil
+	end
+	
+	function HookManager.IsProtected(object: Instance): boolean
+		return protectedObjects[object] ~= nil
+	end
+	
+	function HookManager.HookProperty(object: Instance, property: string, value: any?): (nil)
+		if not hookedProperties[object] then
+			hookedProperties[object] = {}
+		end
+		
+		hookedProperties[object][property] = value
+	end
+	
+	function HookManager.UnhookProperty(object: Instance, property: string): (nil)
+		if hookedProperties[object] then
+			hookedProperties[object][property] = nil
+			
+			if next(hookedProperties[object]) == nil then
+				hookedProperties[object] = nil
+			end
+		end
+	end
+	
+	function HookManager.Clear()
+		table.clear(protectedObjects)
+		table.clear(hookedProperties)
+	end
+	
+	HookManager.OriginalIndex = originalIndex
+	HookManager.OriginalNamecall = originalNamecall
+	
+	return HookManager
+end
+
+if not _ENV.rz_hook_manager then
+	_ENV.rz_hook_manager = getHookManager()
+end
+
+local HookManager = _ENV.rz_hook_manager
+HookManager.Clear()
+
+Module.Enemies = (function()
 		local EnemiesModule = CreateDictionary({
 			"__CakePrince", "__PirateRaid", "__RaidBoss", "__TyrantSkies", "__Bones", "__Elite", "__Others", 
 		}, {})
 		
 		local Signals = Module.Signals
-		local IsAlive = Module.IsAlive
 		local SeaCastle = CFrame.new(-5556, 314, -2988)
 		
 		local TagsMobs = {
@@ -1132,10 +1228,11 @@ end
 			
 			local Humanoid = NewEnemy:WaitForChild("Humanoid")
 			
-			if Humanoid and Humanoid.ClassName == "Humanoid" and Humanoid.Health > 0 then
+			if Humanoid and Humanoid.Health > 0 then
 				table.insert(list, NewEnemy)
 				Humanoid.Died:Wait()
-				table.remove(list, table.find(list, NewEnemy))
+				local index = table.find(list, NewEnemy)
+				if index then table.remove(list, index) end
 			end
 		end
 		
@@ -1153,8 +1250,6 @@ end
 		end
 		
 		local function NewEnemyAdded(Enemy)
-			if Enemy:GetAttribute("IsBoat") then return end
-			
 			local EnemyName = Enemy.Name
 			local Others = EnemiesModule.__Others
 			
@@ -1293,35 +1388,35 @@ end
 			
 			return NewTag
 		end
-
-   local function Bring(Enemy)
-      local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChild("HumanoidRootPart")
-      local RootPart = Enemy:WaitForChild("HumanoidRootPart")
-      local Humanoid = Enemy:WaitForChild("Humanoid")
-      local EnemyName = Enemy.Name
-      sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-      
-      local BodyVelocity = Instance.new("BodyVelocity", RootPart)
-      BodyVelocity.Velocity = Vector3.zero
-      BodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-      
-      local BodyPosition = Instance.new("BodyPosition", RootPart)
-      BodyPosition.Position = RootPart.Position
-      BodyPosition.P, BodyPosition.D = 3e4, 3e3
-      BodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-      
-      while PlayerRootPart and RootPart and Humanoid and Humanoid.Health > 0 and Enemy do
-        local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
-        
-        if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
-          if (RootPart.Position - Target.Position).Magnitude <= 70 then
-            RootPart.CFrame = Target
-          else
-            BodyPosition.Position = Target.Position
-          end
-        end;task.wait()
-      end
-    end
+		
+		local function Bring(Enemy)
+			local RootPart = Enemy:WaitForChild("HumanoidRootPart")
+			local Humanoid = Enemy:WaitForChild("Humanoid")
+			local EnemyName = Enemy.Name
+			
+			local CloneAttachment = Attachment:Clone()
+			local AlignPosition = CloneAttachment.AlignPosition
+			HookManager.ProtectObject(CloneAttachment)
+			CloneAttachment.Parent = RootPart
+			
+			while Enemy and Enemy.Parent == Enemies and Enemy:HasTag(BRING_TAG) do
+				if not Humanoid or Humanoid.Health <= 0 then break end
+				if not RootPart or RootPart.Parent ~= Enemy then break end
+				
+				local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
+				
+				if Target and (Target.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
+					if AlignPosition.Position ~= Target.Position then
+						AlignPosition.Position = Target.Position
+					end
+				else
+					break
+				end;task.wait()
+			end
+			
+			if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
+			if CloneAttachment then HookManager.UnprotectObject(CloneAttachment) CloneAttachment:Destroy() end
+		end
 		
 		local function KillAura(Enemy)
 			local Humanoid = Enemy:FindFirstChild("Humanoid")
@@ -1340,10 +1435,7 @@ end
 		end
 		
 		for _, Enemy in CollectionService:GetTagged("BasicMob") do NewEnemyAdded(Enemy) end
-		for _, Enemy in Enemies:GetChildren() do NewEnemyAdded(Enemy) end
-		
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal("BasicMob"):Connect(NewEnemyAdded))
-		table.insert(Connections, Enemies.ChildAdded:Connect(NewEnemyAdded))
 		
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal(KILLAURA_TAG):Connect(KillAura))
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal(BRING_TAG):Connect(Bring))
