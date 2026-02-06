@@ -1793,9 +1793,9 @@ end
 			
 			local self = FastAttack;
 			local Character = Player.Character;
-			local Humanoid = Character.Humanoid;
+			local Humanoid = Character.HumanoidRootPart
 			
-			if not Humanoid.RootPart then return end
+			if not Humanoid then return end
 			
 			local Equipped = Character:FindFirstChildOfClass("Tool")
 			local ToolTip = Equipped and Equipped.ToolTip
@@ -1812,7 +1812,7 @@ end
 				
 				self.Equipped = Equipped;
 				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then tick() + (Cooldown / 2) else tick();
-				MyRootPartPosition = Character.Humanoid.RootPart.Position;
+				MyRootPartPosition = Character.HumanoidRootPart.Position;
 				
 				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] then
                        if Equipped:FindFirstChild("LeftClickRemote") then
