@@ -1101,12 +1101,13 @@ end
 		end
 	})
 	
-Module.Enemies = (function()
+	Module.Enemies = (function()
 		local EnemiesModule = CreateDictionary({
 			"__CakePrince", "__PirateRaid", "__RaidBoss", "__TyrantSkies", "__Bones", "__Elite", "__Others", 
 		}, {})
 		
 		local Signals = Module.Signals
+		local IsAlive = Module.IsAlive
 		local SeaCastle = CFrame.new(-5556, 314, -2988)
 		
 		local TagsMobs = {
@@ -1131,11 +1132,10 @@ Module.Enemies = (function()
 			
 			local Humanoid = NewEnemy:WaitForChild("Humanoid")
 			
-			if Humanoid and Humanoid.Health > 0 then
+			if Humanoid and Humanoid.ClassName == "Humanoid" and Humanoid.Health > 0 then
 				table.insert(list, NewEnemy)
 				Humanoid.Died:Wait()
-				local index = table.find(list, NewEnemy)
-				if index then table.remove(list, index) end
+				table.remove(list, table.find(list, NewEnemy))
 			end
 		end
 		
@@ -1153,6 +1153,8 @@ Module.Enemies = (function()
 		end
 		
 		local function NewEnemyAdded(Enemy)
+			if Enemy:GetAttribute("IsBoat") then return end
+			
 			local EnemyName = Enemy.Name
 			local Others = EnemiesModule.__Others
 			
@@ -1291,7 +1293,7 @@ Module.Enemies = (function()
 			
 			return NewTag
 		end
-  
+
     local function Bring(Enemy)
       local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChild("HumanoidRootPart")
       local RootPart = Enemy:WaitForChild("HumanoidRootPart")
@@ -1340,7 +1342,10 @@ Module.Enemies = (function()
 		end
 		
 		for _, Enemy in CollectionService:GetTagged("BasicMob") do NewEnemyAdded(Enemy) end
+		for _, Enemy in Enemies:GetChildren() do NewEnemyAdded(Enemy) end
+		
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal("BasicMob"):Connect(NewEnemyAdded))
+		table.insert(Connections, Enemies.ChildAdded:Connect(NewEnemyAdded))
 		
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal(KILLAURA_TAG):Connect(KillAura))
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal(BRING_TAG):Connect(Bring))
