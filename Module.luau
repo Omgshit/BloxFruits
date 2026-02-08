@@ -553,7 +553,7 @@ local Module = {} do
 		Module.IsSuperBring = false
 		
 		Module.RemoveCanTouch = 0
-		Module.AttackCooldown = 0.9
+		Module.AttackCooldown = 0
 		Module.PirateRaid = 0
 		
 		Module.Webhooks = true
