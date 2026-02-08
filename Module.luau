@@ -1152,9 +1152,7 @@ end
 			end
 		end
 		
-		local function NewEnemyAdded(Enemy)
-			if Enemy:GetAttribute("IsBoat") then return end
-			
+		local function NewEnemyAdded(Enemy)			
 			local EnemyName = Enemy.Name
 			local Others = EnemiesModule.__Others
 			
