@@ -1406,7 +1406,7 @@ end
 		return Inventory
 	end)()
 
-  Module.FastAttack = (function()
+Module.FastAttack = (function()
 		local FastAttack = {
 			Distance = 50,
 			attackMobs = true,
@@ -1459,6 +1459,8 @@ end
 					HIT_FUNCTION = (getmenv or getsenv)(Net)._G.SendHitsToServer
 				end
 		end)
+
+        local IsAlive = Module.IsAlive
 		
 		FastAttack.ShootsFunctions = {
 			["Skull Guitar"] = function(self: FastAttack, Equipped: Tool, Position: Vector3)
@@ -1791,6 +1793,9 @@ end
 			
 			local self = FastAttack;
 			local Character = Player.Character;
+			local Humanoid = Character.Humanoid;
+			
+			if not Humanoid.RootPart then return end
 			
 			local Equipped = Character:FindFirstChildOfClass("Tool")
 			local ToolTip = Equipped and Equipped.ToolTip
@@ -1807,7 +1812,7 @@ end
 				
 				self.Equipped = Equipped;
 				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then tick() + (Cooldown / 2) else tick();
-				MyRootPartPosition = Character.HumanoidRootPart.Position;
+				MyRootPartPosition = Character.Humanoid.RootPart.Position;
 				
 				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] then
 					if Equipped:FindFirstChild("LeftClickRemote") then
