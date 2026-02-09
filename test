@@ -1793,6 +1793,7 @@ Module.FastAttack = (function()
 			
 			local self = FastAttack;
 			local Character = Player.Character;
+            local Humanoid = Character.Humanoid;
 			
 			local Equipped = Character:FindFirstChildOfClass("Tool")
 			local ToolTip = Equipped and Equipped.ToolTip
