@@ -1773,14 +1773,8 @@ local Module = {} do
 			end
 		end
 		
-		spawn(function()
-    while task.wait() do
-            pcall(function()
-            FastAttack.attack()
-            end)
-    end
-end)
-		
+		table.insert(Connections, Stepped:Connect(FastAttack.attack))
+
 		return FastAttack
 	end)()
 	
