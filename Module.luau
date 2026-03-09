@@ -42,10 +42,8 @@ local Money: IntValue = Data:WaitForChild("Beli")
 local Modules: Folder? = ReplicatedStorage:WaitForChild("Modules")
 local Net: ModuleScript = Modules:WaitForChild("Net")
 
-local BLACKLISTED_EXECUTORS: { string } = {"NULL"}
-
-local EXECUTOR_NAME: string = string.upper(if identifyexecutor then identifyexecutor() else "NULL")
-local IS_BLACKLISTED_EXECUTOR: boolean = if table.find(BLACKLISTED_EXECUTORS, EXECUTOR_NAME) then true else false
+local EXECUTOR_NAME = string.upper(if identifyexecutor then identifyexecutor() else "NULL")
+local IS_BLACKLISTED_EXECUTOR = table.find({"NULL", "XENO", "SWIFT", "JJSPLOIT"}, EXECUTOR_NAME)
 
 local hookmetamethod = (not IS_BLACKLISTED_EXECUTOR and hookmetamethod) or (function(...) return ... end)
 local hookfunction = (not IS_BLACKLISTED_EXECUTOR and hookfunction) or (function(...) return ... end)
