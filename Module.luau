@@ -2062,7 +2062,6 @@ local Module = {} do
 	end)()
 
   task.defer(function()
-     if not IS_BLACKLISTED_EXECUTOR then
 	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
 	 	local CameraShaker = require(WaitChilds(ReplicatedStorage, "Util", "CameraShaker"))
 		if CameraShaker then
@@ -2071,7 +2070,6 @@ local Module = {} do
         if hookfunction then
  		hookfunction(DeathEffect, function(...) return ... end)
 	 	end
-        end
 	end)
 	
 	task.spawn(function()
