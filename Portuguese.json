@@ -53,8 +53,8 @@
   "Auto Change Boat Speed": ["Auto Ajustar a Velocidade do barco", "Ajustar a velocidade do barco"],
   "Auto Unlock Shipwright Subclass": ["Auto Desbloquear Subclasse de Construtor Naval", "Desbloquear Subclasse de Construtor Naval"],
   
-  "Auto Train Draco": ["Treinar Raça Do Dragão Automático", "Treinar Raça"],
-  "Auto Start Draco Trial": ["Começa A Trial do Dragão Automático", "Começa a Trial do Dragão Automaticamente"],
+  "Auto Train Draco": ["Treinar Raça Draco Automático", "Treinar Raça"],
+  "Auto Start Draco Trial": ["Começa A Trial Draco Automático", "Começa a Trial do Dragão Automaticamente"],
   "Select Player": ["Selecionar Jogador", "Selecionar um Jogador"],
   "Update Dropdown": "Atualizar Lista",
   "Temple Of Time": "Templo do Tempo",
@@ -64,7 +64,7 @@
   "Auto Reset After Trial": ["Auto Reseta Depois Da Trial", "Reseta Depois de fazer sua trial"],
   "Auto Kill Players in Trial": ["Auto Matar Players em Trial", "Matar Players Quando Trial Começa"],
   "Auto Train Race": ["Treinar Sua Raça Automático", "Treinar Raça"],
-  "Auto Pull Lever": ["Puxar a Alaavanca Automático", "Puxa Alavancar quando sem precisa ir ate ela"],
+  "Auto Pull Lever": ["Puxar a Alavanca Automático", "Puxa Alavancar quando sem precisa ir ate ela"],
   "Teleport To Race Door": ["Teleportar para a porta da sua raça", "Teleporta para a porta da sua raça"],
   "Collect Mirage Chests": ["Coletar Baús da Miragem", "Coleta todos os baús da ilha da miragem"],
   "Look To Moon": ["Olhar para a Lua", "Olhar para a lua para fazer ela brilhar"],
@@ -72,6 +72,7 @@
   
   "Auto Dojo Trainer Quest": ["Missão Dojo Trainer", "Completa as missões das Faixas Automaticamente"],
   "Auto Dragon Hunter Quest": ["Missão Dragon Hunter", "a cada Missão terminada, você ganharar 'Blaze Ember'"],
+  "Auto Draco V2 & V3": ["Auto Draco V2 & V3", "Evolui a raça draco para V2 e V3 Automaticamente"],
   "Auto Elite Hunter": ["Elite Hunter Automatico", "Completar missões do Elite Hunter a cada 10 Minutos"],
   "Auto Rip Indra": ["Auto Rip Indra", "Conseguir Calice, Ativar Placas, Spawnar e Matar Rip Indra"],
   "Auto Cake Prince": ["Auto Cake Prince", "Spawnar e Matar Cake Prince"],
@@ -200,8 +201,6 @@
   
   "Race Reroll": "Girar Raça",
   "Reset Stats": "Resetar Status",
-  
-  "Auto Draco V2 & V3": ["Auto Draco V2 & V3", "Evolui a raça draco para V2 e V3 Automaticamente"],
   
   "Acessories": "Acessórios",
   "Gun": "Arma",
