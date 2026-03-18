@@ -4,22 +4,20 @@
   
   "Auto Farm Level": ["Level Automático", "Farma níveis automaticamente"],
   "Auto Farm Nearest": ["Farmar Inimigos Próximos", "Mata inimigos próximos automaticamente"],
-  "Sky Piea Farm": ["Farmar Sky Piea", "Farma inimigos em Sky Piea automaticamente"],
-  "Player Hunter Quest": ["Caça ao Jogador", "Aceita e completa a missão de caçar jogadores"],
   
   "Auto Factory": ["Fábrica Automática", "Farma a fábrica automaticamente, aparece a cada 1:30 (horas, minutos)"],
   "Auto Farm Ectoplasm": ["Farmar Ectoplasma", "Farma ectoplasmas automaticamente"],
   
   "Auto Pirates Sea": ["Farmar Piratas do Mar", "Conclui automaticamente o evento de piratas no Castelo do Mar"],
   "Auto Farm Bones": ["Farmar Ossos", "Farma ossos automaticamente"],
-  "Auto Kill Soul Reaper": ["Auto Soul Reaper", "Spawnar e Matar Soul Reaper"],
+  "Auto Soul Reaper": ["Auto Soul Reaper", "Spawnar e Matar Soul Reaper"],
   "Auto Trade Bones": ["Trocar Ossos", "Troca automaticamente ossos por recompensas"],
-  
-  "Auto Farm Candy": ["Farmar Doces", "Farm de Doces automático durante o evento de Natal"],
+
   "Auto Christmas Gift": ["Presente de Natal Automático", "Coleta presentes de Natal automaticamente a cada 1 hora"],
   "Auto Store Holiday Gift": ["Armazenar Prensentes", "Armazenar presentes coletados no Evento"],
   
   "Auto Chest [ Tween ]": ["Auto Baús [ Tween ]", "Coleta cofres automaticamente usando Tween"],
+  "Auto Chest [ Bypass ]": ["Auto Baús [ Bypass ]", "Coleta cofres automaticamente usando teleport"],
   
   "Update Boss List": ["Atualizar Lista de Bosses", "Atualiza a lista de chefes disponíveis"],
   "Boss List": ["Lista de Bosses", "Seleciona um boss para atacar"],
@@ -31,12 +29,20 @@
   "Auto Farm Material": ["Farmar Material", "Farma materiais automaticamente"],
   
   "Select Enemy Health [ % ]": ["Selecionar Vida do Inimigo [ % ]", "Define a porcentagem de vida dos inimigos para ataque"],
+  "Select Farm Method": ["Selecionar Metodo de Farm", "Escolha o farm parav farmar"],
   "Select Skills": ["Selecionar Skills", "Escolha as skills para utilizar"],
   "Auto Farm Mastery": ["Farmar Mastery", "Aumenta automaticamente a mastery de habilidades"],
+  "Auto Farm Sword Mastery": ["Farmar Sword Mastery", "Aumenta automaticamente a mastery de espadas"],
+  "Auto Farm Mastery": ["Farmar Gun Mastery", "Aumenta automaticamente a mastery de Guns"],
   
   "Auto Farm Sea": ["Farm Mar Automático", "Farmar automaticamente no Mar"],
-  "Auto Drive Boat": ["Auto Dirigir barco", "dirigir barco automaticamente se 'Farm Mar' estiver ativo"],
-  "Use Gun": ["Usar Arma", "Usar arma para atacar Sea Beasts e Barcos"],
+  "Auto Destroy Boat": ["Auto Destruir barco", "Destruir seu barco quando estiver longe"],
+  "Auto No-Clip Boat": ["Auto Remove Colissao Do Barco", "Destruir seu barco quando estiver longe"],
+  "Boat Height": ["Altura do Barco", "Ajustar a altura do barco"],
+  "Dodge Terrorshark": ["Desviar do Terrorshark", "Esquivar-se do Terrorshark"],
+  "Dodge Sea Beast": ["Desviar do Sea Beast", "Esquivar-se do Sea Beasts"],
+  "Use Gun": ["Usar Arma", "Use a arma para atacar Sea Beasts e Barcos"],
+  "Use Fruit": ["Usar Fruta", "Usar Fruta para atacar Sea Beasts e Barcos"],
   
   "Boat Tween Speed": ["Velocidade do Barco", "Ajustar a velocidade do barco"],
   "Teleport to NPC": ["Teleportar para NPC", "Ir até o NPC selecionado"],
