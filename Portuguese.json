@@ -13,8 +13,10 @@
   "Auto Soul Reaper": ["Auto Soul Reaper", "Spawnar e Matar Soul Reaper"],
   "Auto Trade Bones": ["Trocar Ossos", "Troca automaticamente ossos por recompensas"],
 
-  "Auto Christmas Gift": ["Presente de Natal Automático", "Coleta presentes de Natal automaticamente a cada 1 hora"],
-  "Auto Store Holiday Gift": ["Armazenar Prensentes", "Armazenar presentes coletados no Evento"],
+  "Auto Christmas Gift": ["Presente de Natal Automático", "Coleta presentes de Natal automaticamente a cada..."],
+  "Auto Random Winter Gacha": ["Auto Girar Gacha de Natal", "Girar Gacha do Evento"],
+  "Auto Open Gift": ["Abrir Prensentes", "Abrir presentes coletados no Evento"],
+  "Auto Store Gift": ["Armazenar Prensentes", "Armazenar presentes coletados no Evento"],
   
   "Auto Chest [ Tween ]": ["Auto Baús [ Tween ]", "Coleta cofres automaticamente usando Tween"],
   "Auto Chest [ Bypass ]": ["Auto Baús [ Bypass ]", "Coleta cofres automaticamente usando teleport"],
