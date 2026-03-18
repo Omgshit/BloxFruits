@@ -19,6 +19,7 @@
   
   "Auto Chest [ Tween ]": ["Auto Baús [ Tween ]", "Coleta cofres automaticamente usando Tween"],
   "Auto Chest [ Bypass ]": ["Auto Baús [ Bypass ]", "Coleta cofres automaticamente usando teleport"],
+  "Stop When Get Item In Chest": "Parar quando pegar item no baú",
   
   "Update Boss List": ["Atualizar Lista de Bosses", "Atualiza a lista de chefes disponíveis"],
   "Boss List": ["Lista de Bosses", "Seleciona um boss para atacar"],
@@ -127,6 +128,17 @@
   "Auto Pole V1": ["Auto Pole V1", "Derrotar Thunder God até obter Pole V1"],
   "Auto Saw Sword": ["Auto Saw Sword", "Derrotar The Saw até obter Shark Saw"],
   
+  "Fruit Shop": "Shop de Fruta",
+  "Select Normal Fruit": "Selecionar Fruta Normal",
+  "Select Advanced Fruit": "Selecionar Fruta Avançado",
+  "Auto Buy Fruit Stock": "Auto Comprar Fruta No Stock",
+  "Auto Buy Advanced Fruit Stock": "Auto Comprar Fruta No Stock Avançado",
+  "Notification Time": "Tempo de Notificação",
+  "Fruit Spawn": "Notificar Fruta Spawnada",
+  "Select Fruit For Unstore": "Selecionar Fruta Para Desarmazenar",
+  "Get Fruits": ["Pegar Frutas", "Coletar frutas que estão no mapa"],
+  "Auto Random Fruit": ["Auto Girar Fruta Aleatória", "Girar fruta automaticamente"],
+  
   "Fruits": "Frutas",
   "Auto Store Fruits": ["Auto Armazenar Frutas", "Guardar frutas no seu Inventário"],
   "Get Fruits": ["Pegar Frutas", "Coletar frutas que estão no mapa"],
@@ -206,7 +218,6 @@
   "Remove Notifications": ["Remover Notificações", "Desativar notificações do jogo"],
   
   "Walk On Water": ["Andar sobre a Água", "Permitir andar na água"],
-  "Anti AFK": ["Anti AFK", "Evitar ser desconectado por inatividade"],
   
   "Take Quest Debounce": ["Esperar para a próxima missão", "Espera 75 segundos antes de coletar a próxima missão"],
   "Smooth Farm Mode": ["Modo de Farm suave", "reduz cálculos do script para deixar o jogo mais Leve"],
@@ -246,7 +257,6 @@
   "Shop": "Loja",
   "Sword": "Espada",
   "Quest": "Missão",
-  "Bosses": "Chefes",
   "Fish": "Peixes",
   "Boats": "Barcos",
   "Configs": "Configurações",
