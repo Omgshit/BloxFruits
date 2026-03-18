@@ -90,10 +90,6 @@
   "Auto Buy Legendary Sword": ["Comprar Espada Lendária", "Comprar espada automaticamente quando o Vendedor aparecer"],
   "Auto Rengoku": ["Auto Rengoku", "Conseguir Hidden Key e desbloquear a Rengoku"],
   "Auto Collect Berries": ["Auto Coletar Bagas", "Coletar Bagas espalhadas pelo o Mapa"],
-  "Auto Berry Hop": ["Auto Bagas Hop", "Troca de servidor após coletar todas as Bagas"],
-  "Select Aura": ["Selecionar Cor", "Selecione a cor de Haki"],
-  "Auto Craft Aura Color": ["Auto Craft Cor", "Coletar Berries até conseguir craftar a cor de Haki selecionada"],
-  "Auto Craft Hop": ["Auto Craft Hop", "Troca de servidor em busca de pegar as berries que faltam para o craft"],
   
   "Race": "Raça",
   "Auto Race V2": ["Evoluir Raça para V2", "Evoluir raça para V2"],
@@ -109,26 +105,31 @@
   "Auto Pole V1": ["Auto Pole V1", "Derrotar Thunder God até obter Pole V1"],
   "Auto Saw Sword": ["Auto Saw Sword", "Derrotar The Saw até obter Shark Saw"],
   
-  "Auto Mastery all Swords": ["Maestria máxima em todas as espadas", "pegar maestria máxima em todas as espadas desbloqueadas"],
-  
   "Fruits": "Frutas",
   "Auto Store Fruits": ["Auto Armazenar Frutas", "Guardar frutas no seu Inventário"],
-  "Teleport To Fruits": ["Auto Coletar Frutas", "Coletar frutas que estão no mapa"],
+  "Get Fruits": ["Pegar Frutas", "Coletar frutas que estão no mapa"],
   "Auto Random Fruit": ["Auto Girar Fruta Aleatória", "Girar fruta automaticamente"],
   
   "Select Chip": ["Selecionar Chip de Raid", "Escolher chip para iniciar raids"],
   "Auto Farm Raid": ["Farmar Raid Automaticamente", "Farmar raids, despertar e atacar automaticamente"],
   "Auto Buy Chip": ["Comprar Chip de Raid Automaticamente", "Adquirir chips para raids"],
-  "Unstore Common Fruits": ["Desarmazenar Frutas Comuns", "Desarmazena frutas comuns para serem trocadas por Microchip"],
+  "Auto Unstore Selected Fruit": ["Desarmazenar Frutas Selecionadas", "Desarmazena frutas Selecionadas para serem trocadas por Microchip"],
   
   "Islands": "Ilhas",
   "Islands Stats": "Ilhas Spawnadas",
   "Auto Craft Volcanic Magnet": ["Criar Volcanic Magnet", "Coleta os Materiais e Cria o Volcanic Magnet"],
-  "Fully Prehistoric Island": ["Fully Prehistoric Island", "Faz tudo do evento da ilha Pré-histórica"],
-  "Teleport to Prehistoric Island": ["Teleportar para a ilha Pré-histórica", "Teleporta para a ilha Pré-história"],
-  "Ignore Collect Bones [ Fully ]": ["Ignorar Ossos [ Fully ]", "não coleta os Ossos"],
-  "Ignore Collect Dragon Egg [ Fully ]": ["Ignorar Ovo do Dragão [ Fully ]", "não coleta o Ovo do Dragão"],
-  "Reset character after Finishing [ Fully ]": ["Resetar após terminar [ Fully ]", "Reseta o personagem após terminar a Ilha Pré-histórica"],
+  "Auto Prehistoric Island": ["Auto Prehistoric Island", "Faz tudo do evento da ilha Pré-histórica"],
+  "Teleport To Prehistoric Island": ["Teleportar para a ilha Pré-histórica", "Teleporta para a ilha Pré-história"],
+  "Auto Collect Dinosaur Bones": ["Auto Coletar Ossos do Dinosauro", "Coletar Ossos do Dinosauro"],
+  "Auto Collect Dragon Egg": ["Auto Coletar Ovo Do Dragão", "Coletar Ovo do Dragão"],
+  "Auto Reset When Complete Volcano]": ["Resetar após terminar", "Reseta o personagem após terminar a Ilha Pré-histórica"],
+
+  "Auto Teleport Using Other Boat": ["Auto Teleportar Usando Outro Barco", "Teleportar Usando Outro Barco"],
+  "Auto Find Frozen Dimension": ["Auto Procura Ilha do Leviathan", "Procura A Ilha do Levi Ate Encontra"],
+  "Teleport To Frozen Dimension": ["Teleportar para a Ilha do Leviathan", "Teleporta para a Ilha do Leviathan"],
+  "Auto Attack Leviathan": ["Auto Atacar Leviathan", "Atacar o Leviathan"],
+  "Auto Collect Dragon Egg": ["Auto Coletar Ovo Do Dragão", "Coletar Ovo do Dragão"],
+  "Buy Fracments with Spy": "Compra Frações com o espiao",
   
   "Kitsune Island": "Ilha Kitsune",
   "Trade Azure Ember Amount": ["Quantida da troca", "Definir quantidade para troca de Azure Ember"],
@@ -136,6 +137,7 @@
   "Auto Kitsune Island": ["Farmar Ilha Kitsune", "Procurar ilha da Kitsune e Coletar Azure Ember"],
   
   "Mirage Island": "Ilha da Miragem",
+  "Auto Find Mirage Island": ["Auto Procura Ilha Da Miragem", "Procura A Ilha Da Mirage Ate Encontra"],
   "Teleport To Gear": ["Teleportar para Engrenagem", "Ir até Engrenagem se disponível"],
   "Teleport To Mirage": ["Teleportar para Mirage", "Ir até a ilha da Miragem"],
   "Teleport To Fruit Dealer": ["Teleportar para Vendedor de Frutas", "Ir até o vendedor de frutas da miragem"],
@@ -148,8 +150,6 @@
   "Teleport to Island": "Teleportar para a ilha",
   "Teleport to Temple of Time": "Teleportar para Templo do Tempo",
   
-  "Esp Size": "Tamanho do ESP",
-  "ESP My Boat": ["ESP Meu Barco", "Mostra onde está o seu Barco no mapa"],
   "ESP Players": ["ESP Jogadores", "Exibir jogadores no mapa"],
   "ESP Fruits": ["ESP Frutas", "Exibir frutas no mapa"],
   "ESP Islands": ["ESP Ilhas", "Exibir ilhas no mapa"],
@@ -158,24 +158,9 @@
   
   "Meteor Rain": "Chuva de Meteoros",
   "Remove Portal Dash Cooldown": "Remover Cooldown do Dash da Portal",
-  "Enable Roblox Emote Menu": "Habilitar Menu de Emotes do Roblox",
   
   "Execute Clipboard": ["Executar do Clipboard", "Executar script copiado"],
   "Redeem all Codes": ["Resgatar Todos os Códigos", "Coletar recompensas de códigos disponíveis"],
-  
-  "Start Server Hopping": "Iniciar salto entre Servidores",
-  "Options [ Priority Order > ]": "Opções [ Orden de Prioridade > ]",
-  "Don't hop if has \"Fist of Darkness\"": "Não trocar de servidor se Possuir \"Fist of Darkness\"",
-  "Don't hop if has \"God's Chalice\"": "Não trocar de servidor se Possuir \"God's Chalice\"",
-  "Don't hop if has \"Hellfire Torch\"": "Não trocar de servidor se Possuir \"Hellfire Torch\"",
-  "Elite Hunter Quest": ["Derrotar Elite Boss", "Completa a missão do Elite Hunter se Algum Elite Boss estiver spawnado."],
-  "Pirates Sea": ["Completar Raid Pirata", "Completa a Raid Pirata que acontece no Castelo do Mar."],
-	"Complete Factory": ["Completar Factory", "Destrói o núcleo da fábrica para ganhar uma fruta aleatória."],
-	"Collect Fruits": ["Coletar Frutas", "Coleta frutas naturais ou frutas dropadas por outros Jogadores."],
-	"Collect Berries": ["Coletar Bagas", "Coleta todas as Bagas(Berries) espalhadas pelo o mapa."],
-	"Collect Chests": ["Coletar Baús", "Coleta 25 baús antes de trocar de Servidor."],
-	"Defeat Cursed Captain": ["Derrotar Cursed Captain", "Derrota o Cursed Captain se ele estiver spawnado."],
-	"Complete Raids": ["Completar Raids", "Complete raids using fruits that cannot be stored."],
   
   "Rejoin Server": ["Reentrar no Servidor", "Reentrar no servidor Atual"],
   "Server Hop": ["Trocar de Servidor", "Entrar em um servidor diferente"],
@@ -208,11 +193,10 @@
   
   "Auto Draco V2 & V3": ["Auto Draco V2 & V3", "Evolui a raça draco para V2 e V3 Automaticamente"],
   
-  "Only on Sea 2 and 3": "Raid disponíveis apenas no Segundo e terceiro Mar",
   "Acessories": "Acessórios",
   "Gun": "Arma",
-  "Select NPC": "Selecionar NPC",
-  "Farm Select": "Selecionar Farm",
+  "Select Npc": "Selecionar NPC",
+  "Farm Mode": "Selecionar Modo de Farm",
   "Travel": "Viagem",
   "Settings": "Configurações",
   "ESP": "ESP",
@@ -240,10 +224,10 @@
   "Farm": "Farmar",
   "Misc": "Diversos",
   "Others": "Outros",
-  "Race V4": "Raça V4",
+  "Race": "Raça",
+  "Fishing": "Pescaria",
   "Enemies": "Inimigos",
   "Frags": "Fragmentos",
   "Accessories": "Acessórios",
-  "Fighting Style": "Estilo de Luta",
   "Mastery": "Maestria"
 }
