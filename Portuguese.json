@@ -136,8 +136,6 @@
   "Notification Time": "Tempo de Notificação",
   "Fruit Spawn": "Notificar Fruta Spawnada",
   "Select Fruit For Unstore": "Selecionar Fruta Para Desarmazenar",
-  "Get Fruits": ["Pegar Frutas", "Coletar frutas que estão no mapa"],
-  "Auto Random Fruit": ["Auto Girar Fruta Aleatória", "Girar fruta automaticamente"],
   
   "Fruits": "Frutas",
   "Auto Store Fruits": ["Auto Armazenar Frutas", "Guardar frutas no seu Inventário"],
