@@ -73,7 +73,7 @@
   "Auto Dojo Trainer Quest": ["Missão Dojo Trainer", "Completa as missões das Faixas Automaticamente"],
   "Auto Dragon Hunter Quest": ["Missão Dragon Hunter", "a cada Missão terminada, você ganharar 'Blaze Ember'"],
   "Auto Draco V2 & V3": ["Auto Draco V2 & V3", "Evolui a raça draco para V2 e V3 Automaticamente"],
-  "Auto Elite Hunter": ["Elite Hunter Automatico", "Completar missões do Elite Hunter a cada 10 Minutos"],
+  "Auto Elite Hunter": ["Auto Elite Hunter", "Completar missões do Elite Hunter a cada 10 Minutos"],
   "Auto Rip Indra": ["Auto Rip Indra", "Conseguir Calice, Ativar Placas, Spawnar e Matar Rip Indra"],
   "Auto Cake Prince": ["Auto Cake Prince", "Spawnar e Matar Cake Prince"],
   "Auto Dough King": ["Auto Dough King", "Conseguir Calice Doce, Spawnar e Matar Dough King"],
@@ -88,8 +88,7 @@
   "Auto Level Observation": ["Auto Aumentar Observação", "ir ate o npc e upa observação"],
   "Auto Skull Guitar": ["Auto Skull Guitar", "Auto Fazer o Puzzle da Skull Guitar"],
   "Auto Pull Lever [Fully]": ["Auto Puxa Alavanca [Totalmente]", "Auto Fazer o Puzzle da Alavanca"],
-  "Auto Ken V2": ["Auto Observação V2", "Auto Conseguir Observação V2"],
-  "Auto Barista Cousin": ["Auto Barista", "Auto Falar Com o Barista"],
+  "Auto Ken V2": ["Auto Observação V2", "Auto Conseguir Observação V2"],,
   
   "Auto Collect Yama": ["Coletar Yama Automaticamente", "Obter a espada Yama quando chegar em 30 Elites mortos"],
   "Auto Tushita": ["Conseguir a Tushita Automaticamente", "resolver puzzle da Tushita e matar Longma"],
