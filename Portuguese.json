@@ -77,6 +77,11 @@
   "Auto Rip Indra": ["Auto Rip Indra", "Conseguir Calice, Ativar Placas, Spawnar e Matar Rip Indra"],
   "Auto Cake Prince": ["Auto Cake Prince", "Spawnar e Matar Cake Prince"],
   "Auto Dough King": ["Auto Dough King", "Conseguir Calice Doce, Spawnar e Matar Dough King"],
+  "Auto Tyrant of the Skies": ["Auto Tyrant of the Skies", "Spawnar e Matar Tyrant of the Skies"],
+  "Quest Settings": "Configurações da Missão",
+  "Auto Accept Quest - Cake Prince": ["Aceitar automaticamente a missão - Cake Prince", "Aceita Missao Enquanto farma o Cake Prince"],
+  "Auto Accept Quest - Tyrant": ["Aceitar automaticamente a missão - Tyrant", "Aceita Missao Enquanto farma o Tyrant of the Skies"],
+  "Auto Accept Quest - Bone": ["Aceitar automaticamente a missão - Bone", "Aceita Missao Enquanto farma ossos"],
   
   "Auto Collect Yama": ["Coletar Yama Automaticamente", "Obter a espada Yama quando chegar em 30 Elites mortos"],
   "Auto Tushita": ["Conseguir a Tushita Automaticamente", "resolver puzzle da Tushita e matar Longma"],
