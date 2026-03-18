@@ -1,6 +1,5 @@
 {
   "Select Tool": ["Selecionar Ferramenta", "Escolha a ferramenta que deseja usar"],
-  "UI Scale": ["Tamanho da UI", "Ajuste o tamanho da interface de usuário"],
   
   "Auto Farm Level": ["Level Automático", "Farma níveis automaticamente"],
   "Auto Farm Nearest": ["Farmar Inimigos Próximos", "Mata inimigos próximos automaticamente"],
@@ -43,11 +42,21 @@
   "Boat Height": ["Altura do Barco", "Ajustar a altura do barco"],
   "Dodge Terrorshark": ["Desviar do Terrorshark", "Esquivar do Terrorshark"],
   "Dodge Sea Beast": ["Desviar do Sea Beast", "Esquivar do Sea Beast"],
+  "Fly Boat": ["Voar com barco", "Voar com barco no céu"],
+  "Make Boat Go to Sky": ["faça o barco ir para o céu", "ir para o céu se você estiver matando inimigos"],
   "Use Gun": ["Usar Arma", "Use a arma para atacar Sea Beasts e Barcos"],
   "Use Fruit": ["Usar Fruta", "Usar Fruta para atacar Sea Beasts e Barcos"],
   
+  "Sea Level": ["Nivel do mar", "Selecionar Nivel do mar"],
   "Boat Tween Speed": ["Velocidade do Barco", "Ajustar a velocidade do barco"],
-  "Teleport to NPC": ["Teleportar para NPC", "Ir até o NPC selecionado"],
+  "Boat Speed": ["Velocidade Normal do Barco", "Ajustar a velocidade do barco"],
+  "Auto Change Boat Speed": ["Auto Ajustar a Velocidade do barco", "Ajustar a velocidade do barco"],
+  "Auto Unlock Shipwright Subclass": ["Auto Desbloquear Subclasse de Construtor Naval", "Desbloquear Subclasse de Construtor Naval"],
+  
+  "Auto Trial Draco": ["Concluir Trial do Dragão Automático", "Completar Trial da raça Dragão Automaticamente"],
+  "Auto Start Draco Trial": ["Começa A Trial do Dragão Automático", "Começa a Trial do Dragão Automaticamente"],
+  "Select Player": ["Selecionar Jogador", "Selecionar um Jogador"],
+  "Update Dropdown": "Atualizar Lista",
   "Collect Mirage Chests": ["Coletar Baús da Miragem", "Coleta todos os baús da ilha da miragem"],
   "Look To Moon": ["Olhar para a Lua", "Olhar para a lua para fazer ela brilhar"],
   "Auto Finish Trial": ["Concluir Trial Automático", "Completar Trial da sua raça Automaticamente"],
@@ -237,4 +246,4 @@
   "Accessories": "Acessórios",
   "Fighting Style": "Estilo de Luta",
   "Mastery": "Maestria"
-}
+	  }
