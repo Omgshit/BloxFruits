@@ -80,7 +80,7 @@
   
   "Auto Collect Yama": ["Coletar Yama Automaticamente", "Obter a espada Yama quando chegar em 30 Elites mortos"],
   "Auto Tushita": ["Conseguir a Tushita Automaticamente", "resolver puzzle da Tushita e matar Longma"],
-  "Auto Cursed Dual Katana": ["Auto Cursed Dual Katana", "Desbloquear a Cursed Dual Katana"],
+  "Auto Cursed Dual Katana": ["Conseguir a Cursed Dual Katana Automaticamente", "Desbloquear a Cursed Dual Katana"],
   
   "Auto Citizen Quest": ["Completar Missão Citizen", "Completar missão do Citizen para desbloquear Musketeer Hat"],
   "Auto Rainbow Haki": ["Auto Haki Arco-íris", "Desbloquear a cor de Haki Arco-íris"],
@@ -133,7 +133,7 @@
   "Teleport To Prehistoric Island": ["Teleportar para a ilha Pré-histórica", "Teleporta para a ilha Pré-história"],
   "Auto Collect Dinosaur Bones": ["Auto Coletar Ossos do Dinosauro", "Coletar Ossos do Dinosauro"],
   "Auto Collect Dragon Egg": ["Auto Coletar Ovo Do Dragão", "Coletar Ovo do Dragão"],
-  "Auto Reset When Complete Volcano]": ["Resetar após terminar", "Reseta o personagem após terminar a Ilha Pré-histórica"],
+  "Auto Reset When Complete Volcano": ["Resetar após terminar", "Reseta o personagem após terminar a Ilha Pré-histórica"],
 
   "Auto Teleport Using Other Boat": ["Auto Teleportar Usando Outro Barco", "Teleportar Usando Outro Barco"],
   "Auto Find Frozen Dimension": ["Auto Procura Ilha do Leviathan", "Procura A Ilha do Levi Ate Encontra"],
