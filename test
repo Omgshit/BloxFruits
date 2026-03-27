@@ -1783,7 +1783,7 @@ local Module = {} do
 			end
 		end
 		
-		table.insert(Connections, Stepped:Connect(function()
+	 	function FastAttack.attack()
 			if not Settings.AutoClick then return end
 			if not IsAlive(Player.Character) then return end
 			
@@ -1820,8 +1820,10 @@ local Module = {} do
 					self:UseNormalClick(Cooldown)
 				end
 			end
-		end))
-		
+		end
+
+       table.insert(Connections, Stepped:Connect(FastAttack.attack))
+
 		return FastAttack
 	end)()
 	
