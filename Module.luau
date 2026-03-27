@@ -1433,7 +1433,7 @@ local Module = {} do
 				["Cannon"] = "Position",
 				["Dragonstorm"] = "Overheat"
 			},
-           FruitClickFruits = {
+           FruitClick = {
 				["Blade-Blade"] = true,
 				["Gas-Gas"] = true
 			},
@@ -1818,7 +1818,7 @@ local Module = {} do
 					if Equipped:FindFirstChild("LeftClickRemote") then
 						Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
 					end
-                elseif ToolTip == "Blox Fruit" and self.FruitClickFruits[Equipped.Name] then
+                elseif ToolTip == "Blox Fruit" and self.FruitClick[Equipped.Name] then
 					if Equipped:FindFirstChild("LeftClickRemote") then
 						self:UseFruitM1(Character, Equipped, Combo)
 					end
