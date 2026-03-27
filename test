@@ -1457,6 +1457,8 @@ local Module = {} do
 					HIT_FUNCTION = (getmenv or getsenv)(Net)._G.SendHitsToServer
 				end
 		end)
+
+        local IsAlive = Module.IsAlive
 		
 		FastAttack.ShootsFunctions = {
 			["Skull Guitar"] = function(self: FastAttack, Equipped: Tool, Position: Vector3): (nil)
