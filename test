@@ -1567,7 +1567,7 @@ local Module = {} do
 					end
 				end
 				
-				local TargetPlayer = game:GetService("Players"):GetPlayerFromCharacter(Character)
+				local TargetPlayer = game:GetService("Players")[Character]
 				if RootPart and (Character.Parent ~= Characters or CheckPlayerAlly(TargetPlayer)) then
 					local Hitbox = RootPart
 					
