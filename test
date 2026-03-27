@@ -1746,7 +1746,7 @@ local Module = {} do
 				if ShootType == "Overheat" then
 					self.Debounce = tick() + 9e9
 					
-					while PrimaryTarget.Parent and IsAlive(PrimaryTarget) do
+					while PrimaryTarget.Parent and IsAlive(PrimaryTarget) and Equipped and Equipped.Parent == Player.Character do
 						if PrimaryPart.Parent ~= PrimaryTarget or DistanceFromCharacter(PrimaryPart) > Distance then
 							break
 						end
