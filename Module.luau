@@ -1567,7 +1567,7 @@ local Module = {} do
 					end
 				end
 				
-                local TargetPlayer = game:GetService("Players"):GetPlayerFromCharacter(Character)
+               local TargetPlayer = game:GetService("Players"):GetPlayerFromCharacter(Character)
                if RootPart and (Character.Parent ~= Characters or (TargetPlayer and CheckPlayerAlly(TargetPlayer))) then
 					local Hitbox = RootPart
 					
@@ -1726,8 +1726,8 @@ local Module = {} do
 			
 			return math.floor(v9 / v4 * 16777215), v7
 		end
-		
-		function FastAttack:UseGunShoot(Character, Equipped)
+
+       function FastAttack:UseGunShoot(Character, Equipped)
 			if not Equipped.Enabled then return end
 			
 			local ShootType = self.SpecialShoots[Equipped.Name] or "Normal"
@@ -1747,10 +1747,9 @@ local Module = {} do
 					self.Debounce = tick() + 9e9
 					
 					while PrimaryTarget.Parent and IsAlive(PrimaryTarget) and Equipped and Equipped.Parent == Player.Character do
-						if PrimaryPart.Parent ~= PrimaryTarget or DistanceFromCharacter(PrimaryPart) > Distance then
+                        if PrimaryPart.Parent ~= PrimaryTarget then
 							break
 						end
-						
 						Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
 						GunValidator:FireServer(self:GetValidator2())
 						RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
