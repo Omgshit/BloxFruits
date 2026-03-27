@@ -1567,7 +1567,8 @@ local Module = {} do
 					end
 				end
 				
-               if RootPart and (Character.Parent ~= Characters) then
+               local TargetPlayer = game:GetService("Players"):GetPlayerFromCharacter(Character)
+               if RootPart and (Character.Parent ~= Characters or (TargetPlayer and CheckPlayerAlly(TargetPlayer))) then
 					local Hitbox = RootPart
 					
 					if Hitbox and (MyRootPartPosition - RootPart.Position).Magnitude <= Distance then
