@@ -1547,49 +1547,35 @@ local Module = {} do
 			return Hitbox.Position, Hitbox;
 		end
 		
-	local function ProcessHits(List: Folder, Equipped: Tool, Distance: number): nil
-    local MyCharacter = Player.Character
-    if not MyCharacter then return end
-
-    local MyRootPart = MyCharacter:FindFirstChild("HumanoidRootPart")
-    if not MyRootPart then return end
-
-    local Targets = List:GetChildren()
-    local MaxHits = GetMaxHits(MyCharacter) + 1
-
-    for i = 1, #Targets do
-        if #CurrentBladeHits >= MaxHits then break end
-        
-        local Character = Targets[i]
-        if Character == MyCharacter 
-        or Character:GetAttribute("IsBoat") 
-        or not IsAlive(Character) then
-            continue
-        end
-
-        local RootPart = Character:FindFirstChild("HumanoidRootPart") or Character.PrimaryPart
-        if not RootPart then continue end
-
-        -- Debounce de vida
-        if NoAttackBelowDebounce and (tick() - NoAttackBelowDebounce) <= 1 then
-            local Humanoid = Character:FindFirstChild("Humanoid")
-            if Humanoid and Humanoid.MaxHealth > 0 then
-                local HPPercent = (Humanoid.Health / Humanoid.MaxHealth) * 100
-                if HPPercent <= BelowHealthPercent then
-                    continue
-                end
-            end
-        end
-
-        if Character.Parent ~= Characters or CheckPlayerAlly(Character) then
-            local Hitbox = GetRandomHitboxLimb(Character) or RootPart
-            
-            if (MyRootPart.Position - RootPart.Position).Magnitude <= Distance then
-                NewBladeHit(Hitbox, Character)
-            end
-        end
-    end
-end
+    	local function ProcessHits(List: Folder, Equipped: Tool, Distance: number): (nil)
+			local MyCharacter = Player.Character;
+			local Targets = List:GetChildren();
+			local MaxHits = GetMaxHits(MyCharacter) + 1;
+			
+			for i = 1, #Targets do
+				if #CurrentBladeHits >= MaxHits then break end
+				
+				local Character = Targets[i]
+				if Character == MyCharacter or Character:GetAttribute("IsBoat") or not IsAlive(Character) then continue end
+				local RootPart = Character.PrimaryPart
+				
+				if (tick() - NoAttackBelowDebounce) <= 1 then
+					local Humanoid = Character.Humanoid
+					
+					if Humanoid.Health / Humanoid.MaxHealth * 100 <= BelowHealthPercent then
+						continue
+					end
+				end
+				
+				if RootPart and (Character.Parent ~= Characters or CheckPlayerAlly(Character)) then
+					local Hitbox = RootPart
+					
+					if Hitbox and (MyRootPartPosition - RootPart.Position).Magnitude <= Distance then
+						NewBladeHit(Hitbox, Character)
+					end
+				end
+			end
+		end
 	
 		function FastAttack:DontAttackBelowPercent(Percent: number): boolean
 			if SUCCESS_FLAGS and not COMBAT_REMOTE_THREAD or SUCCESS_FLAGS and COMBAT_REMOTE_THREAD and HIT_FUNCTION then
