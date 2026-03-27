@@ -1791,8 +1791,6 @@ local Module = {} do
 			local Character = Player.Character;
 			local Humanoid = Character.Humanoid;
 			
-			if not Humanoid.RootPart then return end
-			
 			local Equipped = Character:FindFirstChildOfClass("Tool")
 			local ToolTip = Equipped and Equipped.ToolTip
 			
