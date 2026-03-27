@@ -1567,7 +1567,7 @@ local Module = {} do
 					end
 				end
 				
-				if RootPart and (Character.Parent ~= Characters or CheckPlayerAlly(Character)) then
+				if RootPart and (Character.Parent ~= Characters or CheckPlayerAlly(Character.Parent)) then
 					local Hitbox = RootPart
 					
 					if Hitbox and (MyRootPartPosition - RootPart.Position).Magnitude <= Distance then
