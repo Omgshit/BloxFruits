@@ -1784,7 +1784,7 @@ local Module = {} do
 		end
 		
 		table.insert(Connections, Stepped:Connect(function()
-			if not Settings.AutoClick then
+			if not Settings.AutoClick then return end
 			if not IsAlive(Player.Character) then return end
 			
 			local self = FastAttack;
