@@ -1452,22 +1452,10 @@ local Module = {} do
 			return getupvalue(require(ReplicatedStorage.Controllers.CombatController).Attack, 9)
 		end)
 		
-		local HIT_FUNCTION; task.defer(function()
-			local PlayerScripts = Player:WaitForChild("PlayerScripts")
-			local LocalScript = PlayerScripts:FindFirstChildOfClass("LocalScript")
-			
-			while not LocalScript do
-				Player.PlayerScripts.ChildAdded:Wait()
-				LocalScript = PlayerScripts:FindFirstChildOfClass("LocalScript")
-			end
-			
+		local HIT_FUNCTION; task.defer(function()			
 			if getsenv then
-				local Success, ScriptEnv = pcall(getsenv, LocalScript)
-				
-				if Success and ScriptEnv then
-					HIT_FUNCTION = ScriptEnv._G.SendHitsToServer
+					HIT_FUNCTION = (getmenv or getsenv)(Net)._G.SendHitsToServer
 				end
-			end
 		end)
 		
 		FastAttack.ShootsFunctions = {
