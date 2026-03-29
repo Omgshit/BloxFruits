@@ -1106,8 +1106,7 @@ local Module = {} do
 		
 		local Signals = Module.Signals
 		local IsAlive = Module.IsAlive
-		local SeaCastle = CFrame.new(-5556, 314, -2988)
-		
+
 		local TagsMobs = {
 			__Elite = CreateDictionary({ "Deandre", "Diablo", "Urban" }, true),
 			__Bones = CreateDictionary({ "Reborn Skeleton", "Living Zombie", "Demonic Soul", "Posessed Mummy" }, true),
@@ -1134,19 +1133,6 @@ local Module = {} do
 				table.insert(list, NewEnemy)
 				Humanoid.Died:Wait()
 				table.remove(list, table.find(list, NewEnemy))
-			end
-		end
-		
-		local function IsFromPiratesSea(Enemy)
-			if not Enemy:WaitForChild("Humanoid") or Enemy.Humanoid.Health <= 0 then return end
-			
-			local HumanoidRootPart = Enemy:WaitForChild("HumanoidRootPart")
-			
-			if HumanoidRootPart and (Enemy.Name ~= "rip_indra True Form" and Enemy.Name ~= "Blank Buddy") then
-				if (HumanoidRootPart.Position - SeaCastle.Position).Magnitude <= 750 then
-					task.spawn(New, EnemiesModule.__PirateRaid, Enemy)
-					Module.PirateRaid = tick()
-				end
 			end
 		end
 		
@@ -1737,7 +1723,7 @@ local Module = {} do
 			local ShootType = self.SpecialShoots[Equipped.Name] or "Normal"
 			
 			if ShootType == "Normal" or ShootType == "Overheat" then
-				local Distance = if ShootType == "Overheat" then self.Overheat[Equipped.Name].Distance else 400
+				local Distance = if ShootType == "Overheat" then self.Overheat[Equipped.Name].Distance else 500
 				self:UpdateBladeHits(Distance, false, true)
 				
 				if #CurrentBladeHits == 0 then
