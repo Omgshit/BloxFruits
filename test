@@ -1738,8 +1738,6 @@ local Module = {} do
 						GunValidator:FireServer(self:GetValidator2())
 						RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
 						task.wait()
-						else
-			        		break
 	         			end
 					end
 					
