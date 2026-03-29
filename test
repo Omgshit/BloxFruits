@@ -1143,10 +1143,6 @@ local Module = {} do
 			Others[EnemyName] = Others[EnemyName] or {}
 			task.spawn(New, Others[EnemyName], Enemy)
 			
-			if Module.GameData.Sea == 3 then
-				task.spawn(IsFromPiratesSea, Enemy)
-			end
-			
 			if Enemy:GetAttribute("RaidBoss") then
 				task.spawn(New, EnemiesModule.__RaidBoss, Enemy)
 			elseif EnemiesModule[`__{ EnemyName }`] then
