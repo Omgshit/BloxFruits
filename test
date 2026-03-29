@@ -1732,16 +1732,12 @@ local Module = {} do
 				if ShootType == "Overheat" then
 					self.Debounce = tick() + 9e9
 					
-					while Equipped and Equipped.Parent == Player.Character do
-    if not PrimaryTarget or not PrimaryTarget.Parent or not IsAlive(PrimaryTarget) then
-        task.wait()
-        continue
-    end
-    Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
+					while PrimaryTarget and PrimaryTarget.Parent and IsAlive(PrimaryTarget) and Equipped and Equipped.Parent == Player.Character do
+						Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
 						GunValidator:FireServer(self:GetValidator2())
 						RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
 						task.wait()
-end
+					end
 					
 					self.Debounce = 0
 				elseif PrimaryTarget then
