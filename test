@@ -1733,6 +1733,9 @@ local Module = {} do
 					self.Debounce = tick() + 9e9
 					
 					while PrimaryTarget and PrimaryTarget.Parent and IsAlive(PrimaryTarget) and Equipped and Equipped.Parent == Player.Character do
+                         if not PrimaryPart or PrimaryPart.Parent ~= PrimaryTarget then
+                            break
+                          end
 						Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
 						GunValidator:FireServer(self:GetValidator2())
 						RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
