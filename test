@@ -2104,6 +2104,7 @@ local Module = {} do
 		return Hooking
 	end)()
 
+if identifyexecutor() ~= "Solara" and identifyexecutor() ~= "Xeno" then
   task.defer(function()
 	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
 	 	local CameraShaker = require(WaitChilds(ReplicatedStorage, "Util", "CameraShaker"))
@@ -2114,6 +2115,7 @@ local Module = {} do
  		hookfunction(DeathEffect, function(...) return ... end)
 	 	end
 	end)
+end
 	
 	task.spawn(function()
 		local SpawnLocations = Module.SpawnLocations
