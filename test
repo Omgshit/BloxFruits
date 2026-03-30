@@ -1672,9 +1672,11 @@ local Module = {} do
 				local PrimaryTarget = PrimaryPart and PrimaryPart.Parent
 				
 				if ShootType == "Overheat" then
-		   	Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-		   	GunValidator:FireServer(self:GetValidator2())
-			   RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)				
+                     while true do
+		        	Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
+		        	GunValidator:FireServer(self:GetValidator2())
+		     	   RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
+                  end
 				end
 			elseif ShootType == "Position" or (ShootType == "TAP" and Equipped:FindFirstChild("RemoteEvent")) then
 				local Target = self:GetClosestEnemy(200)
