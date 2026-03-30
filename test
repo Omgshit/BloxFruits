@@ -1673,14 +1673,9 @@ local Module = {} do
 				
 				if ShootType == "Overheat" then
 					self.Debounce = tick() + 9e9
-					
-					while true do
 						Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
 						GunValidator:FireServer(self:GetValidator2())
-						RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
-						task.wait()
-					end
-					
+						RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)				
 					self.Debounce = 0
 				elseif PrimaryTarget then
 					Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
