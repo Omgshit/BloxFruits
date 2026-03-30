@@ -1664,10 +1664,6 @@ local Module = {} do
 				local Distance = if ShootType == "Overheat" then self.Overheat[Equipped.Name].Distance else 400
 				self:UpdateBladeHits(Distance, false, true)
 				
-				if #CurrentBladeHits == 0 then
-					return nil
-				end
-				
 				local Position, PrimaryPart = ConvertToGunHits()
 				local PrimaryTarget = PrimaryPart and PrimaryPart.Parent
 				
