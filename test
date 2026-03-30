@@ -1675,7 +1675,8 @@ local Module = {} do
                      while true do
 		        	Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
 		        	GunValidator:FireServer(self:GetValidator2())
-		     	   RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
+		     	    RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
+                    wait()
                   end
 				end
 			elseif ShootType == "Position" or (ShootType == "TAP" and Equipped:FindFirstChild("RemoteEvent")) then
