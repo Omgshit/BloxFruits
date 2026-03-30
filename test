@@ -1664,16 +1664,17 @@ local Module = {} do
 				local Distance = if ShootType == "Overheat" then self.Overheat[Equipped.Name].Distance else 400
 				self:UpdateBladeHits(Distance, false, true)
 				
+				if #CurrentBladeHits == 0 then
+					return nil
+				end
+				
 				local Position, PrimaryPart = ConvertToGunHits()
 				local PrimaryTarget = PrimaryPart and PrimaryPart.Parent
 				
 				if ShootType == "Overheat" then
 					self.Debounce = tick() + 9e9
 					
-					while PrimaryTarget and PrimaryTarget.Parent and IsAlive(PrimaryTarget) and Equipped and Equipped.Parent == Player.Character do
-                         if not PrimaryPart or PrimaryPart.Parent ~= PrimaryTarget then
-                            break
-                          end
+					while true do
 						Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
 						GunValidator:FireServer(self:GetValidator2())
 						RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
