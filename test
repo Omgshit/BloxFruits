@@ -1723,7 +1723,7 @@ local Module = {} do
 			local ShootType = self.SpecialShoots[Equipped.Name] or "Normal"
 			
 			if ShootType == "Normal" or ShootType == "Overheat" then
-				local Distance = if ShootType == "Overheat" then self.Overheat[Equipped.Name].Distance else 375
+				local Distance = if ShootType == "Overheat" then self.Overheat[Equipped.Name].Distance else 400
 				self:UpdateBladeHits(Distance, false, true)
 				
 				if #CurrentBladeHits == 0 then
