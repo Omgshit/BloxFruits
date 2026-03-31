@@ -751,7 +751,6 @@ local Module = {} do
 			end
 		end
 	end
-
    
    local function DistanceFromCharacter(Value: CFrame | BasePart): number
 	return Player:DistanceFromCharacter(Value.Position)
