@@ -777,6 +777,7 @@ local Module = {} do
 		task.spawn(TeleportService.TeleportToPlaceInstance, TeleportService, game.PlaceId, game.JobId, Player)
 	end
 
+  function Module:ServerHop(): (nil)
    local PlaceID = game.PlaceId
         local AllIDs = {}
         local foundAnything = ""
