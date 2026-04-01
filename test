@@ -781,9 +781,17 @@ local Module = {} do
 		task.spawn(TeleportService.TeleportToPlaceInstance, TeleportService, game.PlaceId, game.JobId, Player)
 	end
 
-  function Module:ServerHop(): (nil)
-	 TeleportService:Teleport(game.PlaceId)
-	end
+   function Module:ServerHop(): (nil)   
+    local ServerBrowser = ReplicatedStorage.__ServerBrowser 
+    for i = 1, 100 do
+      local Servers = ServerBrowser:InvokeServer(i)
+      for id,info in pairs(Servers) do
+        if id ~= game.JobId and info["Count"] ~= 12 then
+          task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", id)
+        end
+      end
+    end
+  end
 	
 	function Module.EnemySpawned(EnemyName)
 		local Enemies = Module.Enemies
