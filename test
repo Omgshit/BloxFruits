@@ -778,7 +778,8 @@ local Module = {} do
 	end
 
 	function Module.Rejoin(): (nil)
-		task.spawn(TeleportService.TeleportToPlaceInstance, TeleportService, game.PlaceId, game.JobId, Player)
+		 local ServerBrowser = ReplicatedStorage.__ServerBrowser 
+         task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", game.JobId)
 	end
 
    function Module:ServerHop(): (nil)   
