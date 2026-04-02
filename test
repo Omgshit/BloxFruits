@@ -1061,7 +1061,7 @@ local Module = {} do
 		
 		local Signals = Module.Signals
 		local IsAlive = Module.IsAlive
-        local SeaCastle = CFrame.new(-5556, 314, -2988)
+        local SeaCastle = CFrame.new(-5496.17432, 313.768921, -2841.53027, 0.924894512, 7.37058015e-09, 0.380223751, 3.5881019e-08, 1, -1.06665446e-07, -0.380223751, 1.12297109e-07, 0.924894512)
 
 		local TagsMobs = {
 			__Elite = CreateDictionary({ "Deandre", "Diablo", "Urban" }, true),
