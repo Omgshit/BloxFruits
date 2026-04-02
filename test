@@ -847,7 +847,8 @@ local Module = {} do
 		end
 	end
 
- function Module:BringEnemies(ToEnemy: Instance, SuperBring: boolean?, CustomCFrame: CFrame?, Distance: number?): (nil)
+  function Module:BringEnemies(ToEnemy: Instance, SuperBring: boolean?, CustomCFrame: CFrame?, Distance: number?): (nil)
+         local IsAlive = Module.IsAlive
 		if not IsAlive(ToEnemy) or not ToEnemy.PrimaryPart then
 			return nil
 		end
