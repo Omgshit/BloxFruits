@@ -1054,7 +1054,6 @@ local Module = {} do
 		end
 	})
 
-   if identifyexecutor() ~= "Madium" then
 	Module.Enemies = (function()
 		local EnemiesModule = CreateDictionary({
 			"__CakePrince", "__PirateRaid", "__RaidBoss", "__TyrantSkies", "__Bones", "__Elite", "__Others", 
@@ -1775,7 +1774,8 @@ local Module = {} do
 
 		return FastAttack
 	end)()
-	
+
+	   if identifyexecutor() ~= "Madium" then
 	Module.RaidList = (function()
 		local Success, RaidModule = pcall(require, ReplicatedStorage:WaitForChild("Raids"))
 		
