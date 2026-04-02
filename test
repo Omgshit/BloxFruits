@@ -1909,7 +1909,7 @@ local Module = {} do
 		return BodyVelocity
 	end)()
 
-  if identifyexecutor() ~= "Madium" then
+  if identifyexecutor() == "Delta" then
 	Module.Hooking = (function()
 		local Hooking = {
 			Skills = CreateDictionary({ "Z", "X", "C", "V", "F" }, true),
