@@ -1775,7 +1775,6 @@ local Module = {} do
 		return FastAttack
 	end)()
 
-	   if identifyexecutor() ~= "Madium" then
 	Module.RaidList = (function()
 		local Success, RaidModule = pcall(require, ReplicatedStorage:WaitForChild("Raids"))
 		
@@ -1909,7 +1908,8 @@ local Module = {} do
 		
 		return BodyVelocity
 	end)()
-	
+
+  if identifyexecutor() ~= "Madium" then
 	Module.Hooking = (function()
 		local Hooking = {
 			Skills = CreateDictionary({ "Z", "X", "C", "V", "F" }, true),
@@ -2060,6 +2060,7 @@ local Module = {} do
 		
 		return Hooking
 	end)()
+  end
 
   task.defer(function()
 	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
@@ -2098,7 +2099,6 @@ local Module = {} do
 		table.insert(Connections, EnemySpawns.ChildAdded:Connect(NewSpawn))
 		table.insert(Connections, Locations.ChildAdded:Connect(NewIslandAdded))
 	end)
-end
 end
 
 function EnableBuso()
