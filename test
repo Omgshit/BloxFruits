@@ -1053,7 +1053,8 @@ local Module = {} do
 			return rawget(self, Fruit)
 		end
 	})
-	
+
+   if identifyexecutor() ~= "Madium" then
 	Module.Enemies = (function()
 		local EnemiesModule = CreateDictionary({
 			"__CakePrince", "__PirateRaid", "__RaidBoss", "__TyrantSkies", "__Bones", "__Elite", "__Others", 
@@ -2097,6 +2098,7 @@ local Module = {} do
 		table.insert(Connections, EnemySpawns.ChildAdded:Connect(NewSpawn))
 		table.insert(Connections, Locations.ChildAdded:Connect(NewIslandAdded))
 	end)
+end
 end
 
 function EnableBuso()
