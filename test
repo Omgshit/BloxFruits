@@ -787,7 +787,7 @@ local Module = {} do
     for i = 1, 100 do
       local Servers = ServerBrowser:InvokeServer(i)
       for id,info in pairs(Servers) do
-        if id ~= game.JobId and info["Count"] ~= 12 then
+        if id ~= game.JobId and info["Count"] < 10 then
           task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", id)
         end
       end
