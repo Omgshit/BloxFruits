@@ -1271,6 +1271,7 @@ local Module = {} do
         end;wait()
       end
       if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
+      if BodyPosition then BodyPosition:Destroy() end
     end
 		
 		local function KillAura(Enemy)
