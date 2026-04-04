@@ -1267,11 +1267,12 @@ local Module = {} do
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
           if (RootPart.Position - Target.Position).Magnitude <= 70 then
             RootPart.CFrame = Target
+            RootPart.CanCollide = false
           else
             RootPart.CanCollide = false
             BodyPosition.Position = Target.Position
           end
-        end;task.wait()
+        end;wait()
       end
       if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
     end
