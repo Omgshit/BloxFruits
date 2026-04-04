@@ -1252,24 +1252,17 @@ local Module = {} do
       local EnemyName = Enemy.Name
       pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
       
-    local BodyPosition = Instance.new("BodyPosition")
-    BodyPosition.P = 3e4
-    BodyPosition.D = 3e3
-    BodyPosition.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-    BodyPosition.Parent = RootPart
-      
       while PlayerRootPart and RootPart and Humanoid and Humanoid.Health > 0 and Enemy and Enemy.Parent == Enemies and Enemy:HasTag(BRING_TAG) do
         local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
         
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
-            RootPart.CanCollide = false
           if (RootPart.Position - Target.Position).Magnitude <= 70 then
             RootPart.CFrame = Target
-            if BodyPosition then BodyPosition:Destroy() end
+            RootPart.CanCollide = false
           else
-            BodyPosition.Position = Target.Position
+           RootPart.CFrame = Target
           end
-        end;task.wait()
+        end;wait()
       end
       if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
     end
