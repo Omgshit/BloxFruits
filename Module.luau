@@ -751,6 +751,10 @@ local Module = {} do
 			end
 		end
 	end
+   
+   local function DistanceFromCharacter(Value: CFrame | BasePart): number
+	return Player:DistanceFromCharacter(Value.Position)
+   end
 	
 	function Module.KillAura(Distance: number?, Name: string?): (nil)
 		Distance = Distance or 500
@@ -774,70 +778,21 @@ local Module = {} do
 	end
 
 	function Module.Rejoin(): (nil)
-		task.spawn(TeleportService.TeleportToPlaceInstance, TeleportService, game.PlaceId, game.JobId, Player)
+		 local ServerBrowser = ReplicatedStorage.__ServerBrowser 
+         task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", game.JobId)
 	end
 
-   function Module:ServerHop(): (nil)
-		local PlaceID = game.PlaceId
-        local AllIDs = {}
-        local foundAnything = ""
-        local actualHour = os.date("!*t").hour
-        local Deleted = false
-        function TPReturner()
-            local Site;
-            if foundAnything == "" then
-                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
-            else
-                Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
-            end
-            local ID = ""
-            if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
-                foundAnything = Site.nextPageCursor
-            end
-            local num = 0;
-            for i,v in pairs(Site.data) do
-                local Possible = true
-                ID = tostring(v.id)
-                if tonumber(v.maxPlayers) > tonumber(v.playing) then
-                    for _,Existing in pairs(AllIDs) do
-                        if num ~= 0 then
-                            if ID == tostring(Existing) then
-                                Possible = false
-                            end
-                        else
-                            if tonumber(actualHour) ~= tonumber(Existing) then
-                                local delFile = pcall(function()
-                                    AllIDs = {}
-                                    table.insert(AllIDs, actualHour)
-                                end)
-                            end
-                        end
-                        num = num + 1
-                    end
-                    if Possible == true then
-                        table.insert(AllIDs, ID)
-                        wait()
-                        pcall(function()
-                            wait()
-                            game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer("teleport",ID)
-                        end)
-                        wait(4)
-                    end
-                end
-            end
+   function Module:ServerHop(): (nil)   
+    local ServerBrowser = ReplicatedStorage.__ServerBrowser 
+    for i = 1, 100 do
+      local Servers = ServerBrowser:InvokeServer(i)
+      for id,info in pairs(Servers) do
+        if id ~= game.JobId and info["Count"] < 10 then
+          task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", id)
         end
-        function Teleport() 
-            while wait() do
-                pcall(function()
-                    TPReturner()
-                    if foundAnything ~= "" then
-                        TPReturner()
-                    end
-                end)
-            end
-        end
-        Teleport()
-	end
+      end
+    end
+  end
 	
 	function Module.EnemySpawned(EnemyName)
 		local Enemies = Module.Enemies
@@ -1098,7 +1053,7 @@ local Module = {} do
 			return rawget(self, Fruit)
 		end
 	})
-	
+
 	Module.Enemies = (function()
 		local EnemiesModule = CreateDictionary({
 			"__CakePrince", "__PirateRaid", "__RaidBoss", "__TyrantSkies", "__Bones", "__Elite", "__Others", 
@@ -1106,8 +1061,8 @@ local Module = {} do
 		
 		local Signals = Module.Signals
 		local IsAlive = Module.IsAlive
-		local SeaCastle = CFrame.new(-5556, 314, -2988)
-		
+        local SeaCastle = CFrame.new(-5496.17432, 313.768921, -2841.53027, 0.924894512, 7.37058015e-09, 0.380223751, 3.5881019e-08, 1, -1.06665446e-07, -0.380223751, 1.12297109e-07, 0.924894512)
+
 		local TagsMobs = {
 			__Elite = CreateDictionary({ "Deandre", "Diablo", "Urban" }, true),
 			__Bones = CreateDictionary({ "Reborn Skeleton", "Living Zombie", "Demonic Soul", "Posessed Mummy" }, true),
@@ -1150,7 +1105,7 @@ local Module = {} do
 			end
 		end
 		
-		local function NewEnemyAdded(Enemy)			
+		local function NewEnemyAdded(Enemy)
 			local EnemyName = Enemy.Name
 			local Others = EnemiesModule.__Others
 			
@@ -1295,11 +1250,7 @@ local Module = {} do
       local RootPart = Enemy:WaitForChild("HumanoidRootPart")
       local Humanoid = Enemy:WaitForChild("Humanoid")
       local EnemyName = Enemy.Name
-      sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-      
-      local BodyVelocity = Instance.new("BodyVelocity", RootPart)
-      BodyVelocity.Velocity = Vector3.zero
-      BodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
+      pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
       
       local BodyPosition = Instance.new("BodyPosition", RootPart)
       BodyPosition.Position = RootPart.Position
@@ -1312,6 +1263,7 @@ local Module = {} do
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
           if (RootPart.Position - Target.Position).Magnitude <= 70 then
             RootPart.CFrame = Target
+            RootPart.CanCollide = false
           else
             RootPart.CanCollide = false
             BodyPosition.Position = Target.Position
@@ -1406,7 +1358,7 @@ local Module = {} do
 
    Module.FastAttack = (function()
 		local FastAttack = {
-			Distance = 50,
+			Distance = 65,
 			attackMobs = true,
 			attackPlayers = true,
 			Equipped = nil,
@@ -1420,7 +1372,7 @@ local Module = {} do
 					MaxOverheat = 3,
 					Cooldown = 0,
 					TotalOverheat = 0,
-					Distance = 400,
+					Distance = 500,
 					Shooting = false
 				}
 			},
@@ -1751,9 +1703,10 @@ local Module = {} do
 					self.Debounce = tick() + 9e9
 					
 					while PrimaryTarget.Parent and IsAlive(PrimaryTarget) and Equipped and Equipped.Parent == Player.Character do
-                        if PrimaryPart.Parent ~= PrimaryTarget then
+						if PrimaryPart.Parent ~= PrimaryTarget or DistanceFromCharacter(PrimaryPart) > Distance then
 							break
 						end
+						
 						Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
 						GunValidator:FireServer(self:GetValidator2())
 						RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
@@ -1814,7 +1767,7 @@ local Module = {} do
 				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then tick() + (Cooldown / 2) else tick();
 				MyRootPartPosition = Character.Humanoid.RootPart.Position;
 				
-				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] then
+				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] and not self.FruitClick[Equipped.Name] then
 					if Equipped:FindFirstChild("LeftClickRemote") then
 						Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
 					end
@@ -1836,7 +1789,7 @@ local Module = {} do
 
 		return FastAttack
 	end)()
-	
+
 	Module.RaidList = (function()
 		local Success, RaidModule = pcall(require, ReplicatedStorage:WaitForChild("Raids"))
 		
@@ -1970,7 +1923,8 @@ local Module = {} do
 		
 		return BodyVelocity
 	end)()
-	
+
+  if identifyexecutor() == "Delta" then
 	Module.Hooking = (function()
 		local Hooking = {
 			Skills = CreateDictionary({ "Z", "X", "C", "V", "F" }, true),
@@ -2121,6 +2075,7 @@ local Module = {} do
 		
 		return Hooking
 	end)()
+  end
 
   task.defer(function()
 	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
