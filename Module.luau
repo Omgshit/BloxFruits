@@ -572,16 +572,6 @@ local Module = {} do
 		Signals.EnemyAdded = Signal.new()
 		Signals.EnemyDied = Signal.new()
 		Signals.Notify = Signal.new()
-		Signals.Error = Signal.new()
-
-		Signals.Error:Connect(function(ErrorMessage)
-			_ENV.loadedFarm = false
-			_ENV.OnFarm = false
-			
-			local Message = Instance.new("Message", workspace)
-			_ENV.redz_hub_error = Message
-			Message.Text = (`OMG-Hub error [ {Settings.RunningOption or "Null"} ] {ErrorMessage}`)
-		end)
 	end
 	
 	Module.RunFunctions = {} do
@@ -703,7 +693,6 @@ local Module = {} do
 		end
 		
 		Module.RunFunctions.FarmQueue = function(Options)
-			local Success, ErrorMessage = pcall(function()
 				while task.wait(Settings.SmoothMode and 0.25 or 0) do
 					local Enabled = false
 					
@@ -721,9 +710,6 @@ local Module = {} do
 					
 					_ENV.OnFarm = (_ENV.teleporting or Enabled)
 				end
-			end)
-			
-		   Module.Signals.Error:Fire(ErrorMessage)
 		end
 	end
 	
@@ -787,7 +773,7 @@ local Module = {} do
     for i = 1, 100 do
       local Servers = ServerBrowser:InvokeServer(i)
       for id,info in pairs(Servers) do
-        if id ~= game.JobId and info["Count"] < 10 then
+        if id ~= game.JobId and info["Count"] < 11 then
           task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", id)
         end
       end
