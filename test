@@ -692,7 +692,7 @@ local Module = {} do
 			end
 		end
 		
-		Module.RunFunctions.FarmQueue = function(Options)
+  Module.RunFunctions.FarmQueue = function(Options)
 	while task.wait(Settings.SmoothMode and 0.25 or 0.05) do
 		local Enabled = false
 		
@@ -705,6 +705,8 @@ local Module = {} do
 				Settings.RunningMethod = (type(Method) == "string") and Method or nil
 				Enabled = true
 				break
+              else
+                Settings.RunningOption, Settings.RunningMethod = nil, nil
 			end
 		end
 		
