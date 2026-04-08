@@ -692,25 +692,25 @@ local Module = {} do
 			end
 		end
 		
-  Module.RunFunctions.FarmQueue = function(Options)
-	while task.wait(Settings.SmoothMode and 0.25 or 0) do
-		local Enabled = false
-		
-		for _, Option in pairs(Options) do
-			Settings.RunningOption = Option.Name
-			
-			local Success, Method = pcall(Option.Function)
-			
-			if Success and Method then
-				Settings.RunningMethod = type(Method) == "string" and Method
-				Enabled = true
-				break
-			end
+    Module.RunFunctions.FarmQueue = function(Options)
+				while task.wait(Settings.SmoothMode and 0.25 or 0) do
+					local Enabled = false
+					
+					for _, Option in Options do
+						Settings.RunningOption = Option.Name
+						local Method = Option.Function()
+						
+						if Method then
+							Settings.RunningMethod = type(Method) == "string" and Method
+							Enabled = true; break
+						else
+							Settings.RunningOption, Settings.RunningMethod = nil, nil
+						end
+					end
+					
+					_ENV.OnFarm = (_ENV.teleporting or Enabled)
+				end
 		end
-		
-		_ENV.OnFarm = (_ENV.teleporting or Enabled)
-	end
-end
 	end
 	
 	function Module.FireRemote(...)
