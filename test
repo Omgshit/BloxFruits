@@ -702,7 +702,7 @@ local Module = {} do
 			local Success, Method = pcall(Option.Function)
 			
 			if Success and Method then
-				Settings.RunningMethod = (type(Method) == "string") and Method or nil
+				Settings.RunningMethod = type(Method) == "string" and Method
 				Enabled = true
 				break
 			end
