@@ -692,25 +692,34 @@ local Module = {} do
 			end
 		end
 		
-    Module.RunFunctions.FarmQueue = function(Options)
-				while task.wait(Settings.SmoothMode and 0.25 or 0) do
-					local Enabled = false
-					
+      Module.RunFunctions.FarmQueue = function(Options)
+				local function GetQueue()
 					for _, Option in Options do
 						Settings.RunningOption = Option.Name
 						local Method = Option.Function()
 						
 						if Method then
-							Settings.RunningMethod = type(Method) == "string" and Method
-							Enabled = true; break
-						else
-							Settings.RunningOption, Settings.RunningMethod = nil, nil
+							if type(Method) == "string" then
+								Settings.RunningMethod = Method
+							end
+							return Method
 						end
 					end
 					
-					_ENV.OnFarm = (_ENV.teleporting or Enabled)
+					Settings.RunningOption, Settings.RunningMethod = nil, nil
 				end
-		end
+				
+				while task.wait(Settings.SmoothMode and 0.25 or 0) do
+					if _ENV.teleporting then
+						_ENV.OnFarm = true
+					elseif Settings.FixOverflow then
+						local Success, Response = pcall(GetQueue)
+						
+						_ENV.OnFarm = (not Success and _ENV.OnFarm) or Response
+					else
+						_ENV.OnFarm = if GetQueue() then true else false
+					end
+				end
 	end
 	
 	function Module.FireRemote(...)
