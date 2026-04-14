@@ -1351,7 +1351,7 @@ end
 
    Module.FastAttack = (function()
 		local FastAttack = {
-			Distance = Settings.FarmDistance,
+			Distance = 100,
 			attackMobs = true,
 			attackPlayers = true,
 			Equipped = nil,
