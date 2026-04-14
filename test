@@ -1351,7 +1351,7 @@ end
 
    Module.FastAttack = (function()
 		local FastAttack = {
-			Distance = 100,
+			Distance = 59,
 			attackMobs = true,
 			attackPlayers = true,
 			Equipped = nil,
