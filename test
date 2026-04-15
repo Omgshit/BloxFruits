@@ -1720,6 +1720,7 @@ end
 						end
 						
 						Data.Shooting = false
+                     end
 				elseif PrimaryTarget then
 					Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
 					GunValidator:FireServer(self:GetValidator2())
