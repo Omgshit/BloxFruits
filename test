@@ -1699,7 +1699,7 @@ end
 						return nil
 					end
 					
-					local Target = self:GetClosestEnemy(Character, Data.Distance or 100)
+					local Target = self:GetClosestEnemy(Data.Distance or 100)
 					
 					if Target then
 						Data.Shooting = true
