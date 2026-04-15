@@ -1703,8 +1703,7 @@ function FastAttack:HandleOverheat(Equipped, Data)
 end
 
 function FastAttack:HandleNormal(Equipped, ShootType)
-	local Distance = (ShootType == "Overheat" and self.Overheat[Equipped.Name].Distance) or 100
-	self:UpdateBladeHits(Distance, false, true)
+	self:UpdateBladeHits(100, false, true)
 	if #CurrentBladeHits == 0 then return end
 	local Position, PrimaryPart = ConvertToGunHits()
 	if not (PrimaryPart and PrimaryPart.Parent) then return end
