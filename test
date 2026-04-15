@@ -1365,7 +1365,7 @@ end
 					MaxOverheat = 3,
 					Cooldown = 0,
 					TotalOverheat = 0,
-					Distance = 400,
+					Distance = 500,
 					Shooting = false
 				}
 			},
