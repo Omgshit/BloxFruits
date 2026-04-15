@@ -1676,78 +1676,73 @@ end
 			return math.floor(v9 / v4 * 16777215), v7
 		end  
 
-       function FastAttack:UseGunShoot(Character, Equipped)
-			if not Equipped.Enabled then return end
-			
-			local ShootType = self.SpecialShoots[Equipped.Name] or "Normal"
-			
-			if ShootType == "Normal" or ShootType == "Overheat" then
-				local Distance = if ShootType == "Overheat" then self.Overheat[Equipped.Name].Distance else 100
-				self:UpdateBladeHits(Distance, false, true)
-				
-				if #CurrentBladeHits == 0 then
-					return nil
-				end
-				
-				local Position, PrimaryPart = ConvertToGunHits()
-				local PrimaryTarget = PrimaryPart.Parent
-				
-				if ShootType == "Overheat" then
-					local Data = self.Overheat[Equipped.Name]
-					
-					if Data.Shooting then
-						return nil
-					end
-					
-					local Target = self:GetClosestEnemy(Data.Distance or 100)
-					
-					if Target then
-						Data.Shooting = true
-						
-						while Equipped and Equipped.Parent == Player.Character and Data.TotalOverheat < Data.MaxOverheat do
-							if Target and Target.Parent and IsAlive(Target.Parent) then
-								Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-								GunValidator:FireServer(self:GetValidator2())
-								RE_ShootGunEvent:FireServer(Target.Position, { Target })
-								Data.TotalOverheat += task.wait(Data.Cooldown)
-							else
-								break
-							end
-						end
-						
-						while Data.TotalOverheat > 0 do
-							Data.TotalOverheat = math.clamp(Data.TotalOverheat - task.wait(), 0, Data.MaxOverheat)
-						end
-						
-						Data.Shooting = false
-                     end
-				elseif PrimaryTarget then
-					Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-					GunValidator:FireServer(self:GetValidator2())
-					
-					for i = 1, (self.ShootsPerTarget[Equipped.Name] or 1) do
-						RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
-					end
-				end
-			elseif ShootType == "Position" or (ShootType == "TAP" and Equipped:FindFirstChild("RemoteEvent")) then
-				local Target = self:GetClosestEnemy(200)
-				
-				if Target then
-					if self.ShootsFunctions[Equipped.Name] then
-						return self.ShootsFunctions[Equipped.Name](self, Equipped, Target.Position)
-					end
-					
-					Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-					GunValidator:FireServer(self:GetValidator2())
-					
-					if ShootType == "TAP" then
-						Equipped.RemoteEvent:FireServer("TAP", Target.Position)
-					else
-						RE_ShootGunEvent:FireServer(Target.Position)
-					end
-				end
-			end
-		end
+    local function IsValidTarget(Target)
+	return Target and Target.Parent and IsAlive(Target.Parent)
+end
+
+local function AddShot(Equipped)
+	Equipped:SetAttribute("LocalTotalShots",(Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
+end
+
+function FastAttack:HandleOverheat(Equipped, Data)
+	if Data.Shooting then return end
+	local Target = self:GetClosestEnemy(Data.Distance or 100)
+	if not IsValidTarget(Target) then return end
+	Data.Shooting = true
+	while Equipped and Equipped.Parent == Player.Character and Data.TotalOverheat < Data.MaxOverheat do
+		if not IsValidTarget(Target) then break end
+		AddShot(Equipped)
+		GunValidator:FireServer(self:GetValidator2())
+		RE_ShootGunEvent:FireServer(Target.Position, { Target })	
+		Data.TotalOverheat += task.wait(Data.Cooldown)
+	end
+	while Data.TotalOverheat > 0 do
+		Data.TotalOverheat = math.clamp(Data.TotalOverheat - task.wait(),0,Data.MaxOverheat)
+	end
+	Data.Shooting = false
+end
+
+function FastAttack:HandleNormal(Equipped, ShootType)
+	local Distance = (ShootType == "Overheat" and self.Overheat[Equipped.Name].Distance) or 100
+	self:UpdateBladeHits(Distance, false, true)
+	if #CurrentBladeHits == 0 then return end
+	local Position, PrimaryPart = ConvertToGunHits()
+	if not (PrimaryPart and PrimaryPart.Parent) then return end
+	AddShot(Equipped)
+	GunValidator:FireServer(self:GetValidator2())	
+	local shoots = self.ShootsPerTarget[Equipped.Name] or 1
+	for _ = 1, shoots do
+		RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
+	end
+end
+
+function FastAttack:HandlePositionOrTap(Equipped, ShootType)
+	local Target = self:GetClosestEnemy(100)
+	if not IsValidTarget(Target) then return end
+	if self.ShootsFunctions[Equipped.Name] then
+		return self.ShootsFunctions[Equipped.Name](self, Equipped, Target.Position)
+	end
+	AddShot(Equipped)
+	GunValidator:FireServer(self:GetValidator2())
+	if ShootType == "TAP" then
+		Equipped.RemoteEvent:FireServer("TAP", Target.Position)
+	else
+		RE_ShootGunEvent:FireServer(Target.Position)
+	end
+end
+
+function FastAttack:UseGunShoot(Character, Equipped)
+	if not Equipped.Enabled then return end	
+	local ShootType = self.SpecialShoots[Equipped.Name] or "Normal"
+	if ShootType == "Overheat" then
+		local Data = self.Overheat[Equipped.Name]
+		return self:HandleOverheat(Equipped, Data)	
+	elseif ShootType == "Normal" then
+		return self:HandleNormal(Equipped, ShootType)	
+	elseif ShootType == "Position" or (ShootType == "TAP" and Equipped:FindFirstChild("RemoteEvent")) then
+		return self:HandlePositionOrTap(Equipped, ShootType)
+	end
+end
 		
 	 	function FastAttack.attack()
 			if not Settings.AutoClick then return end
