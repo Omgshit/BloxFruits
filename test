@@ -1702,7 +1702,7 @@ function FastAttack:HandleOverheat(Equipped, Data)
 	Data.Shooting = false
 end
 
-function FastAttack:HandleNormal(Equipped, ShootType)
+function FastAttack:HandleNormal(Equipped)
 	self:UpdateBladeHits(100, false, true)
 	if #CurrentBladeHits == 0 then return end
 	local Position, PrimaryPart = ConvertToGunHits()
@@ -1715,7 +1715,7 @@ function FastAttack:HandleNormal(Equipped, ShootType)
 	end
 end
 
-function FastAttack:HandlePositionOrTap(Equipped, ShootType)
+function FastAttack:HandlePositionOrTap(Equipped)
 	local Target = self:GetClosestEnemy(100)
 	if not IsValidTarget(Target) then return end
 	if self.ShootsFunctions[Equipped.Name] then
@@ -1737,9 +1737,9 @@ function FastAttack:UseGunShoot(Character, Equipped)
 		local Data = self.Overheat[Equipped.Name]
 		return self:HandleOverheat(Equipped, Data)	
 	elseif ShootType == "Normal" then
-		return self:HandleNormal(Equipped, ShootType)	
+		return self:HandleNormal(Equipped)	
 	elseif ShootType == "Position" or (ShootType == "TAP" and Equipped:FindFirstChild("RemoteEvent")) then
-		return self:HandlePositionOrTap(Equipped, ShootType)
+		return self:HandlePositionOrTap(Equipped)
 	end
 end
 		
