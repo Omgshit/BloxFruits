@@ -1686,7 +1686,10 @@ end
 
 function FastAttack:HandleOverheat(Equipped, Data)
 	if Data.Shooting then return end
-	local Target = self:GetClosestEnemy(Data.Distance or 100)
+    self:UpdateBladeHits(Data.Distance, false, true)
+	if #CurrentBladeHits == 0 then return end
+	local Position, PrimaryPart = ConvertToGunHits()
+	local Target = PrimaryPart
 	if not IsValidTarget(Target) then return end
 	Data.Shooting = true
 	while Equipped and Equipped.Parent == Player.Character and Data.TotalOverheat < Data.MaxOverheat do
