@@ -1462,7 +1462,6 @@ end
 			end
 			
 			for _, Boat in Enemies:GetChildren() do
-				if not Boat:GetAttribute("IsBoat") then continue end
 				local BasePart = Boat:FindFirstChildOfClass("MeshPart")
 				
 				if IsAlive(Boat) and BasePart and (MyRootPartPosition - BasePart.Position).Magnitude < Distance then
