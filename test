@@ -1685,8 +1685,7 @@ end)
 	if IsAlive(Target.Parent) then
 		return true
 	end
-	if Target.Parent:FindFirstChild("VehicleSeat") 
-	or Target.Parent:FindFirstChild("Engine") then
+	if Target:FindFirstChild("Health') then
 		return true
 	end
 	return false
