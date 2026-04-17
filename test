@@ -1086,11 +1086,11 @@ end
 		end
 		
 		local function IsFromPiratesSea(Enemy)
-			if not Enemy:WaitForChild("Humanoid") or Enemy.Humanoid.Health <= 0 then return end
+			if not Enemy:FindFirstChild("Humanoid") or Enemy.Humanoid.Health <= 0 then return end
 			
 			local HumanoidRootPart = Enemy:WaitForChild("HumanoidRootPart")
 			
-			if HumanoidRootPart and (Enemy.Name ~= "rip_indra True Form" and Enemy.Name ~= "Blank Buddy") and Enemy:IsA("Model") then
+			if HumanoidRootPart and (Enemy.Name ~= "rip_indra True Form" and Enemy.Name ~= "Blank Buddy") then
 				if (HumanoidRootPart.Position - SeaCastle.Position).Magnitude <= 750 then
 					task.spawn(New, EnemiesModule.__PirateRaid, Enemy)
 					Module.PirateRaid = tick()
