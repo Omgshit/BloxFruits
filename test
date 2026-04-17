@@ -1685,7 +1685,7 @@ end)
 	if IsAlive(Target.Parent) then
 		return true
 	end
-	if Target:FindFirstChild("Health') and Target.Health.Value > 0 then
+	if Target:FindFirstChild("Health") and Target.Health.Value > 0 then
 		return true
 	end
 	return false
