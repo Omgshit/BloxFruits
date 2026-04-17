@@ -1466,6 +1466,7 @@ end)
 			end
 			
 			for _, Boat in Enemies:GetChildren() do
+                if not Boat:GetAttribute("IsBoat") then continue end
 				local BasePart = Boat:FindFirstChildOfClass("MeshPart")
 				
 				if IsAlive(Boat) and BasePart and (MyRootPartPosition - BasePart.Position).Magnitude < Distance then
@@ -1680,7 +1681,15 @@ end)
 		end  
 
     local function IsValidTarget(Target)
-	return Target and Target.Parent and IsAlive(Target.Parent)
+	if not (Target and Target.Parent) then return false end
+	if IsAlive(Target.Parent) then
+		return true
+	end
+	if Target.Parent:FindFirstChild("VehicleSeat") 
+	or Target.Parent:FindFirstChild("Engine") then
+		return true
+	end
+	return false
 end
 
 local function AddShot(Equipped)
