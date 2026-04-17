@@ -781,7 +781,11 @@ end
       local Servers = ServerBrowser:InvokeServer(i)
       for id,info in pairs(Servers) do
         if id ~= game.JobId and info["Count"] < 11 then
-          task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", id)
+          task.spawn(function()
+    pcall(function()
+        ServerBrowser:InvokeServer("teleport", id)
+    end)
+end)
         end
       end
     end
