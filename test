@@ -1090,11 +1090,11 @@ end)
 		end
 		
 		local function IsFromPiratesSea(Enemy)
-    local Humanoid = Enemy:FindFirstChild("Humanoid")
-    if not Humanoid or Humanoid.Health <= 0 then return end
+    local Humanoid = Enemy:WaitForChild("Humanoid", 3)
+    local Root = Enemy:WaitForChild("HumanoidRootPart", 3)
 
-    local Root = Enemy:FindFirstChild("HumanoidRootPart")
-    if not Root then return end
+    if not Humanoid or not Root then return end
+    if Humanoid.Health <= 0 then return end
 
     if Enemy.Name ~= "rip_indra True Form" and Enemy.Name ~= "Blank Buddy" then
         if (Root.Position - SeaCastle.Position).Magnitude <= 750 then
@@ -1112,8 +1112,13 @@ end
 			task.spawn(New, Others[EnemyName], Enemy)
 			
 			if Module.GameData.Sea == 3 then
-				task.spawn(IsFromPiratesSea, Enemy)
-			end
+    task.spawn(function()
+        for i = 1, 5 do
+            IsFromPiratesSea(Enemy)
+            task.wait(0.2)
+        end
+    end)
+end
 			
 			if Enemy:GetAttribute("RaidBoss") then
 				task.spawn(New, EnemiesModule.__RaidBoss, Enemy)
