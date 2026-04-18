@@ -1113,10 +1113,8 @@ end
 			
 			if Module.GameData.Sea == 3 then
     task.spawn(function()
-        for i = 1, 5 do
             IsFromPiratesSea(Enemy)
             task.wait(0.2)
-        end
     end)
 end
 			
