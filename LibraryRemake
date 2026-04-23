@@ -715,18 +715,30 @@ self.CLEAR_DROPDOWN()
 end
 
 local function UpdateLabel()
-					if MultiSelect then
-						local list = {}
-						for index, Value in pairs(Selected) do
-							if Value then
-								table.insert(list, index)
-							end
-						end
-						ActiveLabel.Text = #list > 0 and table.concat(list, ", ") or "..."
-					else
-						ActiveLabel.Text = tostring(Selected or "...")
-					end
-				end
+    if not ActiveLabel then
+        warn("ActiveLabel is nil")
+        return
+    end
+
+    if MultiSelect then
+        local list = {}
+
+        if type(Selected) == "table" then
+            for index, Value in pairs(Selected) do
+                if Value then
+                    table.insert(list, index)
+                end
+            end
+        end
+
+        ActiveLabel.Text =
+            #list > 0
+            and table.concat(list, ", ")
+            or "..."
+    else
+        ActiveLabel.Text = tostring(Selected or "...")
+    end
+end
 
 function ap:NewOptions(...)
 self:Clear()
