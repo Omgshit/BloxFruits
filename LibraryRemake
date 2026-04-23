@@ -710,8 +710,15 @@ assert(type(au)=="table",`"Dropdown.SetEnabled[param 1]". 'table' expected, got 
 self.SET_ENABLED_OPTIONS(au)
 end
 
+function ap:ResetText()
+    if self.TITLE_LABEL then
+        self.TITLE_LABEL.Text = self.Title
+    end
+end
+
 function ap:Clear()
 self.CLEAR_DROPDOWN()
+self:ResetText()
 end
 
 function ap:NewOptions(...)
