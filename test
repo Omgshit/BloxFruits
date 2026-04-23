@@ -1937,7 +1937,6 @@ end
 		return BodyVelocity
 	end)()
 
-  if identifyexecutor() == "Delta" then
 	Module.Hooking = (function()
 		local Hooking = {
 			Skills = CreateDictionary({ "Z", "X", "C", "V", "F" }, true),
@@ -1967,7 +1966,8 @@ end
 				end
 			end
 		end
-		
+
+		if identifyexecutor() == "Delta" then
 		function Hooking.UpdateClosests()
 			local SmoothDebounce = Settings.SmoothMode and 0.5 or 0.25
 			
@@ -2085,6 +2085,7 @@ end
 		end)
 		
 		table.insert(Connections, Heartbeat:Connect(Hooking.UpdateClosests))
+     end
 		
 		return Hooking
 	end)()
