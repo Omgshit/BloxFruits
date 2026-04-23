@@ -715,18 +715,21 @@ self.CLEAR_DROPDOWN()
 end
 
 function ap:ResetText()
-    local defaultText = self.Title or (self.VISIBLE_ELEMENT and self.VISIBLE_ELEMENT.Name) or "Select..."
     if self.TITLE_LABEL then
-        self.TITLE_LABEL.Text = defaultText
+        self.TITLE_LABEL.Text = self.Title or "Select..."
     end
 end
 
 function ap:NewOptions(new_options)
-    if self.TITLE_LABEL then
-        self.TITLE_LABEL.Text = self.Title
-    end
     self:Clear() 
-    self:Add(unpack(new_options or {})) 
+    self:ResetText()
+    local options = new_options or {}
+    if #options > 0 then
+        self:Add(unpack(options))
+    end
+    task.defer(function()
+        self:ResetText()
+    end)
 end
 
 function ap:GetOptionsCount()
