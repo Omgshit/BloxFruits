@@ -2089,7 +2089,6 @@ end
 		
 		return Hooking
 	end)()
-  end
 
   task.defer(function()
 	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
