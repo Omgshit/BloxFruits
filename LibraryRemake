@@ -715,8 +715,8 @@ self.CLEAR_DROPDOWN()
 end
 
 function ap:NewOptions(...)
-    self:Clear()
-    self:Add(...)
+self:Clear()
+self:Add(...)
 end
 
 function ap:GetOptionsCount()
