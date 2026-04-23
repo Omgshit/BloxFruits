@@ -714,17 +714,9 @@ function ap:Clear()
 self.CLEAR_DROPDOWN()
 end
 
-function ap:Set(Val1, Clear)
-    if type(Val1) == "table" then
-        AddNewOptions(Val1, not Clear)
-    elseif type(Val1) == "function" then
-        Callback = Val1
-    end
-end
-
-function ap:NewOptions(List)
-    self:Set(List, true)
-    self:Set(nil)
+function ap:NewOptions(...)
+    self:Clear()
+    self:Add(...)
 end
 
 function ap:GetOptionsCount()
