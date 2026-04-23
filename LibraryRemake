@@ -714,9 +714,44 @@ function ap:Clear()
 self.CLEAR_DROPDOWN()
 end
 
+local function UpdateLabel()
+					if MultiSelect then
+						local list = {}
+						for index, Value in pairs(Selected) do
+							if Value then
+								table.insert(list, index)
+							end
+						end
+						ActiveLabel.Text = #list > 0 and table.concat(list, ", ") or "..."
+					else
+						ActiveLabel.Text = tostring(Selected or "...")
+					end
+				end
+				
+				local function UpdateSelected()
+					if MultiSelect then
+						for _,v in pairs(Options) do
+							local nodes, Stats = v.nodes, v.Stats
+							CreateTween({nodes[2], "BackgroundTransparency", Stats and 0 or 0.8, 0.35})
+							CreateTween({nodes[2], "Size", Stats and UDim2.fromOffset(4, 12) or UDim2.fromOffset(4, 4), 0.35})
+							CreateTween({nodes[3], "TextTransparency", Stats and 0 or 0.4, 0.35})
+						end
+					else
+						for _,v in pairs(Options) do
+							local Slt = v.Value == Selected
+							local nodes = v.nodes
+							CreateTween({nodes[2], "BackgroundTransparency", Slt and 0 or 1, 0.35})
+							CreateTween({nodes[2], "Size", Slt and UDim2.fromOffset(4, 14) or UDim2.fromOffset(4, 4), 0.35})
+							CreateTween({nodes[3], "TextTransparency", Slt and 0 or 0.4, 0.35})
+						end
+					end
+					UpdateLabel()
+				end
+
 function ap:NewOptions(...)
 self:Clear()
 self:Add(...)
+UpdateSelected()
 end
 
 function ap:GetOptionsCount()
