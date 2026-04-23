@@ -715,12 +715,9 @@ self.CLEAR_DROPDOWN()
 end
 
 function ap:NewOptions(...)
-self:Clear()
-self:Add(...)
-self.Value = nil
-    if self.VALUE_LABEL then
-        self.VALUE_LABEL.Text = "..."
-    end
+    self:Clear()
+    self:Add(...)
+    self:Set(nil)
 end
 
 function ap:GetOptionsCount()
@@ -742,6 +739,22 @@ assert(#au>0,"'Dropdown.Add' requires one or more options.")
 
 for av,aw in au do
 self.ADD_DROPDOWN_OPTION(aw)
+end
+
+function ap:Set(value)
+    self.Value = value
+    if self.Label then
+        if value == nil or value == "" then
+            self.Label.Text = "..."
+        elseif type(value) == "table" then
+            self.Label.Text = table.concat(value, ", ")
+        else
+            self.Label.Text = tostring(value)
+        end
+    end
+    if self.Callback then
+        pcall(self.Callback, value)
+    end
 end
 end
 
