@@ -717,6 +717,10 @@ end
 function ap:NewOptions(...)
 self:Clear()
 self:Add(...)
+self.Value = nil
+    if self.VALUE_LABEL then
+        self.VALUE_LABEL.Text = "..."
+    end
 end
 
 function ap:GetOptionsCount()
