@@ -138,7 +138,6 @@ Themes=r,
 
 Connections={},
 Options={},
-Icons={},
 Tabs={}
 }
 
@@ -716,8 +715,8 @@ self.CLEAR_DROPDOWN()
 end
 
 function ap:NewOptions(...)
-self:Clear()
-self:Add(...)
+    self:Clear()
+    self:Add(...)
 end
 
 function ap:GetOptionsCount()
@@ -3685,6 +3684,10 @@ if ae.ScriptFolder~=nil and type(ae.ScriptFolder)~="string"then
 return error(`"Window.ScriptFolder". 'string', or nil expected, got {typeof(ae.ScriptFolder)}`,2)
 end
 
+if ae.ScriptFolder~=nil and string.find(ae.ScriptFolder,"/")then
+return error("\"Window.ScriptFolder\" is not valid, unexpected char \"/\"",2)
+end
+
 local af=(function()
 local af=ae.ScriptFolder
 local ag=false
@@ -3766,6 +3769,41 @@ end)()
 self.ThemesObjects=C
 self.WindowSettings=af
 self.Flags=ag
+
+self.Icons=(function()
+local ah=ae.ScriptFolder
+
+local ai,aj=pcall(function()
+return loadstring(f(`{ah}/Icons.lua`))()
+end)
+
+if ai and type(aj)=="table"then
+return aj
+end
+
+local ak=`https://raw.githubusercontent.com/{self.Information.GitHubOwner}`
+local al=`{ak}/Library/refs/heads/main/redz-V5-remake/Utils/Icons.lua`
+local am local an=function()
+
+
+return z(`{ah}/Icons.lua`,am)end
+
+
+local ao,ap=pcall(function()
+am=game:HttpGet(al)
+return loadstring(am)()
+end)
+
+if ao and type(ap)=="table"then
+if type(am)=="string"then
+pcall(an)
+end
+
+return ap
+end
+
+return{}
+end)()
 
 if type(af.SelectedTheme)=="string"and self:IsValidTheme(af.SelectedTheme)then
 self:SetTheme(af.SelectedTheme)
