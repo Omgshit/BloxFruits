@@ -1051,15 +1051,14 @@ end)
 		end
 	})
 
-	Module.Enemies = (function()
+Module.Enemies = (function()
 		local EnemiesModule = CreateDictionary({
 			"__CakePrince", "__PirateRaid", "__RaidBoss", "__TyrantSkies", "__Bones", "__Elite", "__Others", 
 		}, {})
 		
 		local Signals = Module.Signals
-		local IsAlive = Module.IsAlive
-        local SeaCastle = CFrame.new(-5496.17432, 313.768921, -2841.53027, 0.924894512, 7.37058015e-09, 0.380223751, 3.5881019e-08, 1, -1.06665446e-07, -0.380223751, 1.12297109e-07, 0.924894512)
-
+		local SeaCastle = CFrame.new(-5496.17432, 313.768921, -2841.53027, 0.924894512, 7.37058015e-09, 0.380223751, 3.5881019e-08, 1, -1.06665446e-07, -0.380223751, 1.12297109e-07, 0.924894512)
+		
 		local TagsMobs = {
 			__Elite = CreateDictionary({ "Deandre", "Diablo", "Urban" }, true),
 			__Bones = CreateDictionary({ "Reborn Skeleton", "Living Zombie", "Demonic Soul", "Posessed Mummy" }, true),
@@ -1082,27 +1081,26 @@ end)
 			
 			local Humanoid = NewEnemy:WaitForChild("Humanoid")
 			
-			if Humanoid and Humanoid.ClassName == "Humanoid" and Humanoid.Health > 0 then
+			if Humanoid and Humanoid.Health > 0 then
 				table.insert(list, NewEnemy)
 				Humanoid.Died:Wait()
-				table.remove(list, table.find(list, NewEnemy))
+				local index = table.find(list, NewEnemy)
+				if index then table.remove(list, index) end
 			end
 		end
 		
 		local function IsFromPiratesSea(Enemy)
-    local Humanoid = Enemy:WaitForChild("Humanoid", 3)
-    local Root = Enemy:WaitForChild("HumanoidRootPart", 3)
-
-    if not Humanoid or not Root then return end
-    if Humanoid.Health <= 0 then return end
-
-    if Enemy.Name ~= "rip_indra True Form" and Enemy.Name ~= "Blank Buddy" then
-        if (Root.Position - SeaCastle.Position).Magnitude <= 750 then
-            task.spawn(New, EnemiesModule.__PirateRaid, Enemy)
-            Module.PirateRaid = tick()
-        end
-    end
-end
+			if not Enemy:WaitForChild("Humanoid") or Enemy.Humanoid.Health <= 0 then return end
+			
+			local HumanoidRootPart = Enemy:WaitForChild("HumanoidRootPart")
+			
+			if HumanoidRootPart and (Enemy.Name ~= "rip_indra True Form" and Enemy.Name ~= "Blank Buddy") then
+				if (HumanoidRootPart.Position - SeaCastle.Position).Magnitude <= 750 then
+					task.spawn(New, EnemiesModule.__PirateRaid, Enemy)
+					Module.PirateRaid = tick()
+				end
+			end
+		end
 		
 		local function NewEnemyAdded(Enemy)
 			local EnemyName = Enemy.Name
@@ -1112,11 +1110,8 @@ end
 			task.spawn(New, Others[EnemyName], Enemy)
 			
 			if Module.GameData.Sea == 3 then
-    task.spawn(function()
-            IsFromPiratesSea(Enemy)
-            task.wait(0.2)
-    end)
-end
+				task.spawn(IsFromPiratesSea, Enemy)
+			end
 			
 			if Enemy:GetAttribute("RaidBoss") then
 				task.spawn(New, EnemiesModule.__RaidBoss, Enemy)
@@ -1246,8 +1241,8 @@ end
 			
 			return NewTag
 		end
-
-    local function Bring(Enemy)
+		
+		local function Bring(Enemy)
       local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChild("HumanoidRootPart")
       local RootPart = Enemy:WaitForChild("HumanoidRootPart")
       local Humanoid = Enemy:WaitForChild("Humanoid")
@@ -1292,10 +1287,7 @@ end
 		end
 		
 		for _, Enemy in CollectionService:GetTagged("BasicMob") do NewEnemyAdded(Enemy) end
-		for _, Enemy in Enemies:GetChildren() do NewEnemyAdded(Enemy) end
-		
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal("BasicMob"):Connect(NewEnemyAdded))
-		table.insert(Connections, Enemies.ChildAdded:Connect(NewEnemyAdded))
 		
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal(KILLAURA_TAG):Connect(KillAura))
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal(BRING_TAG):Connect(Bring))
