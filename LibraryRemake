@@ -714,12 +714,8 @@ function ap:Clear()
 self.CLEAR_DROPDOWN()
 end
 
-local function UpdateLabel() if MultiSelect then local list = {} for index, Value in pairs(Selected) do if Value then table.insert(list, index) end end aI.Text = #list > 0 and table.concat(list, ", ") or "..." else aI.Text = tostring(Selected or "...") end end
-
 function ap:NewOptions(...)
     self:Clear()
-    Selected = MultiSelect and {} or nil 
-    UpdateLabel() 
     self:Add(...)
 end
 
