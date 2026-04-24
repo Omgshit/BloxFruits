@@ -785,12 +785,6 @@ end
     until tick() - ticklon >= 1
     local function Hop()
         for r = 1, math.huge do
-            if ChooseRegion == nil or ChooseRegion == "" then
-                ChooseRegion = "Singapore"
-            else
-                game:GetService("Players").LocalPlayer.PlayerGui.ServerBrowser.Frame.Filters.SearchRegion.TextBox.Text =
-                    ChooseRegion
-            end
             local bP = game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer(r)
             for k, v in pairs(bP) do
                 if k ~= game.JobId and v["Count"] < bO then
