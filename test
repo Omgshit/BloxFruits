@@ -770,24 +770,65 @@ end
 		return Module.Bosses[Name] and true or false
 	end
 
-	function Module.Rejoin(): (nil)
+	function Module.Rejoin()
 		 local ServerBrowser = ReplicatedStorage.__ServerBrowser 
          task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", game.JobId)
 	end
 
-   function Module:ServerHop(): (nil)   
-    local ServerBrowser = ReplicatedStorage.__ServerBrowser 
-    for i = 1, 100 do
-      local Servers = ServerBrowser:InvokeServer(i)
-      for id,info in pairs(Servers) do
-        if id ~= game.JobId and info["Count"] < 11 then
-          task.spawn(function()
-    pcall(function()
-        ServerBrowser:InvokeServer("teleport", id)
-    end)
-end)
+   function Module:ServerHop(bO)
+       if not bO then
+        bO = 10
+    end
+    ticklon = tick()
+    repeat
+        task.wait()
+    until tick() - ticklon >= 1
+    local function Hop()
+        for r = 1, math.huge do
+            if ChooseRegion == nil or ChooseRegion == "" then
+                ChooseRegion = "Singapore"
+            else
+                game:GetService("Players").LocalPlayer.PlayerGui.ServerBrowser.Frame.Filters.SearchRegion.TextBox.Text =
+                    ChooseRegion
+            end
+            local bP = game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer(r)
+            for k, v in pairs(bP) do
+                if k ~= game.JobId and v["Count"] < bO then
+                   game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer("teleport", k)
+                end
+            end
         end
-      end
+        return false
+    end
+    if not getgenv().Loaded then
+        local function bQ(v)
+            if v.Name == "ErrorPrompt" then
+                if v.Visible then
+                    if v.TitleFrame.ErrorTitle.Text == "Teleport Failed" then
+                        HopServer()
+                        v.Visible = false
+                    end
+                end
+                v:GetPropertyChangedSignal("Visible"):Connect(
+                    function()
+                        if v.Visible then
+                            if v.TitleFrame.ErrorTitle.Text == "Teleport Failed" then
+                                HopServer()
+                                v.Visible = false
+                            end
+                        end
+                    end
+                )
+            end
+        end
+        for k, v in pairs(game.CoreGui.RobloxPromptGui.promptOverlay:GetChildren()) do
+            bQ(v)
+        end
+        game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(bQ)
+        getgenv().Loaded = true
+    end
+    while not Hop() do
+        wait()
     end
   end
 	
