@@ -1132,7 +1132,9 @@ Module.Enemies = (function()
 			
 			if HumanoidRootPart and (Enemy.Name ~= "rip_indra True Form" and Enemy.Name ~= "Blank Buddy") then
 				if (HumanoidRootPart.Position - SeaCastle.Position).Magnitude <= 750 then
-					task.spawn(New, EnemiesModule.__PirateRaid, Enemy)
+					task.spawn(function()
+    New(EnemiesModule.__PirateRaid, Enemy)
+end)
 					Module.PirateRaid = tick()
 				end
 			end
