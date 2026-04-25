@@ -1113,22 +1113,14 @@ Module.Enemies = (function()
 		end
 		
 		local function New(list, NewEnemy)
-	if not list or not NewEnemy then return end
-	if table.find(list, NewEnemy) then return end
-
-	local Humanoid = NewEnemy:FindFirstChild("Humanoid")
-	if not Humanoid then return end
-
-	if Humanoid.Health > 0 then
-		table.insert(list, NewEnemy)
-
-		Humanoid.Died:Connect(function()
-			local index = table.find(list, NewEnemy)
-			if index then
-				table.remove(list, index)
-			end
-		end)
-	end
+	if table.find(list, NewEnemy) then return end	
+			local Humanoid = NewEnemy:FindFirstChild("Humanoid")			
+			if Humanoid and Humanoid.Health > 0 then
+				table.insert(list, NewEnemy)
+                else
+				local index = table.find(list, NewEnemy)
+				if index then table.remove(list, index) end
+       end
 end
 		
 		local function IsFromPiratesSea(Enemy)
