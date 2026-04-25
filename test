@@ -1119,6 +1119,7 @@ Module.Enemies = (function()
 			
 			if Humanoid and Humanoid.Health > 0 then
 				table.insert(list, NewEnemy)
+                else
 				local index = table.find(list, NewEnemy)
 				if index then table.remove(list, index) end
 			end
