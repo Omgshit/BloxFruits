@@ -1419,7 +1419,6 @@ Module.Enemies = (function()
 		end)
 
         local IsAlive = Module.IsAlive
-        local MyRootPartPosition = Player.Character.HumanoidRootPart.Position
 		
 		FastAttack.ShootsFunctions = {
 			["Skull Guitar"] = function(self: FastAttack, Equipped: Tool, Position: Vector3): (nil)
@@ -1428,9 +1427,11 @@ Module.Enemies = (function()
 		}
 		
 		local CurrentBladeHits = {};
+		local MyRootPartPosition = nil;
 		local NoAttackBelowTool = nil;
 		local NoAttackBelowDebounce = 0;
 		local BelowHealthPercent = 0;
+        MyRootPartPosition = Player.Character.Humanoid.RootPart.Position;
 		
 		local function ExpandsHitBox(Enemies: { table }): (nil)
 			for i = 1, #Enemies do
@@ -1599,7 +1600,7 @@ Module.Enemies = (function()
 		
 		function FastAttack:GetClosestEnemy(Distance: number?): (nil)
 			self:UpdateBladeHits(Distance, true)
-
+			
 			local Distance, Closest = math.huge
 			
 			for i = 1, #CurrentBladeHits do
