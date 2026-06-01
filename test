@@ -1600,7 +1600,7 @@ Module.Enemies = (function()
 		function FastAttack:GetClosestEnemy(Distance: number?): (nil)
 			self:UpdateBladeHits(Distance, true)
 
-            local MyRootPartPosition = Character.Humanoid.RootPart.Position
+            local MyRootPartPosition = Player.Character.Humanoid.RootPart.Position
 			local Distance, Closest = math.huge
 			
 			for i = 1, #CurrentBladeHits do
