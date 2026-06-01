@@ -1599,7 +1599,8 @@ Module.Enemies = (function()
 		
 		function FastAttack:GetClosestEnemy(Distance: number?): (nil)
 			self:UpdateBladeHits(Distance, true)
-			
+
+            local MyRootPartPosition = Character.Humanoid.RootPart.Position
 			local Distance, Closest = math.huge
 			
 			for i = 1, #CurrentBladeHits do
@@ -1787,7 +1788,6 @@ end
 				
 				self.Equipped = Equipped;
 				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then tick() + (Cooldown / 2) else tick();
-				MyRootPartPosition = Character.Humanoid.RootPart.Position;
 				
 				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] and not self.FruitClick[Equipped.Name] then
 					if Equipped:FindFirstChild("LeftClickRemote") then
