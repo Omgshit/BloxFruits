@@ -1419,7 +1419,7 @@ Module.Enemies = (function()
 		end)
 
         local IsAlive = Module.IsAlive
-        local MyRootPartPosition = Player.Character.Humanoid.RootPart.Position
+        local MyRootPartPosition = Player.Character.HumanoidRootPart.Position
 		
 		FastAttack.ShootsFunctions = {
 			["Skull Guitar"] = function(self: FastAttack, Equipped: Tool, Position: Vector3): (nil)
