@@ -1428,7 +1428,6 @@ Module.Enemies = (function()
 		}
 		
 		local CurrentBladeHits = {};
-		local MyRootPartPosition = nil;
 		local NoAttackBelowTool = nil;
 		local NoAttackBelowDebounce = 0;
 		local BelowHealthPercent = 0;
