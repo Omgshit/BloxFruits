@@ -225,19 +225,12 @@ local Signal = {} do
 	})
 end
 
-local sea1 = {2753915549, 85211729168715}
-local sea2 = {4442272183, 79091703265657}
-local sea3 = {7449423635, 100117331123089}
-
-local function detectSea(placeId)
-    if table.find(sea1, placeId) then
-        return 1
-    elseif table.find(sea2, placeId) then
-        return 2
-    elseif table.find(sea3, placeId) then
-        return 3
-    end
-    return 0
+if table.find({2753915549, 85211729168715, 113741252407134, 114279672983750}, game.PlaceId) then
+    SeaId = 1
+elseif table.find({4442272183, 79091703265657}, game.PlaceId) then
+    SeaId = 2
+elseif table.find({7449423635, 100117331123089}, game.PlaceId) then
+    SeaId = 3
 end
 
 local Module = {} do
@@ -252,7 +245,7 @@ local Module = {} do
 	}
 	
 	Module.GameData = {
-		Sea =  detectSea(game.PlaceId),
+		Sea =  SeaId,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
 		MaxLevel = game.Workspace:GetAttribute("LEVEL_CAP"),
