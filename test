@@ -1638,8 +1638,8 @@ Module.Enemies = (function()
 		end
 		
 		function FastAttack:UseNormalClick(Cooldown: number): (nil)
-			self:UpdateBladeHits()
-			MyRootPartPosition = Player.Character.Humanoid.RootPart.Position;
+		    MyRootPartPosition = Player.Character.Humanoid.RootPart.Position;
+			self:UpdateBladeHits()			
 			
 			if #CurrentBladeHits > 0 then
 				local PrimaryRootPart = table.remove(CurrentBladeHits)[2]
