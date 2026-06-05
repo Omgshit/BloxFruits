@@ -1427,9 +1427,10 @@ Module.Enemies = (function()
 		}
 		
 		local CurrentBladeHits = {};
+		local MyRootPartPosition = nil;
 		local NoAttackBelowTool = nil;
 		local NoAttackBelowDebounce = 0;
-		local BelowHealthPercent = 0;
+		local BelowHealthPercent = 0;        
 		
 		local function ExpandsHitBox(Enemies: { table }): (nil)
 			for i = 1, #Enemies do
@@ -1466,7 +1467,7 @@ Module.Enemies = (function()
 			for _, SeaBeast in SeaBeasts:GetChildren() do
 				local BasePart = SeaBeast:FindFirstChildOfClass("MeshPart")
 				
-				if IsAlive(SeaBeast) and BasePart and (Player.Character.Humanoid.RootPart.Position - BasePart.Position).Magnitude < Distance then
+				if IsAlive(SeaBeast) and BasePart and (MyRootPartPosition - BasePart.Position).Magnitude < Distance then
 					NewBladeHit(BasePart, SeaBeast)
 				end
 			end
@@ -1475,7 +1476,7 @@ Module.Enemies = (function()
                 if not Boat:GetAttribute("IsBoat") then continue end
 				local BasePart = Boat:FindFirstChildOfClass("MeshPart")
 				
-				if IsAlive(Boat) and BasePart and (Player.Character.Humanoid.RootPart.Position - BasePart.Position).Magnitude < Distance then
+				if IsAlive(Boat) and BasePart and (MyRootPartPosition - BasePart.Position).Magnitude < Distance then
 					NewBladeHit(BasePart, Boat)
 				end
 			end
@@ -1530,7 +1531,7 @@ Module.Enemies = (function()
                if RootPart and (Character.Parent ~= Characters or (TargetPlayer and CheckPlayerAlly(TargetPlayer))) then
 					local Hitbox = RootPart
 					
-					if Hitbox and (Player.Character.Humanoid.RootPart.Position - RootPart.Position).Magnitude <= Distance then
+					if Hitbox and (MyRootPartPosition - RootPart.Position).Magnitude <= Distance then
 						NewBladeHit(Hitbox, Character)
 					end
 				end
@@ -1602,7 +1603,7 @@ Module.Enemies = (function()
 			local Distance, Closest = math.huge
 			
 			for i = 1, #CurrentBladeHits do
-				local Magnitude = (Player.Character.Humanoid.RootPart.Position - CurrentBladeHits[i][2].Position).Magnitude
+				local Magnitude = (MyRootPartPosition - CurrentBladeHits[i][2].Position).Magnitude
 				
 				if Magnitude <= Distance then
 					Distance, Closest = Magnitude, CurrentBladeHits[i][2]
@@ -1638,6 +1639,7 @@ Module.Enemies = (function()
 		
 		function FastAttack:UseNormalClick(Cooldown: number): (nil)
 			self:UpdateBladeHits()
+			MyRootPartPosition = Player.Character.Humanoid.RootPart.Position;
 			
 			if #CurrentBladeHits > 0 then
 				local PrimaryRootPart = table.remove(CurrentBladeHits)[2]
@@ -1752,6 +1754,7 @@ end
 
 function FastAttack:UseGunShoot(Character, Equipped)
 	if not Equipped.Enabled then return end	
+	MyRootPartPosition = Player.Character.Humanoid.RootPart.Position;
 	local ShootType = self.SpecialShoots[Equipped.Name] or "Normal"
 	if ShootType == "Overheat" then
 		local Data = self.Overheat[Equipped.Name]
