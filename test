@@ -1802,8 +1802,8 @@ end
 					if SUCCESS_SHOOT and SHOOT_FUNCTION then
 						self:UseGunShoot(Character, Equipped)
 					end
-				else
-					self:UseNormalClick(Cooldown)
+	    	  elseif ToolTip == "Melee" or ToolTip == "Sword" then
+		      	self:UseNormalClick(Cooldown)
 				end
 			end
 		end
