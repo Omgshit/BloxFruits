@@ -1389,6 +1389,10 @@ Module.Enemies = (function()
 				["Cannon"] = "Position",
 				["Dragonstorm"] = "Overheat"
 			},
+           FruitClick = {
+				["Blade-Blade"] = true,
+				["Gas-Gas"] = true
+			},
 			NormalClickFruits = {
 				["Light-Light"] = true,
 				["Ice-Ice"] = true
@@ -1761,43 +1765,6 @@ function FastAttack:UseGunShoot(Character, Equipped)
 		return self:HandlePositionOrTap(Equipped)
 	end
 end
-
-        function FastAttack.NormalAttack()
-			if not IsAlive(Player.Character) then return end
-			
-			local self = FastAttack;
-			local Character = Player.Character;
-			local Humanoid = Character.Humanoid;
-			
-			local Equipped = Character:FindFirstChildOfClass("Tool")
-			local ToolTip = Equipped and Equipped.ToolTip
-			
-			if not Equipped or (ToolTip ~= "Gun" and ToolTip ~= "Melee" and ToolTip ~= "Blox Fruit" and ToolTip ~= "Sword") then
-				return nil
-			end
-			
-			local Cooldown = Equipped:FindFirstChild("Cooldown") and Equipped.Cooldown.Value or 0.3;
-			
-			if (tick() - self.Debounce) >= Cooldown and CheckStun(ToolTip, Character, Humanoid) then
-				local Combo = self:GetCombo();
-				if Combo >= 4 then Cooldown += 0.05 end;
-				
-				self.Equipped = Equipped;
-				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then tick() + (Cooldown / 2) else tick();
-				
-				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] then
-					if Equipped:FindFirstChild("LeftClickRemote") then
-						self:UseFruitM1(Character, Equipped, Combo)
-					end
-				elseif ToolTip == "Gun" then
-					if SUCCESS_SHOOT and SHOOT_FUNCTION then
-						self:UseGunShoot(Character, Equipped)
-					end
-	    	  elseif ToolTip == "Melee" or ToolTip == "Sword" or self.NormalClickFruits[Equipped.Name] then
-		      	self:UseNormalClick(Cooldown)
-				end
-			end
-		end
 		
 	 	function FastAttack.attack()
 			if not Settings.AutoClick then return end
@@ -1823,7 +1790,11 @@ end
 				self.Equipped = Equipped;
 				self.Debounce = if Combo >= 4 and ToolTip ~= "Gun" then tick() + (Cooldown / 2) else tick();
 				
-				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] then
+				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] and not self.FruitClick[Equipped.Name] then
+					if Equipped:FindFirstChild("LeftClickRemote") then
+						Equipped.LeftClickRemote:FireServer(Vector3.new(0.01,-500,0.01),1,true)
+					end
+                elseif ToolTip == "Blox Fruit" and self.FruitClick[Equipped.Name] then
 					if Equipped:FindFirstChild("LeftClickRemote") then
 						self:UseFruitM1(Character, Equipped, Combo)
 					end
