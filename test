@@ -1947,6 +1947,159 @@ end
 		return BodyVelocity
 	end)()
 
+  Module.Hooking = (function()
+		local Hooking = {
+			Skills = CreateDictionary({ "Z", "X", "C", "V", "F" }, true),
+			ClosestsEnemies = {}
+		}
+		
+		local Enabled = _ENV.rz_EnabledOptions
+		local Debounce = Module.Debounce
+		local IsAlive = Module.IsAlive
+		
+		local function GetNextTarget(Mode: string, ClosestList: boolean): any?
+			if (tick() - Debounce.TargetDebounce) <= 2 or _ENV[Mode] then
+				return if ClosestList then Hooking.ClosestsEnemies else Hooking.ClosestsEnemies.Closest
+			end
+		end
+		
+		function Hooking:SetTarget(RootPart: BasePart, Character: Model?, IsEnemy: boolean?): (nil)
+			table.clear(self.ClosestsEnemies)
+			self.ClosestsEnemies.Closest = RootPart
+			Debounce.TargetDebounce = tick()
+			
+			if IsEnemy then
+				for _, Enemy in ipairs(Module.Enemies:GetTagged(Character.Name)) do
+					if Enemy ~= Character and Enemy:FindFirstChild("UpperTorso") then
+						table.insert(self.ClosestsEnemies, Enemy.UpperTorso)
+					end
+				end
+			end
+		end
+
+		if identifyexecutor() == "Delta" then
+		function Hooking.UpdateClosests()
+			local SmoothDebounce = Settings.SmoothMode and 0.5 or 0.25
+			
+			if (tick() - Debounce.TargetDebounce) <= 2 or (tick() - Debounce.UpdateDebounce) <= SmoothDebounce then
+				return nil
+			end
+			
+			Debounce.UpdateDebounce = tick()
+			local Equipped = IsAlive(Player.Character) and Player.Character:FindFirstChildOfClass("Tool")
+			
+			if Equipped and Equipped.ToolTip then
+				local ClosestsEnemies = Hooking.ClosestsEnemies
+				table.clear(ClosestsEnemies)
+				
+				local Position = Player.Character:GetPivot().Position
+				
+				local Players = Players:GetPlayers()
+				local Enemies = Enemies:GetChildren()
+				
+				local Distance = if Equipped.ToolTip == "Gun" then 120 else 900
+				local ClosestsDistance = if Equipped.ToolTip == "Gun" then 120 else 60
+				
+				for i = 1, #Players do
+					local __Player = Players[i]
+					local Character = __Player.Character
+					
+					if Player ~= __Player and CheckPlayerAlly(__Player) and IsAlive(Character) then
+						local UpperTorso = Character:FindFirstChild("UpperTorso")
+						local Magnitude = UpperTorso and (UpperTorso.Position - Position).Magnitude
+						
+						if UpperTorso and Magnitude <= ClosestsDistance then
+							table.insert(ClosestsEnemies, UpperTorso)
+						end
+						if UpperTorso and Magnitude <= Distance then
+							ClosestsEnemies.Closest = UpperTorso
+							Distance = if UpperTorso then Magnitude else Distance
+						end
+					end
+				end
+				
+				if Settings.NoAimMobs then
+					return nil
+				end
+				
+				for i = 1, #Enemies do
+					local Enemy = Enemies[i]
+					local UpperTorso = Enemy and Enemy:FindFirstChild("UpperTorso")
+					
+					if UpperTorso and IsAlive(Enemy) then
+						local Magnitude = (UpperTorso.Position - Position).Magnitude
+						
+						if Magnitude <= ClosestsDistance then
+							table.insert(ClosestsEnemies, UpperTorso)
+						end
+						if Magnitude <= Distance then
+							Distance, ClosestsEnemies.Closest = Magnitude, UpperTorso
+						end
+					end
+				end
+			end
+		end
+		
+		task.defer(function()
+			if _ENV.original_namecall then
+				return nil
+			end
+			
+			local old_namecall; old_namecall = hookmetamethod(game, "__namecall", function(self, ...)
+				if string.lower(getnamecallmethod()) ~= "fireserver" then
+					return old_namecall(self, ...)
+				end
+				
+				local Name = self.Name
+				
+				if Name == "RE/ShootGunEvent" then
+					local Position, Enemies = ...
+					
+					if typeof(Position) == "Vector3" and type(Enemies) == "table" then
+						local ClosestList = GetNextTarget("AimBot_Gun", true)
+						
+						if ClosestList and #ClosestList > 0 then
+							for i = 1, #ClosestList do
+								local BasePart = ClosestList[i]
+								
+								if BasePart and (not Enemies[1] or (BasePart.Position - Enemies[1].Position).Magnitude <= 15) then
+									table.insert(Enemies, BasePart)
+								end
+							end
+							
+							return old_namecall(self, Enemies[1].Position, Enemies)
+						end
+					end
+				elseif Name == "RemoteEvent" then
+					local v1, v2 = ...
+					
+					if typeof(v1) == "Vector3" and not v2 then
+						local Target = GetNextTarget("AimBot_Skills")
+						
+						if Target then
+							return old_namecall(self, Target.Position)
+						end
+					elseif v1 == "TAP" and typeof(v2) == "Vector3" then
+						local Target = GetNextTarget("AimBot_Tap")
+						
+						if Target then
+							return old_namecall(self, "TAP", Target.Position)
+						end
+					end
+				end
+				
+				return old_namecall(self, ...)
+			end)
+			
+			_ENV.original_namecall = old_namecall
+		end)
+		
+		table.insert(Connections, Heartbeat:Connect(Hooking.UpdateClosests))
+     end
+		
+		return Hooking
+	end)()
+
   task.defer(function()
 	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
 	 	local CameraShaker = require(WaitChilds(ReplicatedStorage, "Util", "CameraShaker"))
