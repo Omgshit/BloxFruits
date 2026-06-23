@@ -2001,7 +2001,7 @@ if hookmetamethod and hookfunction then
 				local Distance = if Equipped.ToolTip == "Gun" then 120 else 900
 				local ClosestsDistance = if Equipped.ToolTip == "Gun" then 120 else 60
 
-               if not Settings.NoAimPlayer then
+               if not _G.NoAimPlayer then
 				for i = 1, #Players do
 					local __Player = Players[i]
 					local Character = __Player.Character
@@ -2021,7 +2021,7 @@ if hookmetamethod and hookfunction then
 				end
             end
 				
-				if not Settings.NoAimMobs then
+				if not _G.NoAimMobs then
 				for i = 1, #Enemies do
 					local Enemy = Enemies[i]
 					local UpperTorso = Enemy and Enemy:FindFirstChild("UpperTorso")
