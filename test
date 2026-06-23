@@ -1977,7 +1977,8 @@ end
 			end
 		end
 
-		if identifyexecutor() == "Delta" and version() == "2.725.1142" then
+        local v = tostring(version()) 
+		if identifyexecutor() == "Delta" and v == "2.725.1142" then
 		function Hooking.UpdateClosests()
 			local SmoothDebounce = Settings.SmoothMode and 0.5 or 0.25
 			
