@@ -1947,6 +1947,7 @@ end
 		return BodyVelocity
 	end)()
 
+if hookmetamethod and hookfunction then 
   Module.Hooking = (function()
 		local Hooking = {
 			Skills = CreateDictionary({ "Z", "X", "C", "V", "F" }, true),
@@ -2099,6 +2100,7 @@ end
 		
 		return Hooking
 	end)()
+ end
 
   task.defer(function()
 	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
