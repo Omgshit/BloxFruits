@@ -2102,7 +2102,6 @@ if hookmetamethod and hookfunction then
 	end)()
  end
 
-  task.defer(function()
 	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
 	 	local CameraShaker = require(WaitChilds(ReplicatedStorage, "Util", "CameraShaker"))
 		if CameraShaker then
@@ -2111,7 +2110,6 @@ if hookmetamethod and hookfunction then
         if hookfunction then
  		hookfunction(DeathEffect, function(...) return ... end)
 	 	end
-	end)
 	
 	task.spawn(function()
 		local SpawnLocations = Module.SpawnLocations
