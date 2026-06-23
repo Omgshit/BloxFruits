@@ -2019,10 +2019,7 @@ if hookmetamethod and hookfunction then
 					end
 				end
 				
-				if Settings.NoAimMobs then
-					return nil
-				end
-				
+				if not Settings.NoAimMobs then
 				for i = 1, #Enemies do
 					local Enemy = Enemies[i]
 					local UpperTorso = Enemy and Enemy:FindFirstChild("UpperTorso")
@@ -2040,6 +2037,7 @@ if hookmetamethod and hookfunction then
 				end
 			end
 		end
+    end
 		
 		task.defer(function()
 			if _ENV.original_namecall then
