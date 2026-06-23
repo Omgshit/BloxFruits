@@ -1947,7 +1947,6 @@ end
 		return BodyVelocity
 	end)()
 
-if hookmetamethod and hookfunction then 
   Module.Hooking = (function()
 		local Hooking = {
 			Skills = CreateDictionary({ "Z", "X", "C", "V", "F" }, true),
@@ -1978,7 +1977,7 @@ if hookmetamethod and hookfunction then
 			end
 		end
 
-		if identifyexecutor() == "Delta" then
+		if identifyexecutor() == "Delta" and version() == "2.725.1142" then
 		function Hooking.UpdateClosests()
 			local SmoothDebounce = Settings.SmoothMode and 0.5 or 0.25
 			
@@ -2100,7 +2099,6 @@ if hookmetamethod and hookfunction then
 		
 		return Hooking
 	end)()
- end
 
   task.defer(function()
 	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
