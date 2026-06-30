@@ -1452,9 +1452,15 @@ Module.Enemies = (function()
 			return true
 		end
 		
-		local function NewBladeHit(RootPart: BasePart, Character: Model): (nil)
-			table.insert(CurrentBladeHits, { Character, RootPart })
-		end
+		local function NewBladeHit(RootPart: BasePart, Character: Model)
+    if not RootPart or not Character then return end
+    if not Character.Parent then return end
+
+    local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+    if not Humanoid or Humanoid.Health <= 0 then return end
+
+    table.insert(CurrentBladeHits, { Character, RootPart })
+end
 		
 		local function GetMaxHits(Character)
 			if Character:FindFirstChild("HumanoidRootPart") and Character.HumanoidRootPart:FindFirstChild("Buddha") then
@@ -1464,23 +1470,26 @@ Module.Enemies = (function()
 		end
 		
 		local function ProcessSeaEventsHits(Distance)
-			for _, SeaBeast in SeaBeasts:GetChildren() do
-				local BasePart = SeaBeast:FindFirstChildOfClass("MeshPart")
-				
-				if IsAlive(SeaBeast) and BasePart and (MyRootPartPosition - BasePart.Position).Magnitude < Distance then
-					NewBladeHit(BasePart, SeaBeast)
-				end
-			end
-			
-			for _, Boat in Enemies:GetChildren() do
-                if not Boat:GetAttribute("IsBoat") then continue end
-				local BasePart = Boat:FindFirstChildOfClass("MeshPart")
-				
-				if IsAlive(Boat) and BasePart and (MyRootPartPosition - BasePart.Position).Magnitude < Distance then
-					NewBladeHit(BasePart, Boat)
-				end
-			end
-		end
+    for _, SeaBeast in ipairs(SeaBeasts:GetChildren()) do
+        local Part = SeaBeast:FindFirstChildOfClass("MeshPart")
+        if Part and IsAlive(SeaBeast) then
+            if (MyRootPartPosition - Part.Position).Magnitude <= Distance then
+                NewBladeHit(Part, SeaBeast)
+            end
+        end
+    end
+
+    for _, Boat in ipairs(Enemies:GetChildren()) do
+        if not Boat:GetAttribute("IsBoat") then continue end
+
+        local Part = Boat:FindFirstChildOfClass("MeshPart")
+        if Part and IsAlive(Boat) then
+            if (MyRootPartPosition - Part.Position).Magnitude <= Distance then
+                NewBladeHit(Part, Boat)
+            end
+        end
+    end
+end
 		
 		local function CanChangeGunTarget(Target, Enemy)
 			if Enemy.Parent == SeaBeasts then
@@ -1493,50 +1502,49 @@ Module.Enemies = (function()
 		end
 		
 		local function ConvertToGunHits()
-			local Target, Hitbox;
-			
-			for index = 1, #CurrentBladeHits do
-				local Hit = CurrentBladeHits[index]
-				
-				if not Target or CanChangeGunTarget(Target, Hit[1]) then
-					Hitbox, Target = Hit[2], Hit[1];
-				end
-			end
-			
-			CurrentBladeHits = { Hitbox, math.random() }
-			return Hitbox.Position, Hitbox;
-		end
+    local Target, Hitbox
+
+    for i = 1, #CurrentBladeHits do
+        local Hit = CurrentBladeHits[i]
+        local Enemy = Hit[1]
+        local Part = Hit[2]
+
+        if not Target or CanChangeGunTarget(Target, Enemy) then
+            Target = Enemy
+            Hitbox = Part
+        end
+    end
+
+    if not Hitbox or not Target then
+        return nil, nil
+    end
+
+    return Hitbox.Position, Target
+end
 		
-    	local function ProcessHits(List: Folder, Equipped: Tool, Distance: number): (nil)
-			local MyCharacter = Player.Character;
-			local Targets = List:GetChildren();
-			local MaxHits = GetMaxHits(MyCharacter) + 1;
-			
-			for i = 1, #Targets do
-				if #CurrentBladeHits >= MaxHits then break end
-				
-				local Character = Targets[i]
-				if Character == MyCharacter or Character:GetAttribute("IsBoat") or not IsAlive(Character) then continue end
-				local RootPart = Character.PrimaryPart
-				
-				if (tick() - NoAttackBelowDebounce) <= 1 then
-					local Humanoid = Character.Humanoid
-					
-					if Humanoid.Health / Humanoid.MaxHealth * 100 <= BelowHealthPercent then
-						continue
-					end
-				end
-				
-               local TargetPlayer = game:GetService("Players"):GetPlayerFromCharacter(Character)
-               if RootPart and (Character.Parent ~= Characters or (TargetPlayer and CheckPlayerAlly(TargetPlayer))) then
-					local Hitbox = RootPart
-					
-					if Hitbox and (MyRootPartPosition - RootPart.Position).Magnitude <= Distance then
-						NewBladeHit(Hitbox, Character)
-					end
-				end
-			end
-		end
+    	local function ProcessHits(List: Folder, Distance: number)
+    local MyCharacter = Player.Character
+    if not MyCharacter or not MyCharacter:FindFirstChild("HumanoidRootPart") then return end
+
+    local Targets = List:GetChildren()
+    local MaxHits = GetMaxHits(MyCharacter)
+
+    for i = 1, #Targets do
+        if #CurrentBladeHits >= MaxHits then break end
+
+        local Character = Targets[i]
+        if Character == MyCharacter then continue end
+        if not IsAlive(Character) then continue end
+
+        local RootPart = Character:FindFirstChild("HumanoidRootPart")
+        if not RootPart then continue end
+
+        local distance = (MyRootPartPosition - RootPart.Position).Magnitude
+        if distance > Distance then continue end
+
+        NewBladeHit(RootPart, Character)
+    end
+end
 	
 		function FastAttack:DontAttackBelowPercent(Percent: number): boolean
 			if SUCCESS_FLAGS and not COMBAT_REMOTE_THREAD or SUCCESS_FLAGS and COMBAT_REMOTE_THREAD and HIT_FUNCTION then
