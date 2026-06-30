@@ -1453,13 +1453,12 @@ Module.Enemies = (function()
 		end
 		
 		local function NewBladeHit(RootPart: BasePart, Character: Model)
-    if not RootPart or not Character then return end
-    if not Character.Parent then return end
-
-    local Humanoid = Character:FindFirstChildOfClass("Humanoid")
-    if not Humanoid or Humanoid.Health <= 0 then return end
-
-    table.insert(CurrentBladeHits, { Character, RootPart })
+	if not RootPart or not Character then return end
+	if not Character.Parent then return end
+	local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+	if not Humanoid or Humanoid.Health <= 0 then return end
+	if #CurrentBladeHits >= math.random(2, 4) then return end
+	table.insert(CurrentBladeHits, { Character, RootPart })
 end
 		
 		local function GetMaxHits(Character)
@@ -1469,26 +1468,35 @@ end
 			return 1
 		end
 		
-		local function ProcessSeaEventsHits(Distance)
-    for _, SeaBeast in ipairs(SeaBeasts:GetChildren()) do
-        local Part = SeaBeast:FindFirstChildOfClass("MeshPart")
-        if Part and IsAlive(SeaBeast) then
-            if (MyRootPartPosition - Part.Position).Magnitude <= Distance then
-                NewBladeHit(Part, SeaBeast)
-            end
-        end
-    end
+		local function IsInRange(pos1, pos2, maxDist)
+	local offset = math.random(-3, 3)
+	return (pos1 - pos2).Magnitude <= (maxDist + offset)
+end
 
-    for _, Boat in ipairs(Enemies:GetChildren()) do
-        if not Boat:GetAttribute("IsBoat") then continue end
+local function ShuffleTable(t)
+	for i = #t, 2, -1 do
+		local j = math.random(1, i)
+		t[i], t[j] = t[j], t[i]
+	end
+	return t
+end
 
-        local Part = Boat:FindFirstChildOfClass("MeshPart")
-        if Part and IsAlive(Boat) then
-            if (MyRootPartPosition - Part.Position).Magnitude <= Distance then
-                NewBladeHit(Part, Boat)
-            end
-        end
-    end
+local function ProcessSeaEventsHits(Distance)
+	local SeaList = ShuffleTable(SeaBeasts:GetChildren())
+	for _, SeaBeast in SeaList do
+		local BasePart = SeaBeast:FindFirstChildOfClass("MeshPart")	
+		if IsAlive(SeaBeast) and BasePart and IsInRange(MyRootPartPosition, BasePart.Position, Distance) then
+			NewBladeHit(BasePart, SeaBeast)
+		end
+	end
+	local BoatList = ShuffleTable(Enemies:GetChildren())
+	for _, Boat in BoatList do
+		if not Boat:GetAttribute("IsBoat") then continue end
+		local BasePart = Boat:FindFirstChildOfClass("MeshPart")
+		if IsAlive(Boat) and BasePart and IsInRange(MyRootPartPosition, BasePart.Position, Distance) then
+			NewBladeHit(BasePart, Boat)
+		end
+	end
 end
 		
 		local function CanChangeGunTarget(Target, Enemy)
@@ -1622,14 +1630,19 @@ end
 		end
 		
 		function FastAttack:GetCombo(): number
-			local Combo = if tick() - self.ComboDebounce <= 0.4 then self.M1Combo else 0
-			Combo = if Combo >= 4 then 1 else Combo + 1
-			
-			self.ComboDebounce = tick()
-			self.M1Combo = Combo
-			
-			return Combo
-		end
+	local Combo = if tick() - self.ComboDebounce <= 0.4 then self.M1Combo else 0
+	
+	if math.random() < 0.1 then
+		Combo = math.random(1, 3)
+	end
+
+	Combo = if Combo >= 4 then 1 else Combo + 1
+	
+	self.ComboDebounce = tick()
+	self.M1Combo = Combo
+	
+	return Combo
+end
 		
 		function FastAttack:UseFruitM1(Character: Character, Equipped: Tool, Combo: number): (nil)
 			local MyPosition = Character.Humanoid.RootPart.Position
@@ -1645,28 +1658,20 @@ end
 			end
 		end
 		
-		function FastAttack:UseNormalClick(Cooldown: number): (nil)
-		    MyRootPartPosition = Player.Character.Humanoid.RootPart.Position;
-			self:UpdateBladeHits()			
-			
-			if #CurrentBladeHits > 0 then
-				local PrimaryRootPart = table.remove(CurrentBladeHits)[2]
-				
-				if SUCCESS_FLAGS and COMBAT_REMOTE_THREAD and HIT_FUNCTION then
-					RE_RegisterAttack:FireServer(Cooldown)
-					HIT_FUNCTION(PrimaryRootPart, CurrentBladeHits)
-				elseif SUCCESS_FLAGS and not COMBAT_REMOTE_THREAD then
-					RE_RegisterAttack:FireServer(Cooldown)
-					RE_RegisterHit:FireServer(PrimaryRootPart, CurrentBladeHits)
-				else
-					table.insert(CurrentBladeHits, { Enemy, PrimaryRootPart })
-					ExpandsHitBox(CurrentBladeHits)
-					
-					VirtualInputManager:SendMouseButtonEvent(0, 0, 0, true, game, 1);task.wait(0.05)
-					VirtualInputManager:SendMouseButtonEvent(0, 0, 0, false, game, 1)
-				end
-			end
-		end
+		local function HumanDelay(min, max)
+	return task.wait(math.random(min * 100, max * 100) / 100)
+end
+
+function FastAttack:UseNormalClick(Cooldown: number)
+	MyRootPartPosition = Player.Character.Humanoid.RootPart.Position
+	self:UpdateBladeHits()
+	if #CurrentBladeHits > 0 then
+		HumanDelay(0.03, 0.08)
+		local PrimaryRootPart = table.remove(CurrentBladeHits)[2]
+		RE_RegisterAttack:FireServer(Cooldown)
+		RE_RegisterHit:FireServer(PrimaryRootPart, CurrentBladeHits)
+	end
+end
 		
 		function FastAttack:GetValidator2()
 			local v1 = getupvalue(SHOOT_FUNCTION, 15) -- v40, 15
@@ -1737,11 +1742,13 @@ function FastAttack:HandleNormal(Equipped)
 	if #CurrentBladeHits == 0 then return end
 	local Position, PrimaryPart = ConvertToGunHits()
 	if not (PrimaryPart and PrimaryPart.Parent) then return end
+	HumanDelay(0.05, 0.12)
 	AddShot(Equipped)
-	GunValidator:FireServer(self:GetValidator2())	
+	GunValidator:FireServer(self:GetValidator2())
 	local shoots = self.ShootsPerTarget[Equipped.Name] or 1
 	for _ = 1, shoots do
 		RE_ShootGunEvent:FireServer(Position, CurrentBladeHits)
+		HumanDelay(0.02, 0.06)
 	end
 end
 
