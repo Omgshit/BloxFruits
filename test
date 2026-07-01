@@ -1699,10 +1699,6 @@ Module.Enemies = (function()
 	return false
 end
 
-local function AddShot(Equipped)
-	Equipped:SetAttribute("LocalTotalShots",(Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-end
-
 function FastAttack:ShootWithValidation(Position, Targets)
 	local Equipped = Player.Character and Player.Character:FindFirstChildOfClass("Tool")
 	if not Equipped then return end
