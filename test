@@ -1976,7 +1976,7 @@ end
 			end
 		end
 
-		if identifyexecutor() == "Delta" or identifyexecutor() == "Madium" then
+		if identifyexecutor() == "Delta" then
 		function Hooking.UpdateClosests()
 			local SmoothDebounce = Settings.SmoothMode and 0.5 or 0.25
 			
