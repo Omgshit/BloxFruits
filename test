@@ -1267,6 +1267,7 @@ Module.Enemies = (function()
         local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
         
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
+         pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
           if (RootPart.Position - Target.Position).Magnitude <= 70 then
             RootPart.CFrame = Target
             RootPart.CanCollide = false
@@ -1276,7 +1277,6 @@ Module.Enemies = (function()
           end
         end;task.wait()
       end
-      pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
       if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
     end
 		
