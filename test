@@ -1268,7 +1268,7 @@ Module.Enemies = (function()
         
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
          pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
-          if (RootPart.Position - Target.Position).Magnitude <= 30 then
+          if (RootPart.Position - Target.Position).Magnitude <= Settings.FarmDistance then
             RootPart.CFrame = Target
             RootPart.CanCollide = false
           else
