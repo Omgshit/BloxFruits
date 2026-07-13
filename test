@@ -1257,7 +1257,6 @@ Module.Enemies = (function()
       local RootPart = Enemy:WaitForChild("HumanoidRootPart")
       local Humanoid = Enemy:WaitForChild("Humanoid")
       local EnemyName = Enemy.Name
-      if identifyexecutor() ~= "Delta" then pcall(sethiddenproperty, Player, "SimulationRadius", math.huge) end
       
       local BodyPosition = Instance.new("BodyPosition", RootPart)
       BodyPosition.Position = RootPart.Position
@@ -1277,6 +1276,7 @@ Module.Enemies = (function()
           end
         end;task.wait()
       end
+      pcall(sethiddenproperty, Player, "SimulationRadius", math.huge)
       if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
     end
 		
