@@ -1253,12 +1253,13 @@ Module.Enemies = (function()
 		end
 		
 		local function Bring(Enemy)
+       if identifyexecutor() ~= "Delta" then
       local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChild("HumanoidRootPart")
       local RootPart = Enemy:WaitForChild("HumanoidRootPart")
       local Humanoid = Enemy:WaitForChild("Humanoid")
       local EnemyName = Enemy.Name
 
-      if identifyexecutor() ~= "Delta" then pcall(sethiddenproperty, Player, "SimulationRadius", math.huge) end
+      pcall(sethiddenproperty, Player, "SimulationRadius", math.huge) 
       
       local BodyPosition = Instance.new("BodyPosition", RootPart)
       BodyPosition.Position = RootPart.Position
@@ -1280,13 +1281,15 @@ Module.Enemies = (function()
       end
       if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
     end
+end
 		
 		local function KillAura(Enemy)
+      if identifyexecutor() ~= "Delta" then
 			local Humanoid = Enemy:FindFirstChild("Humanoid")
 			local RootPart = Enemy:FindFirstChild("HumanoidRootPart")
 			
-			if identifyexecutor() ~= "Delta" then pcall(sethiddenproperty, Player, "SimulationRadius", math.huge) end 
-			
+			 pcall(sethiddenproperty, Player, "SimulationRadius", math.huge) 
+
 			if Humanoid and RootPart then
 				RootPart.CanCollide = false
 				RootPart.Size = Vector3.new(60, 60, 60)
@@ -1296,6 +1299,7 @@ Module.Enemies = (function()
 				Enemy:RemoveTag(KILLAURA_TAG)
 			end
 		end
+   end
 		
 		for _, Enemy in CollectionService:GetTagged("BasicMob") do NewEnemyAdded(Enemy) end
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal("BasicMob"):Connect(NewEnemyAdded))
