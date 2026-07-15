@@ -1306,7 +1306,6 @@ Module.Enemies = (function()
 end
 		
 		local function KillAura(Enemy)
-      if identifyexecutor() ~= "Delta" then
 			local Humanoid = Enemy:FindFirstChild("Humanoid")
 			local RootPart = Enemy:FindFirstChild("HumanoidRootPart")
 			
@@ -1321,7 +1320,6 @@ end
 				Enemy:RemoveTag(KILLAURA_TAG)
 			end
 		end
-   end
 		
 		for _, Enemy in CollectionService:GetTagged("BasicMob") do NewEnemyAdded(Enemy) end
 		table.insert(Connections, CollectionService:GetInstanceAddedSignal("BasicMob"):Connect(NewEnemyAdded))
