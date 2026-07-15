@@ -1290,9 +1290,6 @@ end
            sethiddenproperty(game.Players.LocalPlayer, "MaxSimulationRadius", 112412400000)
 
 			if Humanoid and RootPart then
-				RootPart.CanCollide = false
-				RootPart.Size = Vector3.new(60, 60, 60)
-				Humanoid:ChangeState(15)
 				Humanoid.Health = 0
 				task.wait()
 				Enemy:RemoveTag(KILLAURA_TAG)
