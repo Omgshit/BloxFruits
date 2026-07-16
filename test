@@ -1714,20 +1714,22 @@ end
 
 function FastAttack:HandleOverheat(Equipped, Data)
 	if Data.Shooting then return end
-	local Position, PrimaryPart = ConvertToGunHits()
-	local Target = PrimaryPart
-	if not IsValidTarget(Target) then return end
-    if #CurrentBladeHits == 0 then return end
 	Data.Shooting = true
-	while Equipped and Equipped.Parent == Player.Character and Data.TotalOverheat < Data.MaxOverheat do
+	while Equipped and Equipped.Parent == Player.Character do
+		self:UpdateBladeHits(Data.Distance, false, true)
+		if #CurrentBladeHits == 0 then break end
+		local Position, PrimaryPart = ConvertToGunHits()
+		local Target = PrimaryPart
 		if not IsValidTarget(Target) then break end
-        self:UpdateBladeHits(Data.Distance, false, true)
+		if Data.TotalOverheat >= Data.MaxOverheat then break end
 		self:ShootWithValidation(Target.Position, { Target })
-		Data.TotalOverheat += task.wait(Data.Cooldown)
+		Data.TotalOverheat += Data.Cooldown	
+		task.wait(Data.Cooldown)
 	end
-	while Data.TotalOverheat > 0 do
-		Data.TotalOverheat = math.clamp(Data.TotalOverheat - task.wait(), 0, Data.MaxOverheat)
-	end
+		while Data.TotalOverheat > 0 do
+			Data.TotalOverheat = math.clamp(Data.TotalOverheat - 0.1, 0, Data.MaxOverheat)
+			task.wait(0.1)
+		end
 	Data.Shooting = false
 end
 
