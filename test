@@ -1716,7 +1716,7 @@ function FastAttack:HandleOverheat(Equipped, Data)
 	if Data.Shooting then return end
    if workspace:FindFirstChild("SeaBeasts") then
 		for _, v in pairs(workspace.SeaBeasts:GetChildren()) do
-			if v:IsA("Model") and v:FindFirstChild("HumanoidRootPart") then
+			if v:IsA("Model") then
 				seaBeast = v
 				break
 			end
