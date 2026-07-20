@@ -1733,7 +1733,12 @@ function FastAttack:HandleOverheat(Equipped, Data)
 	if not IsValidTarget(Target) then return end
 	Data.Shooting = true
 	while Equipped and Equipped.Parent == Player.Character and Data.TotalOverheat < Data.MaxOverheat do
-		if not IsValidTarget(Target) then break end
+        if seaBeast then
+			self:UpdateBladeHits(1000, false, true)
+		else
+			self:UpdateBladeHits(Data.Distance, false, true)
+		end
+		if not IsValidTarget(Target) then task.wait() continue end
 		self:ShootWithValidation(Target.Position, { Target })
 		Data.TotalOverheat += task.wait(Data.Cooldown)
 	end
