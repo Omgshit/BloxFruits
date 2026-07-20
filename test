@@ -1270,6 +1270,15 @@ local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChil
         local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
         
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
+       if Settings.RunningOption == "Ectoplasm" then
+           if (RootPart.Position - Target.Position).Magnitude <= 50 then
+            RootPart.CFrame = Target
+            RootPart.CanCollide = false
+          else
+            RootPart.CanCollide = false
+            BodyPosition.Position = Target.Position
+          end
+         else
           if (RootPart.Position - Target.Position).Magnitude <= 300 then
             RootPart.CFrame = Target
             RootPart.CanCollide = false
@@ -1277,6 +1286,7 @@ local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChil
             RootPart.CanCollide = false
             BodyPosition.Position = Target.Position
           end
+      end
         end;task.wait()
       end
       if Enemy and Enemy:HasTag(BRING_TAG) then Enemy:RemoveTag(BRING_TAG) end
