@@ -1270,7 +1270,7 @@ local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChil
         local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
         
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
-          if (RootPart.Position - Target.Position).Magnitude <= Settings.FarmDistance then
+          if (RootPart.Position - Target.Position).Magnitude <= Settings.BringDistance then
             RootPart.CFrame = Target
             RootPart.CanCollide = false
           else
