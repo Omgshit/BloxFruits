@@ -1271,7 +1271,7 @@ local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChil
         
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
        if _ENV.rz_EnabledOptions.Ectoplasm then
-           if (RootPart.Position - Target.Position).Magnitude <= 225 then
+           if (RootPart.Position - Target.Position).Magnitude <= 200 then
             RootPart.CFrame = Target
             RootPart.CanCollide = false
           else
