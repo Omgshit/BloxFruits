@@ -1753,7 +1753,7 @@ function FastAttack:HandleOverheat(Equipped, Data)
 	if seaBeast then
 		self:UpdateBladeHits(500, false, true)
     elseif levi then
-     self:UpdateBladeHits(100, false, true)
+     self:UpdateBladeHits(50, false, true)
 	else
 		self:UpdateBladeHits(Data.Distance, false, true)
 	end
