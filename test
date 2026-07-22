@@ -1503,6 +1503,8 @@ end
 		local function CanChangeGunTarget(Target, Enemy)
 			if Enemy.Parent == SeaBeasts then
 				return true
+            elseif Target.Parent ~= SeaBeasts and not Enemy:GetAttribute("IsBoat") then
+               return true
 			elseif Target.Parent ~= SeaBeasts and Enemy:GetAttribute("IsBoat") then
 				return true
 			end
