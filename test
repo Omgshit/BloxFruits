@@ -1734,14 +1734,14 @@ function FastAttack:HandleOverheat(Equipped, Data)
 	if Data.Shooting then return end
    if workspace:FindFirstChild("SeaBeasts") then
 		for _, v in pairs(workspace.SeaBeasts:GetChildren()) do
-			if v:IsA("Model") then
+			if v:IsA("Model") and v.Name == "Sea Beast" then
 				seaBeast = v
 				break
 			end
 		end
 	end
 	if seaBeast then
-		self:UpdateBladeHits(600, false, true)
+		self:UpdateBladeHits(500, false, true)
 	else
 		self:UpdateBladeHits(Data.Distance, false, true)
 	end
