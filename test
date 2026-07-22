@@ -1270,7 +1270,7 @@ local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChil
         local Target = Cached.Bring[if Module.IsSuperBring then "ALL_MOBS" else EnemyName]
         
         if Target and (PlayerRootPart.Position - RootPart.Position).Magnitude <= Settings.BringDistance then
-       if _ENV.rz_EnabledOptions.Ectoplasm or _ENV.rz_EnabledOptions.DungeonKill then
+       if _ENV.rz_EnabledOptions.Ectoplasm then
            if (RootPart.Position - Target.Position).Magnitude <= 200 then
             RootPart.CFrame = Target
             RootPart.CanCollide = false
@@ -1278,6 +1278,14 @@ local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChil
             RootPart.CanCollide = false
             BodyPosition.Position = Target.Position
           end
+       elseif _ENV.rz_EnabledOptions.DungeonKill then
+       if (RootPart.Position - Target.Position).Magnitude <= 20 then
+            RootPart.CFrame = Target
+            RootPart.CanCollide = false
+          else
+            RootPart.CanCollide = false
+            BodyPosition.Position = Target.Position
+          en
          else
           if (RootPart.Position - Target.Position).Magnitude <= 300 then
             RootPart.CFrame = Target
