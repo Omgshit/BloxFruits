@@ -1391,7 +1391,13 @@ end
 				if item.MasteryRequirements then self.MasteryRequirements[Name] = item.MasteryRequirements end
 			end
 		end
-		task.spawn(function() for _, item in pairs(getInventory()) do Inventory:UpdateItem(item) end end)
+      spawn(function()
+        while task.wait(Settings.SmoothMode and 0.25 or 0) do
+            pcall(function()
+                for _, item in pairs(getInventory()) do Inventory:UpdateItem(item) end 
+            end)
+        end
+    end)
 		return Inventory
 	end)() 
 
