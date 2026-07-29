@@ -227,7 +227,7 @@ end
 
 local rz_MAP = workspace:GetAttribute("MAP")
 local SeaId = (rz_MAP == "Sea1" and 1) or (rz_MAP == "Sea2" and 2) or (rz_MAP == "Sea3" and 3)
-local Module = {} do
+local Module = {} 
 	local Cached = {
 		Closest = nil,
 		Equipped = nil,
@@ -242,8 +242,7 @@ local Module = {} do
 		Sea =  SeaId,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
-		MaxLevel = game.Workspace:GetAttribute("LEVEL_CAP"),
-        StringVersion = require(ReplicatedStorage.BuildInfo).VERSION
+		MaxLevel = game.Workspace:GetAttribute("LEVEL_CAP")
 	}
 	
 	Module.Debounce = {
@@ -532,7 +531,6 @@ local Module = {} do
 			}},
 			{"Race", {{"Ghoul Race", {"Ectoplasm", "Change", 4}}, {"Cyborg Race", {"CyborgTrainer", "Buy"}}}}
 		}
-	end
 	
 	do
 		Module.IsSuperBring = false
