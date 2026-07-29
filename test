@@ -245,7 +245,7 @@ local Module = {} do
 	}
 	
 	Module.GameData = {
-		Sea = "1",
+		Sea = SeaId,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
 		MaxLevel = game.Workspace:GetAttribute("LEVEL_CAP"),
@@ -1372,8 +1372,7 @@ end
 		
 		task.spawn(function()
 			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
-			for _, item in ipairs(Module.FireRemote("getInventory")) do Inventory:UpdateItem(item) end
-		end)
+         end)
 		
 		return Inventory
 	end)()
