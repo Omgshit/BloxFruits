@@ -78,50 +78,53 @@ local function CheckPlayerAlly(__Player: Player): boolean
 end
 
 local function WaitChilds(Instance, ...)
-	for _, ChildName in ipairs({...}) do
-		Instance = Instance:WaitForChild(ChildName)
+	local args = {...}
+	if #args == 0 then return Instance end
+	for _, ChildName in ipairs(args) do
+		if ChildName then
+			Instance = Instance:WaitForChild(ChildName)
+		end
 	end
 	return Instance
 end
 
 local function FastWait(Seconds, Instance, ...)
-	local Success, Result = pcall(function(...)
-		for _, ChildName in ipairs({...}) do
+	local args = {...}
+	if #args == 0 then
+		return Instance
+	end
+	local Success, Result = pcall(function()
+		for _, ChildName in ipairs(args) do
+			if not ChildName then continue end
 			Instance = Instance:WaitForChild(ChildName, Seconds)
 		end
 		return Instance
-	end, ...)
-	
+	end)
 	return Success and Result or nil
 end
 
-local function CreateNewClear()
-	local COUNT_NEWINDEX = 0
-	
-	return {
-		__newindex = function(self, index, value)
-			if COUNT_NEWINDEX >= HIDDEN_SETTINGS.CLEAR_AFTER then
-				for key, cache in pairs(self) do
-					if typeof(cache) == "Instance" and not cache:IsDescendantOf(game) then
-						rawset(self, key, nil)
-					end
-				end
-				COUNT_NEWINDEX = 0
-			end
-			
-			COUNT_NEWINDEX += 1
-			return rawset(self, index, value)
-		end
-	}
-end
-
-function CreateDictionary(array: { string }, value: any?): { [string]: any? }
-	local Dictionary = {}
-	
-	for _, string in ipairs(array) do
-		Dictionary[string] = if type(value) == "table" then {} else value
+function CreateDictionary(array, value)
+	if type(array) ~= "table" then
+		return {}
 	end
 	
+	local Dictionary = {}
+	
+	for _, str in ipairs(array) do
+		Dictionary[str] = type(value) == "table" and {} or value
+	end
+
+	return Dictionary
+end
+
+function CreateDictionary(array, value)
+	if type(array) ~= "table" then
+		return {}
+	end
+	local Dictionary = {}
+	for _, str in ipairs(array) do
+		Dictionary[str] = type(value) == "table" and {} or value
+	end
 	return Dictionary
 end
 
@@ -201,13 +204,14 @@ local Signal = {} do
 		return coroutine.yield()
 	end
 	
-	function Signal:Fire(...): (nil)
-		for _, Connection in ipairs(self.Connections) do
-			if Connection.Connected then
-				Connection:Fire(...)
-			end
+	function Signal:Fire(...)
+	if not self.Connections then return end
+	for _, Connection in ipairs(self.Connections) do
+		if Connection.Connected then
+			Connection:Fire(...)
 		end
 	end
+end
 	
 	function Signal.new(): Signal
 		return setmetatable({
@@ -647,7 +651,6 @@ local Module = {} do
 			
 			for name, task in QuestsModule do
 				if table.find(bl_Quests, name) then continue end
-                if type(task) ~= "table" then continue end
 				
 				for num, mission in task do
 					local Level = mission.LevelReq
