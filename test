@@ -242,7 +242,7 @@ local Module = {} do
 		Sea =  SeaId,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
-		MaxLevel =  workspace::GetAttribute("LEVEL_CAP")
+		MaxLevel =  workspace:GetAttribute("LEVEL_CAP")
 	}
 	
 	Module.Debounce = {
