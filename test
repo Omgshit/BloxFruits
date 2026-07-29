@@ -245,10 +245,10 @@ local Module = {} do
 	}
 	
 	Module.GameData = {
-		Sea =  1,
+		Sea ="1",
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
-		MaxLevel = game.Workspace:GetAttribute("LEVEL_CAP"),
+		MaxLevel = g,ame.Workspace:GetAttribute("LEVEL_CAP"),
         StringVersion = require(ReplicatedStorage.BuildInfo).VERSION
 	}
 	
