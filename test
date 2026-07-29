@@ -647,6 +647,7 @@ local Module = {} do
 			
 			for name, task in QuestsModule do
 				if table.find(bl_Quests, name) then continue end
+                if type(task) ~= "table" then continue end
 				
 				for num, mission in task do
 					local Level = mission.LevelReq
