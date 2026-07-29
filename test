@@ -225,14 +225,8 @@ local Signal = {} do
 	})
 end
 
-if table.find({2753915549, 85211729168715, 113741252407134, 114279672983750}, game.PlaceId) then
-    SeaId = 1
-elseif table.find({4442272183, 79091703265657}, game.PlaceId) then
-    SeaId = 2
-elseif table.find({7449423635, 100117331123089}, game.PlaceId) then
-    SeaId = 3
-end
-
+local rz_MAP = workspace:GetAttribute("MAP")
+local SeaId = (rz_MAP == "Sea1" and 1) or ((rz_MAP == "Sea2" or rz_MAP == "Dungeons") and 2) or (rz_MAP == "Sea3" and 3)
 local Module = {} do
 	local Cached = {
 		Closest = nil,
