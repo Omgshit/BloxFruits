@@ -1395,7 +1395,7 @@ function Inventory:UpdateItem(item)
     end
     if mastery ~= nil then
         self.Mastery[name] = mastery
-    en
+    end
     if item.MasteryRequirements ~= nil then
         self.MasteryRequirements[name] = item.MasteryRequirements
     end
