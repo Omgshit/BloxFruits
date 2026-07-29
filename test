@@ -1323,6 +1323,63 @@ end
 		return EnemiesModule
 	end)()
 
+   Module.Inventory = (function()
+		local Inventory = {
+			Unlocked = setmetatable({}, { __index = function() return false end }),
+			Mastery = setmetatable({}, { __index = function() return 0 end }),
+			Count = setmetatable({}, { __index = function() return 0 end }),
+			MasteryRequirements = {},
+			Items = {},
+		}
+		
+		function Inventory:UpdateItem(item)
+			if type(item) == "table" then
+				if item.Type == "Wear" then
+					item.Type = "Accessory"
+				end
+				
+				local Name = item.Name
+				
+				self.Items[Name] = item
+				
+				if not self.Unlocked[Name] then self.Unlocked[Name] = true end
+				if item.Count then self.Count[Name] = item.Count end
+				if item.Mastery then self.Mastery[Name] = item.Mastery end
+				if item.MasteryRequirements then self.MasteryRequirements[Name] = item.MasteryRequirements end
+			end
+		end
+		
+		function Inventory:RemoveItem(ItemName)
+			if type(ItemName) == "string" then
+				self.Unlocked[ItemName] = nil
+				self.Mastery[ItemName] = nil
+				self.Count[ItemName] = nil
+				self.Items[ItemName] = nil
+			end
+		end
+		
+		local function OnClientEvent(Method, ...)
+			if Method == "ItemChanged" then
+				Inventory:UpdateItem(...)
+			elseif Method == "ItemAdded" then
+				Inventory:UpdateItem(...)
+			elseif Method == "ItemRemoved" then
+				Inventory:RemoveItem(...)
+			elseif Method == "Notify" then
+				Module.Signals.Notify:Fire(...)
+			end
+		end
+		
+		task.spawn(function()
+			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
+			local data = Module.FireRemote("getInventory")
+	        if type(data) ~= "table" then warn("getInventory retornou inválido:", data) return end
+	        for _, item in ipairs(data) do Inventory:UpdateItem(item) end
+		end)
+		
+		return Inventory
+	end)() 
+
    Module.FastAttack = (function()
 		local FastAttack = {
 			Distance = 55,
