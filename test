@@ -1391,26 +1391,7 @@ end
 				if item.MasteryRequirements then self.MasteryRequirements[Name] = item.MasteryRequirements end
 			end
 		end
-		function Inventory:RemoveItem(ItemName)
-			if type(ItemName) == "string" then
-				self.Unlocked[ItemName] = nil
-				self.Mastery[ItemName] = nil
-				self.Count[ItemName] = nil
-				self.Items[ItemName] = nil
-			end
-		end
-		local function OnClientEvent(Method, ...)
-			if Method == "ItemChanged" then
-				Inventory:UpdateItem(...)
-			elseif Method == "ItemAdded" then
-				Inventory:UpdateItem(...)
-			elseif Method == "ItemRemoved" then
-				Inventory:RemoveItem(...)
-			elseif Method == "Notify" then
-				Module.Signals.Notify:Fire(...)
-			end
-		end
-		task.spawn(function() table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent)) for _, item in pairs(getInventory()) do Inventory:UpdateItem(item) end end)
+		task.spawn(function() for _, item in pairs(getInventory()) do Inventory:UpdateItem(item) end end)
 		return Inventory
 	end)() 
 
