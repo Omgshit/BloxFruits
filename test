@@ -226,7 +226,7 @@ local Signal = {} do
 end
 
 local rz_MAP = workspace:GetAttribute("MAP")
-local SeaId = (rz_MAP == "Sea1" and 1) or ((rz_MAP == "Sea2" or rz_MAP == "Dungeons") and 2) or (rz_MAP == "Sea3" and 3)
+local SeaId = (rz_MAP == "Sea1" and 1) or (rz_MAP == "Sea2" and 2) or (rz_MAP == "Sea3" and 3)
 local Module = {} do
 	local Cached = {
 		Closest = nil,
