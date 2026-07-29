@@ -13,6 +13,11 @@ local TeleportService: TeleportService = game:GetService("TeleportService")
 local RunService: RunService = game:GetService("RunService")
 local Players: Players = game:GetService("Players")
 
+local HttpService = game:GetService("HttpService")
+local ItemReplicationService = require(ReplicatedStorage.ItemReplicationService)
+local ItemId = require(ReplicatedStorage.Economy.ItemId)
+local ItemConfig = require(ReplicatedStorage.ItemConfig)
+
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local GunValidator: RemoteEvent = Remotes:WaitForChild("Validator2")
 local CommF: RemoteFunction = Remotes:WaitForChild("CommF_")
@@ -1323,6 +1328,48 @@ end
 		return EnemiesModule
 	end)()
 
+  local function getInventory()
+    local Items = {}
+    for _, v in ipairs(ItemReplicationService:GetItems()) do
+        local itemId = v.ItemId
+        local entry = Items[itemId]
+
+        if not entry then
+            local dataResult = ItemId.getDataFromId(itemId) 
+            if dataResult:isOk() then
+                local ItemData = dataResult:unwrap()
+				local ItemConfigData = ItemConfig.match(itemId):unwrap()
+                local Type
+				local Rarity 
+                if ItemData.Type == "Accessory" or ItemData.Type == "Material" or ItemData.Type == "Title" then
+                    Type = ItemData.Type
+                elseif ItemData.Type == "Moveset" then
+                    Type = ItemConfigData.Moveset.Type
+                elseif ItemData.Type == "PhysicalMoveset" then
+                    Type = ItemConfigData.Inventory.Brackets[1]
+                else
+                    Type = ItemData.Type
+                end
+				if ItemConfigData.Quality and ItemConfigData.Quality.RarityValue then 
+					Rarity = ItemConfigData.Quality.RarityValue
+				end
+                entry = {
+                    Type = Type,
+                    Name = ItemData.StorageKey,
+                    ItemId = itemId,
+                    NetworkedUID = v.NetworkedUID,
+					Rarity = Rarity
+                }
+                Items[itemId] = entry
+            end
+        end
+        if entry then
+            entry[v.Key] = v.Value
+        end
+    end
+    return Items
+end
+
    Module.Inventory = (function()
 		local Inventory = {
 			Unlocked = setmetatable({}, { __index = function() return false end }),
@@ -1331,24 +1378,19 @@ end
 			MasteryRequirements = {},
 			Items = {},
 		}
-		
 		function Inventory:UpdateItem(item)
 			if type(item) == "table" then
 				if item.Type == "Wear" then
 					item.Type = "Accessory"
 				end
-				
 				local Name = item.Name
-				
 				self.Items[Name] = item
-				
 				if not self.Unlocked[Name] then self.Unlocked[Name] = true end
 				if item.Count then self.Count[Name] = item.Count end
 				if item.Mastery then self.Mastery[Name] = item.Mastery end
 				if item.MasteryRequirements then self.MasteryRequirements[Name] = item.MasteryRequirements end
 			end
 		end
-		
 		function Inventory:RemoveItem(ItemName)
 			if type(ItemName) == "string" then
 				self.Unlocked[ItemName] = nil
@@ -1357,7 +1399,6 @@ end
 				self.Items[ItemName] = nil
 			end
 		end
-		
 		local function OnClientEvent(Method, ...)
 			if Method == "ItemChanged" then
 				Inventory:UpdateItem(...)
@@ -1369,14 +1410,7 @@ end
 				Module.Signals.Notify:Fire(...)
 			end
 		end
-		
-		task.spawn(function()
-			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
-			local data = Module.FireRemote("getTiles")
-	        if type(data) ~= "table" then warn("getInventory retornou inválido:", data) return end
-	        for _, item in ipairs(data) do Inventory:UpdateItem(item) end
-		end)
-		
+		task.spawn(function() table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent)) for _, item in pairs(getInventory()) do Inventory:UpdateItem(item) end end)
 		return Inventory
 	end)() 
 
