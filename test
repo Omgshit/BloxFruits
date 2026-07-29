@@ -103,18 +103,22 @@ local function FastWait(Seconds, Instance, ...)
 	return Success and Result or nil
 end
 
-function CreateDictionary(array, value)
-	if type(array) ~= "table" then
-		return {}
-	end
-	
-	local Dictionary = {}
-	
-	for _, str in ipairs(array) do
-		Dictionary[str] = type(value) == "table" and {} or value
-	end
-
-	return Dictionary
+local function CreateNewClear()
+	local COUNT_NEWINDEX = 0
+	return {
+		__newindex = function(self, index, value)
+			if COUNT_NEWINDEX >= HIDDEN_SETTINGS.CLEAR_AFTER then
+				for key, cache in pairs(self) do
+					if typeof(cache) == "Instance" and not cache:IsDescendantOf(game) then
+						rawset(self, key, nil)
+					end
+				end
+				COUNT_NEWINDEX = 0
+			end
+			COUNT_NEWINDEX += 1
+			return rawset(self, index, value)
+		end
+	}
 end
 
 function CreateDictionary(array, value)
