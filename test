@@ -1372,32 +1372,52 @@ end
 
    Module.Inventory = (function()
 		local Inventory = {
-			Unlocked = setmetatable({}, { __index = function() return false end }),
-			Mastery = setmetatable({}, { __index = function() return 0 end }),
-			Count = setmetatable({}, { __index = function() return 0 end }),
-			MasteryRequirements = {},
-			Items = {},
-		}
-		function Inventory:UpdateItem(item)
-			if type(item) == "table" then
-				if item.Type == "Wear" then
-					item.Type = "Accessory"
-				end
-				local Name = item.Name
-				self.Items[Name] = item
-				if not self.Unlocked[Name] then self.Unlocked[Name] = true end
-				if item.Count then self.Count[Name] = item.Count end
-				if item.Mastery then self.Mastery[Name] = item.Mastery end
-				if item.MasteryRequirements then self.MasteryRequirements[Name] = item.MasteryRequirements end
-			end
-		end
-      spawn(function()
-        while task.wait(Settings.SmoothMode and 0.25 or 0) do
-            pcall(function()
-                for _, item in pairs(getInventory()) do Inventory:UpdateItem(item) end 
-            end)
+    Unlocked = setmetatable({}, { __index = function() return false end }),
+    Mastery = setmetatable({}, { __index = function() return 0 end }),
+    Count = setmetatable({}, { __index = function() return 0 end }),
+    MasteryRequirements = {},
+    Items = {},
+}
+function Inventory:UpdateItem(item)
+    if type(item) ~= "table" or not item.Name then
+        return
+    end
+    if item.Type == "Wear" then
+        item.Type = "Accessory"
+    end
+    local name = item.Name
+    local count = tonumber(item.Count or item.Value or item.Quantity or item.Amount)
+    local mastery = tonumber(item.Mastery)
+    self.Items[name] = item
+    self.Unlocked[name] = true
+    if count ~= nil then
+        self.Count[name] = count
+    end
+    if mastery ~= nil then
+        self.Mastery[name] = mastery
+    en
+    if item.MasteryRequirements ~= nil then
+        self.MasteryRequirements[name] = item.MasteryRequirements
+    end
+end
+function Inventory:Refresh()
+    local items = getInventory()
+    for _, item in pairs(items) do
+        self:UpdateItem(item)
+    end
+end
+Module.Inventory = Inventory
+Inventory:Refresh()
+task.spawn(function()
+    while task.wait(Settings and Settings.SmoothMode and 0.25 or 0.1) do
+        local ok, err = pcall(function()
+            Inventory:Refresh()
+        end)
+        if not ok then
+            warn("[Inventory]", err)
         end
-    end)
+    end
+end)
 		return Inventory
 	end)() 
 
