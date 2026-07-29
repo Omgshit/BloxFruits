@@ -6,61 +6,41 @@ if type(Settings) ~= "table" or type(Connections) ~= "table" then
 	return {}
 end
 
-local function SafeGetService(name)
-    local ok, service = pcall(function()
-        return game:GetService(name)
-    end)
-    return ok and service or nil
-end
+local VirtualInputManager: VirtualInputManager = game:GetService("VirtualInputManager")
+local CollectionService: CollectionService = game:GetService("CollectionService")
+local ReplicatedStorage: ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TeleportService: TeleportService = game:GetService("TeleportService")
+local RunService: RunService = game:GetService("RunService")
+local Players: Players = game:GetService("Players")
 
-local Players = SafeGetService("Players")
-local ReplicatedStorage = SafeGetService("ReplicatedStorage")
-local CollectionService = SafeGetService("CollectionService")
-local RunService = SafeGetService("RunService")
-local TeleportService = SafeGetService("TeleportService")
-local VirtualInputManager = SafeGetService("VirtualInputManager")
+local Remotes = ReplicatedStorage:WaitForChild("Remotes")
+local GunValidator: RemoteEvent = Remotes:WaitForChild("Validator2")
+local CommF: RemoteFunction = Remotes:WaitForChild("CommF_")
+local CommE: RemoteEvent = Remotes:WaitForChild("CommE")
 
-local Player = Players and Players.LocalPlayer
+local ChestModels: Folder = workspace:WaitForChild("ChestModels")
+local WorldOrigin: Folder = workspace:WaitForChild("_WorldOrigin")
+local Characters: Folder = workspace:WaitForChild("Characters")
+local SeaBeasts: Folder = workspace:WaitForChild("SeaBeasts")
+local Enemies: Folder = workspace:WaitForChild("Enemies")
+local Boats: Folder = workspace:WaitForChild("Boats")
+local Map: Model = workspace:WaitForChild("Map")
 
-local function SafeWait(parent, name, timeout)
-    if not parent then return nil end
-    local obj = parent:FindFirstChild(name)
-    if obj then return obj end
+local EnemySpawns: Folder = WorldOrigin:WaitForChild("EnemySpawns")
+local Locations: Folder = WorldOrigin:WaitForChild("Locations")
 
-    local ok, result = pcall(function()
-        return parent:WaitForChild(name, timeout or 5)
-    end)
+local RenderStepped = RunService.RenderStepped
+local Heartbeat = RunService.Heartbeat
+local Stepped = RunService.Stepped
+local Player = Players.LocalPlayer
 
-    return ok and result or nil
-end
+local Data: Folder = Player:WaitForChild("Data")
+local Level: IntValue = Data:WaitForChild("Level")
+local Fragments: IntValue = Data:WaitForChild("Fragments")
+local Money: IntValue = Data:WaitForChild("Beli")
 
-local Remotes = SafeWait(ReplicatedStorage, "Remotes")
-local GunValidator = Remotes and Remotes:FindFirstChild("Validator2")
-local CommF = Remotes and Remotes:FindFirstChild("CommF_")
-local CommE = Remotes and Remotes:FindFirstChild("CommE")
-
-local ChestModels = SafeWait(workspace, "ChestModels")
-local WorldOrigin = SafeWait(workspace, "_WorldOrigin")
-local Characters = SafeWait(workspace, "Characters")
-local SeaBeasts = SafeWait(workspace, "SeaBeasts")
-local Enemies = SafeWait(workspace, "Enemies")
-local Boats = SafeWait(workspace, "Boats")
-local Map = SafeWait(workspace, "Map")
-
-local EnemySpawns = WorldOrigin and SafeWait(WorldOrigin, "EnemySpawns")
-local Locations = WorldOrigin and SafeWait(WorldOrigin, "Locations")
-
-local RenderStepped = RunService and RunService.RenderStepped
-local Heartbeat = RunService and RunService.Heartbeat
-local Stepped = RunService and RunService.Stepped
-
-local Data = Player and SafeWait(Player, "Data")
-local Level = Data and SafeWait(Data, "Level")
-local Fragments = Data and SafeWait(Data, "Fragments")
-local Money = Data and SafeWait(Data, "Beli")
-
-local Modules = ReplicatedStorage and SafeWait(ReplicatedStorage, "Modules")
-local Net = Modules and SafeWait(Modules, "Net")
+local Modules: Folder? = ReplicatedStorage:WaitForChild("Modules")
+local Net: ModuleScript = Modules:WaitForChild("Net")
 
 local EXECUTOR_NAME = string.upper(if identifyexecutor then identifyexecutor() else "NULL")
 local IS_BLACKLISTED_EXECUTOR = table.find({"NULL", "XENO", "SWIFT", "JJSPLOIT"}, EXECUTOR_NAME)
@@ -83,29 +63,20 @@ local HIDDEN_SETTINGS: { [string]: any } = {
 _ENV._Bring_Tag = BRING_TAG
 _ENV._KillAura_Tag = KILLAURA_TAG
 
-local function GetEnemyName(str)
-    if not str then return "" end
-    return (str:find("Lv. ") and str:gsub(" %pLv. %d+%p", "") or str):gsub(" %pBoss%p", "")
+local function GetEnemyName(string: string): string
+	return (string:find("Lv. ") and string:gsub(" %pLv. %d+%p", "") or string):gsub(" %pBoss%p", "")
 end
 
-local function HasTagSafe(obj, tag)
-    if CollectionService and CollectionService.HasTag then
-        return CollectionService:HasTag(obj, tag)
-    end
-    return false
+local function CheckPlayerAlly(__Player: Player): boolean
+	if tostring(__Player.Team) == "Marines" and __Player.Team == Player.Team then
+		return false
+	elseif __Player:HasTag(`Ally{Player.Name}`) or Player:HasTag(`Ally{__Player.Name}`) then
+		return false
+	end
+	
+	return true
 end
 
-local function CheckPlayerAlly(__Player)
-    if not __Player or not Player then return false end
-
-    if tostring(__Player.Team) == "Marines" and __Player.Team == Player.Team then
-        return false
-    elseif HasTagSafe(__Player, "Ally"..Player.Name) or HasTagSafe(Player, "Ally"..__Player.Name) then
-        return false
-    end
-
-    return true
-end
 local function WaitChilds(Instance, ...)
 	for _, ChildName in ipairs({...}) do
 		Instance = Instance:WaitForChild(ChildName)
@@ -256,7 +227,7 @@ end
 
 local rz_MAP = workspace:GetAttribute("MAP")
 local SeaId = (rz_MAP == "Sea1" and 1) or (rz_MAP == "Sea2" and 2) or (rz_MAP == "Sea3" and 3)
-local Module = {} 
+local Module = {} do
 	local Cached = {
 		Closest = nil,
 		Equipped = nil,
@@ -271,7 +242,7 @@ local Module = {}
 		Sea =  SeaId,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
-		MaxLevel = game.Workspace:GetAttribute("LEVEL_CAP")
+		MaxLevel =  workspace::GetAttribute("LEVEL_CAP")
 	}
 	
 	Module.Debounce = {
@@ -560,6 +531,7 @@ local Module = {}
 			}},
 			{"Race", {{"Ghoul Race", {"Ectoplasm", "Change", 4}}, {"Cyborg Race", {"CyborgTrainer", "Buy"}}}}
 		}
+	end
 	
 	do
 		Module.IsSuperBring = false
