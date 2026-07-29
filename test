@@ -78,33 +78,26 @@ local function CheckPlayerAlly(__Player: Player): boolean
 end
 
 local function WaitChilds(Instance, ...)
-	local args = {...}
-	if #args == 0 then return Instance end
-	for _, ChildName in ipairs(args) do
-		if ChildName then
-			Instance = Instance:WaitForChild(ChildName)
-		end
+	for _, ChildName in ipairs({...}) do
+		Instance = Instance:WaitForChild(ChildName)
 	end
 	return Instance
 end
 
 local function FastWait(Seconds, Instance, ...)
-	local args = {...}
-	if #args == 0 then
-		return Instance
-	end
-	local Success, Result = pcall(function()
-		for _, ChildName in ipairs(args) do
-			if not ChildName then continue end
+	local Success, Result = pcall(function(...)
+		for _, ChildName in ipairs({...}) do
 			Instance = Instance:WaitForChild(ChildName, Seconds)
 		end
 		return Instance
-	end)
+	end, ...)
+	
 	return Success and Result or nil
 end
 
 local function CreateNewClear()
 	local COUNT_NEWINDEX = 0
+	
 	return {
 		__newindex = function(self, index, value)
 			if COUNT_NEWINDEX >= HIDDEN_SETTINGS.CLEAR_AFTER then
@@ -115,20 +108,20 @@ local function CreateNewClear()
 				end
 				COUNT_NEWINDEX = 0
 			end
+			
 			COUNT_NEWINDEX += 1
 			return rawset(self, index, value)
 		end
 	}
 end
 
-function CreateDictionary(array, value)
-	if type(array) ~= "table" then
-		return {}
-	end
+function CreateDictionary(array: { string }, value: any?): { [string]: any? }
 	local Dictionary = {}
-	for _, str in ipairs(array) do
-		Dictionary[str] = type(value) == "table" and {} or value
+	
+	for _, string in ipairs(array) do
+		Dictionary[string] = if type(value) == "table" then {} else value
 	end
+	
 	return Dictionary
 end
 
@@ -208,14 +201,13 @@ local Signal = {} do
 		return coroutine.yield()
 	end
 	
-	function Signal:Fire(...)
-	if not self.Connections then return end
-	for _, Connection in ipairs(self.Connections) do
-		if Connection.Connected then
-			Connection:Fire(...)
+	function Signal:Fire(...): (nil)
+		for _, Connection in ipairs(self.Connections) do
+			if Connection.Connected then
+				Connection:Fire(...)
+			end
 		end
 	end
-end
 	
 	function Signal.new(): Signal
 		return setmetatable({
@@ -233,8 +225,14 @@ end
 	})
 end
 
-local rz_MAP = workspace:GetAttribute("MAP")
-local SeaId = (rz_MAP == "Sea1" and 1) or (rz_MAP == "Sea2" and 2) or (rz_MAP == "Sea3" and 3)
+if table.find({2753915549, 85211729168715, 113741252407134, 114279672983750}, game.PlaceId) then
+    SeaId = 1
+elseif table.find({4442272183, 79091703265657}, game.PlaceId) then
+    SeaId = 2
+elseif table.find({7449423635, 100117331123089}, game.PlaceId) then
+    SeaId = 3
+end
+
 local Module = {} do
 	local Cached = {
 		Closest = nil,
@@ -250,7 +248,8 @@ local Module = {} do
 		Sea =  SeaId,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
-		MaxLevel =  workspace:GetAttribute("LEVEL_CAP")
+		MaxLevel = game.Workspace:GetAttribute("LEVEL_CAP"),
+        StringVersion = require(ReplicatedStorage.BuildInfo).VERSION
 	}
 	
 	Module.Debounce = {
