@@ -245,7 +245,7 @@ local Module = {} do
 	}
 	
 	Module.GameData = {
-		Sea =  SeaId,
+		Sea =  1,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
 		MaxLevel = game.Workspace:GetAttribute("LEVEL_CAP"),
