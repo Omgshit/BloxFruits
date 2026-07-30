@@ -1409,12 +1409,7 @@ end
 Inventory:Refresh()
 task.spawn(function()
     while task.wait(Settings and Settings.SmoothMode and 0.25 or 0.1) do
-        local ok, err = pcall(function()
             Inventory:Refresh()
-        end)
-        if not ok then
-            warn("[Inventory]", err)
-        end
     end
 end)
 		return Inventory
