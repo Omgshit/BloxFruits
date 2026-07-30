@@ -1417,7 +1417,7 @@ function Inventory:Refresh()
 end
 Inventory:Refresh()
 task.spawn(function()
-    while task.wait(3) do
+    while task.wait() do
         pcall(function()
             Inventory:Refresh()
         end)
