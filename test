@@ -1341,7 +1341,7 @@ end
 				local ItemConfigData = ItemConfig.match(itemId):unwrap()
                 local Type
 				local Rarity 
-                if ItemData.Type == "Accessory" or ItemData.Type == "Material" or ItemData.Type == "Title" or ItemData.Type == "Fruits" or ItemData.Type == "Gun" or ItemData.Type == "Wear" or ItemData.Type == "Sword" then
+                if ItemData.Type == "Accessory" or ItemData.Type == "Material" or ItemData.Type == "Title" or ItemData.Type == "Fruits" or ItemData.Type == "Gun" or ItemData.Type == "Sword" then
                     Type = ItemData.Type
                 elseif ItemData.Type == "Moveset" then
                     Type = ItemConfigData.Moveset.Type
