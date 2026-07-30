@@ -1378,53 +1378,63 @@ end
     return Items
 end
 
-   Module.Inventory = (function()
+ Module.Inventory = (function()
 		local Inventory = {
-    Unlocked = setmetatable({}, { __index = function() return false end }),
-    Mastery = setmetatable({}, { __index = function() return 0 end }),
-    Count = setmetatable({}, { __index = function() return 0 end }),
-    MasteryRequirements = {},
-    Items = {},
-}
-function Inventory:UpdateItem(item)
-    if type(item) ~= "table" or not item.Name then
-        return
-    end
-    if item.Type == "Wear" then
-        item.Type = "Accessory"
-    end
-    local name = item.Name
-    local count = tonumber(item.Count or item.Value or item.Quantity or item.Amount)
-    local mastery = tonumber(item.Mastery)
-    self.Items[name] = item
-    self.Unlocked[name] = true
-    if count ~= nil then
-        self.Count[name] = count
-    end
-    if mastery ~= nil then
-        self.Mastery[name] = mastery
-    end
-    if item.MasteryRequirements ~= nil then
-        self.MasteryRequirements[name] = item.MasteryRequirements
-    end
-end
-function Inventory:Refresh()
-    local ok, items = pcall(getInventory)
-    if not ok or type(items) ~= "table" then return end
-    for _, item in pairs(items) do
-        self:UpdateItem(item)
-    end
-end
-Inventory:Refresh()
-spawn(function()
-        while task.wait(0.25) do
-            pcall(function()
-               Inventory:Refresh()
-            end)
-        end
-    end)
+			Unlocked = setmetatable({}, { __index = function() return false end }),
+			Mastery = setmetatable({}, { __index = function() return 0 end }),
+			Count = setmetatable({}, { __index = function() return 0 end }),
+			MasteryRequirements = {},
+			Items = {},
+		}
+		
+		function Inventory:UpdateItem(item)
+			if type(item) == "table" then
+				if item.Type == "Wear" then
+					item.Type = "Accessory"
+				end
+				
+				local Name = item.Name
+				
+				self.Items[Name] = item
+				
+				if not self.Unlocked[Name] then self.Unlocked[Name] = true end
+                local count = item.Count or item.Value or item.Quantity or item.Amount
+				if item.Count then self.Count[Name] = count end
+				if item.Mastery then self.Mastery[Name] = item.Mastery end
+				if item.MasteryRequirements then self.MasteryRequirements[Name] = item.MasteryRequirements end
+			end
+		end
+		
+		function Inventory:RemoveItem(ItemName)
+			if type(ItemName) == "string" then
+				self.Unlocked[ItemName] = nil
+				self.Mastery[ItemName] = nil
+				self.Count[ItemName] = nil
+				self.Items[ItemName] = nil
+			end
+		end
+		
+		local function OnClientEvent(Method, ...)
+			if Method == "ItemChanged" then
+				Inventory:UpdateItem(...)
+			elseif Method == "ItemAdded" then
+				Inventory:UpdateItem(...)
+			elseif Method == "ItemRemoved" then
+				Inventory:RemoveItem(...)
+			elseif Method == "Notify" then
+				Module.Signals.Notify:Fire(...)
+			end
+		end
+
+        function Inventory:Refresh() local ok, items = pcall(getInventory) if not ok or type(items) ~= "table" then return end for _, item in pairs(items) do self:UpdateItem(item) end end
+		
+		task.spawn(function()
+			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
+			Inventory:Refresh()
+		end)
+		
 		return Inventory
-	end)() 
+	end)()
 
    Module.FastAttack = (function()
 		local FastAttack = {
