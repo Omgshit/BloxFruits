@@ -1399,7 +1399,7 @@ end
 				
 				if not self.Unlocked[Name] then self.Unlocked[Name] = true end
                 local count = item.Count or item.Value or item.Quantity or item.Amount
-				if item.Count then self.Count[Name] = count end
+                if count then self.Count[Name] = count end
 				if item.Mastery then self.Mastery[Name] = item.Mastery end
 				if item.MasteryRequirements then self.MasteryRequirements[Name] = item.MasteryRequirements end
 			end
