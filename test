@@ -1416,13 +1416,13 @@ function Inventory:Refresh()
     end
 end
 Inventory:Refresh()
-task.spawn(function()
-    while task.wait() do
-        pcall(function()
-            Inventory:Refresh()
-        end)
-    end
-end)
+spawn(function()
+        while task.wait(0.25) do
+            pcall(function()
+               Inventory:Refresh()
+            end)
+        end
+    end)
 		return Inventory
 	end)() 
 
