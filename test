@@ -1406,7 +1406,6 @@ function Inventory:Refresh()
         self:UpdateItem(item)
     end
 end
-Module.Inventory = Inventory
 Inventory:Refresh()
 task.spawn(function()
     while task.wait(Settings and Settings.SmoothMode and 0.25 or 0.1) do
