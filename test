@@ -1401,7 +1401,8 @@ function Inventory:UpdateItem(item)
     end
 end
 function Inventory:Refresh()
-    local items = getInventory()
+    local ok, items = pcall(getInventory)
+    if not ok or type(items) ~= "table" then return end
     for _, item in pairs(items) do
         self:UpdateItem(item)
     end
@@ -1409,7 +1410,9 @@ end
 Inventory:Refresh()
 task.spawn(function()
     while task.wait(Settings and Settings.SmoothMode and 0.25 or 0.1) do
+        pcall(function()
             Inventory:Refresh()
+        end)
     end
 end)
 		return Inventory
