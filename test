@@ -1388,22 +1388,27 @@ end
 		}
 		
 		function Inventory:UpdateItem(item)
-			if type(item) == "table" then
-				if item.Type == "Wear" then
-					item.Type = "Accessory"
-				end
-				
-				local Name = item.Name
-				
-				self.Items[Name] = item
-				
-				if not self.Unlocked[Name] then self.Unlocked[Name] = true end
-                local count = tonumber(item.Count or item.Value or item.Quantity or item.Amount)
-                if count then self.Count[Name] = count end
-				if item.Mastery then self.Mastery[Name] = item.Mastery end
-				if item.MasteryRequirements then self.MasteryRequirements[Name] = item.MasteryRequirements end
-			end
-		end
+    if type(item) ~= "table" or not item.Name then
+        return
+    end
+    if item.Type == "Wear" then
+        item.Type = "Accessory"
+    end
+    local name = item.Name
+    local count = tonumber(item.Count or item.Value or item.Quantity or item.Amount)
+    local mastery = tonumber(item.Mastery)
+    self.Items[name] = item
+    self.Unlocked[name] = true
+    if count ~= nil then
+        self.Count[name] = count
+    end
+    if mastery ~= nil then
+        self.Mastery[name] = mastery
+    end
+    if item.MasteryRequirements ~= nil then
+        self.MasteryRequirements[name] = item.MasteryRequirements
+    end
+end
 		
 		function Inventory:RemoveItem(ItemName)
 			if type(ItemName) == "string" then
