@@ -1404,7 +1404,11 @@ end
         end
     end
 
-    print("Itens carregados:", count) 
+   local count = 0
+for _ in pairs(Items) do
+    count = count + 1
+end
+print("Itens carregados:", count)
     return Items
 end
 
