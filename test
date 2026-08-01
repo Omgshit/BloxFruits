@@ -1437,7 +1437,6 @@ end
 		
 		task.spawn(function()
 			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
-            repeat task.wait() until #ItemReplicationService:GetItems() > 0
 			Inventory:Refresh()
 		end)
 		
