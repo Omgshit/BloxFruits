@@ -1361,9 +1361,20 @@ local function getInventory()
             entry = {
                 Name = ItemData.StorageKey,
                 ItemId = itemId,
-                NetworkedUID = v.NetworkedUID
+                NetworkedUID = v.NetworkedUID,
+                Count = 0 
             }
             Items[itemId] = entry
+        end
+        if v.Key then
+            entry[v.Key] = v.Value
+            if v.Key == "Count"
+            or v.Key == "Quantity"
+            or v.Key == "Amount"
+            or v.Key == "Stacks"
+            or v.Key == "Owned" then
+                entry.Count = tonumber(v.Value) or entry.Count
+            end
         end
     end
     return Items
