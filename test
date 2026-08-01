@@ -1433,7 +1433,7 @@ end
 			end
 		end
 
-        function Inventory:Refresh() local ok, items = pcall(getInventory) if not ok or type(items) ~= "table" then return end for _, item in pairs(items) do self:UpdateItem(item) end end
+        function Inventory:Refresh() for _, item in pairs(getInventory()) do self:UpdateItem(item) end end
 		
 		task.spawn(function()
 			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
