@@ -1336,12 +1336,19 @@ end
 		return EnemiesModule
 	end)()
 
-  local function getInventory()
-    local Items = {}
-    local rawItems = ItemReplicationService:GetItems()
-    if not rawItems or #rawItems == 0 then
-        return Items
+  local function safeGetItems()
+    local ok, result = pcall(function()
+        return ItemReplicationService:GetItems()
+    end)
+    if ok and result then
+        return result
     end
+    return {}
+end
+
+local function getInventory()
+    local Items = {}
+    local rawItems = safeGetItems()
     for _, v in ipairs(rawItems) do
         local itemId = v.ItemId
         local entry = Items[itemId]
@@ -1351,42 +1358,12 @@ end
                 continue
             end
             local ItemData = dataResult:unwrap()
-            local configResult = ItemConfig.match(itemId)
-            if not configResult or not configResult:isOk() then
-                continue
-            end
-            local ItemConfigData = configResult:unwrap()
-            local Type
-            local Rarity
-            if ItemData.Type == "Accessory"
-            or ItemData.Type == "Material"
-            or ItemData.Type == "Title"
-            or ItemData.Type == "Fruits"
-            or ItemData.Type == "Gun"
-            or ItemData.Type == "Sword" then
-                Type = ItemData.Type
-            elseif ItemData.Type == "Moveset" then
-                Type = ItemConfigData.Moveset and ItemConfigData.Moveset.Type
-            elseif ItemData.Type == "PhysicalMoveset" then
-                Type = ItemConfigData.Inventory and ItemConfigData.Inventory.Brackets and ItemConfigData.Inventory.Brackets[1]
-            else
-                Type = ItemData.Type
-            end
-            if ItemConfigData.Quality and ItemConfigData.Quality.RarityValue then
-                Rarity = ItemConfigData.Quality.RarityValue
-            end
             entry = {
-                Type = Type,
                 Name = ItemData.StorageKey,
                 ItemId = itemId,
-                NetworkedUID = v.NetworkedUID,
-                Rarity = Rarity
+                NetworkedUID = v.NetworkedUID
             }
-
             Items[itemId] = entry
-        end
-        if entry and v.Key then
-            entry[v.Key] = v.Value
         end
     end
     return Items
