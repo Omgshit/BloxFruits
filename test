@@ -1338,37 +1338,26 @@ end
 
   local function getInventory()
     local Items = {}
-
     local rawItems = ItemReplicationService:GetItems()
     if not rawItems or #rawItems == 0 then
-        warn("GetItems vazio")
         return Items
     end
-
     for _, v in ipairs(rawItems) do
         local itemId = v.ItemId
         local entry = Items[itemId]
-
         if not entry then
             local dataResult = ItemId.getDataFromId(itemId)
             if not dataResult or not dataResult:isOk() then
-                warn("Erro ItemData:", itemId)
                 continue
             end
-
             local ItemData = dataResult:unwrap()
-
             local configResult = ItemConfig.match(itemId)
             if not configResult or not configResult:isOk() then
-                warn("Erro ItemConfig:", itemId)
                 continue
             end
-
             local ItemConfigData = configResult:unwrap()
-
             local Type
             local Rarity
-
             if ItemData.Type == "Accessory"
             or ItemData.Type == "Material"
             or ItemData.Type == "Title"
@@ -1383,11 +1372,9 @@ end
             else
                 Type = ItemData.Type
             end
-
             if ItemConfigData.Quality and ItemConfigData.Quality.RarityValue then
                 Rarity = ItemConfigData.Quality.RarityValue
             end
-
             entry = {
                 Type = Type,
                 Name = ItemData.StorageKey,
@@ -1398,17 +1385,10 @@ end
 
             Items[itemId] = entry
         end
-
         if entry and v.Key then
             entry[v.Key] = v.Value
         end
     end
-
-   local count = 0
-for _ in pairs(Items) do
-    count = count + 1
-end
-print("Itens carregados:", count)
     return Items
 end
 
