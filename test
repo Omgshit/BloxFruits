@@ -1404,7 +1404,7 @@ end
         end
     end
 
-    print("Itens carregados:", #Items)
+    print("Itens carregados:", count) 
     return Items
 end
 
