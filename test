@@ -1338,43 +1338,73 @@ end
 
   local function getInventory()
     local Items = {}
-    for _, v in ipairs(ItemReplicationService:GetItems()) do
+
+    local rawItems = ItemReplicationService:GetItems()
+    if not rawItems or #rawItems == 0 then
+        warn("GetItems vazio")
+        return Items
+    end
+
+    for _, v in ipairs(rawItems) do
         local itemId = v.ItemId
         local entry = Items[itemId]
 
         if not entry then
-            local dataResult = ItemId.getDataFromId(itemId) 
-            if dataResult:isOk() then
-                local ItemData = dataResult:unwrap()
-				local ItemConfigData = ItemConfig.match(itemId):unwrap()
-                local Type
-				local Rarity 
-                if ItemData.Type == "Accessory" or ItemData.Type == "Material" or ItemData.Type == "Title" or ItemData.Type == "Fruits" or ItemData.Type == "Gun" or ItemData.Type == "Sword" then
-                    Type = ItemData.Type
-                elseif ItemData.Type == "Moveset" then
-                    Type = ItemConfigData.Moveset.Type
-                elseif ItemData.Type == "PhysicalMoveset" then
-                    Type = ItemConfigData.Inventory.Brackets[1]
-                else
-                    Type = ItemData.Type
-                end
-				if ItemConfigData.Quality and ItemConfigData.Quality.RarityValue then 
-					Rarity = ItemConfigData.Quality.RarityValue
-				end
-                entry = {
-                    Type = Type,
-                    Name = ItemData.StorageKey,
-                    ItemId = itemId,
-                    NetworkedUID = v.NetworkedUID,
-					Rarity = Rarity
-                }
-                Items[itemId] = entry
+            local dataResult = ItemId.getDataFromId(itemId)
+            if not dataResult or not dataResult:isOk() then
+                warn("Erro ItemData:", itemId)
+                continue
             end
+
+            local ItemData = dataResult:unwrap()
+
+            local configResult = ItemConfig.match(itemId)
+            if not configResult or not configResult:isOk() then
+                warn("Erro ItemConfig:", itemId)
+                continue
+            end
+
+            local ItemConfigData = configResult:unwrap()
+
+            local Type
+            local Rarity
+
+            if ItemData.Type == "Accessory"
+            or ItemData.Type == "Material"
+            or ItemData.Type == "Title"
+            or ItemData.Type == "Fruits"
+            or ItemData.Type == "Gun"
+            or ItemData.Type == "Sword" then
+                Type = ItemData.Type
+            elseif ItemData.Type == "Moveset" then
+                Type = ItemConfigData.Moveset and ItemConfigData.Moveset.Type
+            elseif ItemData.Type == "PhysicalMoveset" then
+                Type = ItemConfigData.Inventory and ItemConfigData.Inventory.Brackets and ItemConfigData.Inventory.Brackets[1]
+            else
+                Type = ItemData.Type
+            end
+
+            if ItemConfigData.Quality and ItemConfigData.Quality.RarityValue then
+                Rarity = ItemConfigData.Quality.RarityValue
+            end
+
+            entry = {
+                Type = Type,
+                Name = ItemData.StorageKey,
+                ItemId = itemId,
+                NetworkedUID = v.NetworkedUID,
+                Rarity = Rarity
+            }
+
+            Items[itemId] = entry
         end
-        if entry then
+
+        if entry and v.Key then
             entry[v.Key] = v.Value
         end
     end
+
+    print("Itens carregados:", #Items)
     return Items
 end
 
@@ -1435,6 +1465,7 @@ end
 		
 		task.spawn(function()
 			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
+            repeat task.wait() until #ItemReplicationService:GetItems() > 0
 			Inventory:Refresh()
 		end)
 		
