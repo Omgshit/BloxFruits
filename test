@@ -1365,7 +1365,7 @@ local function getInventory()
                 Count = 0 
             }
             Items[itemId] = entry
-        endd
+        end
         if v.Key then
             entry[v.Key] = v.Value
             if v.Key == "Quantity" then
