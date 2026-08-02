@@ -1351,7 +1351,7 @@ local function getInventory()
     local rawItems = safeGetItems()
     for _, v in ipairs(rawItems) do
         local itemId = v.ItemId
-        local entry = Items[itemId]
+        local entry = Items[ItemData.StorageKey]
             local dataResult = ItemId.getDataFromId(itemId)
             if not dataResult or not dataResult:isOk() then
                 continue
