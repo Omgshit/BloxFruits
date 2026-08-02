@@ -1352,7 +1352,6 @@ local function getInventory()
     for _, v in ipairs(rawItems) do
         local itemId = v.ItemId
         local entry = Items[itemId]
-        if not entry then
             local dataResult = ItemId.getDataFromId(itemId)
             if not dataResult or not dataResult:isOk() then
                 continue
@@ -1365,10 +1364,6 @@ local function getInventory()
                 Count = v.Value
             }
             Items[ItemData.StorageKey] = entry
-        end
-        if v.Key then
-            entry[v.Key] = v.Value
-        end
     end
     return Items
 end
