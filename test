@@ -1348,22 +1348,28 @@ end
 
 local function getInventory()
     local Items = {}
-    local rawItems = safeGetItems()
-    for _, v in ipairs(rawItems) do
+    for _, v in ipairs(safeGetItems()) do
         local itemId = v.ItemId
-        local entry = Items[ItemData.StorageKey]
-            local dataResult = ItemId.getDataFromId(itemId)
-            if not dataResult or not dataResult:isOk() then
-                continue
-            end
+        local dataResult = itemId and ItemId.getDataFromId(itemId)
+        if dataResult and dataResult:isOk() then
             local ItemData = dataResult:unwrap()
-            entry = {
-                Name = ItemData.StorageKey,
-                ItemId = itemId,
-                NetworkedUID = v.NetworkedUID,
-                Count = v.Value
-            }
-            Items[ItemData.StorageKey] = entry
+            local key = ItemData.StorageKey
+            local count = tonumber(v.Value) or tonumber(v.Count) or tonumber(v.Amount) 
+            local existing = Items[key]
+            if existing then
+                existing.Count = existing.Count + count
+            else
+                Items[key] = {
+                    Name = key,
+                    Type = ItemData.Type,
+                    ItemId = itemId,
+                    NetworkedUID = v.NetworkedUID,
+                    Count = count,
+                    Mastery = tonumber(v.Mastery),
+                    MasteryRequirements = ItemData.MasteryRequirements,
+                }
+            end
+        end
     end
     return Items
 end
