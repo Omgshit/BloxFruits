@@ -1365,11 +1365,11 @@ local function getInventory()
                 Count = 0 
             }
             Items[itemId] = entry
-        end
+        endd
         if v.Key then
             entry[v.Key] = v.Value
             if v.Key == "Quantity" then
-                entry.Count = v.Value
+                entry.Count = entry.Count + v.Value
             end
         end
     end
