@@ -1372,7 +1372,7 @@ local function getInventory()
             or v.Key == "Quantity"
             or v.Key == "Amount"
             or v.Key == "Stacks"
-            or v.Key == "Owned" then
+            or v.Key == "Owned" or v.Key == "Mastery" then
                 entry.Count = tonumber(v.Value) or entry.Count
             end
         end
