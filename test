@@ -1393,7 +1393,7 @@ end
         item.Type = "Accessory"
     end
     local name = item.Name
-    local count = tonumber(item.Count or item.Value or item.Quantity or item.Amount)
+    local count = item.Count
     local mastery = tonumber(item.Mastery)
     self.Items[name] = item
     self.Unlocked[name] = true
