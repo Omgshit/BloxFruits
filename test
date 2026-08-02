@@ -1362,15 +1362,12 @@ local function getInventory()
                 Name = ItemData.StorageKey,
                 ItemId = itemId,
                 NetworkedUID = v.NetworkedUID,
-                Count = 0 
+                Count = v.Value
             }
             Items[itemId] = entry
         end
         if v.Key then
             entry[v.Key] = v.Value
-            if v.Key == "Quantity" then
-                entry.Count = entry.Count + v.Value
-            end
         end
     end
     return Items
