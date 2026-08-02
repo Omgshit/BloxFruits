@@ -1369,7 +1369,7 @@ local function getInventory()
         if v.Key then
             entry[v.Key] = v.Value
             if v.Key == "Quantity" then
-                entry.Count = tonumber(v.Value) or entry.Count
+                entry.Count = v.Value
             end
         end
     end
