@@ -1364,7 +1364,6 @@ local function getInventory()
                 entry.Count = tonumber(v.Value) or 0
             elseif v.Key == "IsOwned" then
                 entry.Owned = v.Value == true
-                if entry.Count == 0 and v.Value == true then entry.Count = 1 end
             elseif v.Key == "Mastery" then
                 entry.Mastery = tonumber(v.Value)
             end
