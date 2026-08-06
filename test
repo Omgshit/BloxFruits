@@ -1701,6 +1701,11 @@ end
 			
 			return Combo
 		end
+
+      function FastAttack:GetFruitCombo(): number
+    _G.M1Combo = ((_G.M1Combo or 0) % 4) + 1
+    return _G.M1Combo
+end
 		
 		function FastAttack:UseFruitM1(Character: Character, Equipped: Tool, Combo: number): (nil)
 			local MyPosition = Character.Humanoid.RootPart.Position
@@ -1883,6 +1888,7 @@ end
 			
 			if (tick() - self.Debounce) >= Cooldown and CheckStun(ToolTip, Character, Humanoid) then
 				local Combo = self:GetCombo();
+                local FruitCombo = self:GetFruitCombo();
 				if Combo >= 4 then Cooldown += 0.05 end;
 				
 				self.Equipped = Equipped;
@@ -1890,7 +1896,7 @@ end
 				
 				if ToolTip == "Blox Fruit" and not self.NormalClickFruits[Equipped.Name] and not self.FruitClick[Equipped.Name] then
                   if Equipped:FindFirstChild("LeftClickRemote") then
-						self:UseFruitM1(Character, Equipped, 1)
+						self:UseFruitM1(Character, Equipped, FruitCombo)
 					end	
                 elseif ToolTip == "Blox Fruit" and self.FruitClick[Equipped.Name] then
 					if Equipped:FindFirstChild("LeftClickRemote") then
