@@ -1465,7 +1465,8 @@ end
 				["Dragonstorm"] = "Overheat"
 			},
            FruitClick = {
-				["Dragon-Dragon"] = true
+			  ["Dragon (East)-Dragon (East)"] = true,
+              ["Dragon (West)-Dragon (West)"] = true
 			},
 			NormalClickFruits = {
 				["Light-Light"] = true,
