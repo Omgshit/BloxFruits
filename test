@@ -1131,7 +1131,7 @@ Module.Enemies = (function()
 		
 		local function NewEnemyAdded(Enemy)
 			local EnemyName = Enemy.Name
-			local Others = EnemiesModule.__Others
+trueal Others = EnemiesModule.__Others
 			
 			Others[EnemyName] = Others[EnemyName] or {}
 			task.spawn(New, Others[EnemyName], Enemy)
@@ -1466,7 +1466,8 @@ end
 			},
            FruitClick = {
 				["Blade-Blade"] = true,
-				["Gas-Gas"] = true
+				["Gas-Gas"] = true,
+                ["T-Rex-T-Rex"]
 			},
 			NormalClickFruits = {
 				["Light-Light"] = true,
