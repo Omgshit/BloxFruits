@@ -19,7 +19,6 @@ local ItemId = require(ReplicatedStorage.Economy.ItemId)
 local ItemConfig = require(ReplicatedStorage.ItemConfig)
 
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
-local GunValidator: RemoteEvent = Remotes:WaitForChild("Validator2")
 local CommF: RemoteFunction = Remotes:WaitForChild("CommF_")
 local CommE: RemoteEvent = Remotes:WaitForChild("CommE")
 
@@ -1657,7 +1656,6 @@ end
 						
 						if ShootType == "Position" or (ShootType == "TAP" and Equipped:FindFirstChild("RemoteEvent")) then
 							Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-							GunValidator:FireServer(self:GetValidator2())
 							
 							if ShootType == "TAP" then
 								Equipped.RemoteEvent:FireServer("TAP", TargetPosition)
@@ -1738,34 +1736,6 @@ end
 				end
 			end
 		end
-		
-		function FastAttack:GetValidator2()
-			local v1 = getupvalue(SHOOT_FUNCTION, 15) -- v40, 15
-			local v2 = getupvalue(SHOOT_FUNCTION, 13) -- v41, 13
-			local v3 = getupvalue(SHOOT_FUNCTION, 16) -- v42, 16
-			local v4 = getupvalue(SHOOT_FUNCTION, 17) -- v43, 17
-			local v5 = getupvalue(SHOOT_FUNCTION, 14) -- v44, 14
-			local v6 = getupvalue(SHOOT_FUNCTION, 12) -- v45, 12
-			local v7 = getupvalue(SHOOT_FUNCTION, 18) -- v46, 18
-			
-			local v8 = v6 * v2									-- v133
-			local v9 = (v5 * v2 + v6 * v1) % v3 -- v134
-			
-			v9 = (v9 * v3 + v8) % v4
-			v5 = math.floor(v9 / v3)
-			v6 = v9 - v5 * v3
-			v7 = v7 + 1
-			
-			setupvalue(SHOOT_FUNCTION, 15, v1) -- v40, 15
-			setupvalue(SHOOT_FUNCTION, 13, v2) -- v41, 13
-			setupvalue(SHOOT_FUNCTION, 16, v3) -- v42, 16
-			setupvalue(SHOOT_FUNCTION, 17, v4) -- v43, 17
-			setupvalue(SHOOT_FUNCTION, 14, v5) -- v44, 14
-			setupvalue(SHOOT_FUNCTION, 12, v6) -- v45, 12
-			setupvalue(SHOOT_FUNCTION, 18, v7) -- v46, 18
-			
-			return math.floor(v9 / v4 * 16777215), v7
-		end  
 
     local function IsValidTarget(Target)
 	if not (Target and Target.Parent) then return false end
@@ -1783,7 +1753,6 @@ function FastAttack:ShootWithValidation(Position, Targets)
 	if not Equipped then return end
 	if Equipped.ToolTip ~= "Gun" then return end
 	Equipped:SetAttribute("LocalTotalShots",(Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-	GunValidator:FireServer(self:GetValidator2())
 	if Targets then
 		RE_ShootGunEvent:FireServer(Position, Targets)
 	else
@@ -1793,27 +1762,7 @@ end
 
 function FastAttack:HandleOverheat(Equipped, Data)
 	if Data.Shooting then return end
-   if workspace:FindFirstChild("SeaBeasts") then
-		for _, v in pairs(workspace.SeaBeasts:GetChildren()) do
-			if v:IsA("Model") and string.find(v.Name,"SeaBeast") then
-				seaBeast = v
-				break
-			end
-		end
-      for _, v in pairs(workspace.SeaBeasts:GetChildren()) do
-			if v:IsA("Model") and not string.find(v.Name,"SeaBeast") then
-				levi = v
-				break
-			end
-		end
-	end
-	if seaBeast then
-		self:UpdateBladeHits(500, false, true)
-    elseif levi then
-     self:UpdateBladeHits(700, false, true)
-	else
-		self:UpdateBladeHits(Data.Distance, false, true)
-	end
+	self:UpdateBladeHits(Data.Distance, false, true)
 	if #CurrentBladeHits == 0 then return end
 	local Position, PrimaryPart = ConvertToGunHits()
 	local Target = PrimaryPart
