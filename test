@@ -2080,7 +2080,7 @@ end
 				local Players = Players:GetPlayers()
 				local Enemies = Enemies:GetChildren()
 				
-				local Distance = if Equipped.ToolTip == "Gun" then 120 else 900
+				local Distance = 900
 				local ClosestsDistance = if Equipped.ToolTip == "Gun" then 120 else 60
 
                if not _G.NoAimPlayer then
@@ -2145,7 +2145,7 @@ end
 							for i = 1, #ClosestList do
 								local BasePart = ClosestList[i]
 								
-								if BasePart and (not Enemies[1] or (BasePart.Position - Enemies[1].Position).Magnitude <= 15) then
+								if BasePart and (not Enemies[1] or (BasePart.Position - Enemies[1].Position).Magnitude <= 100) then
 									table.insert(Enemies, BasePart)
 								end
 							end
