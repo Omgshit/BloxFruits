@@ -1404,23 +1404,8 @@ end
     end
 end
 		
-		function Inventory:RemoveItem(ItemName)
-			if type(ItemName) == "string" then
-				self.Unlocked[ItemName] = nil
-				self.Mastery[ItemName] = nil
-				self.Count[ItemName] = nil
-				self.Items[ItemName] = nil
-			end
-		end
-		
 		local function OnClientEvent(Method, ...)
-			if Method == "ItemChanged" then
-				Inventory:UpdateItem(...)
-			elseif Method == "ItemAdded" then
-				Inventory:UpdateItem(...)
-			elseif Method == "ItemRemoved" then
-				Inventory:RemoveItem(...)
-			elseif Method == "Notify" then
+			if Method == "Notify" then
 				Module.Signals.Notify:Fire(...)
 			end
 		end
