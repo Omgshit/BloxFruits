@@ -1742,29 +1742,27 @@ end
 
      function FastAttack:GetValidator2()
     if not ShootFunction then return 0, 0 end
-    local v1 = getupvalue(ShootFunction, 15)
-    local v2 = getupvalue(ShootFunction, 13)
-    local v3 = getupvalue(ShootFunction, 16)
-    local v4 = getupvalue(ShootFunction, 17)
-    local v5 = getupvalue(ShootFunction, 14)
-    local v6 = getupvalue(ShootFunction, 12)
-    local v7 = getupvalue(ShootFunction, 18)
-
+    local v1 = debug.getupvalue(ShootFunction, 13)
+    local v2 = debug.getupvalue(ShootFunction, 14)
+    local v3 = debug.getupvalue(ShootFunction, 15)
+    local v4 = debug.getupvalue(ShootFunction, 17)
+    local v7 = debug.getupvalue(ShootFunction, 19)
+    local v5 = debug.getupvalue(ShootFunction, 16)
+    local v6 = debug.getupvalue(ShootFunction, 12)
+    if not (v1 and v2 and v3 and v4 and v5 and v6) then
+        warn("validator quebrado")
+        return 0, 0
+    end
     local v8 = v6 * v2
     local v9 = (v5 * v2 + v6 * v1) % v3
     v9 = (v9 * v3 + v8) % v4
     v5 = math.floor(v9 / v3)
     v6 = v9 - v5 * v3
     v7 = v7 + 1
-    setupvalue(ShootFunction, 15, v1)
-    setupvalue(ShootFunction, 13, v2)
-    setupvalue(ShootFunction, 16, v3)
-    setupvalue(ShootFunction, 17, v4)
-    setupvalue(ShootFunction, 14, v5)
-    setupvalue(ShootFunction, 12, v6)
-    setupvalue(ShootFunction, 18, v7)
-
-    return math.floor(v9 / v4 * 16777215), v7
+    debug.setupvalue(ShootFunction, 16, v5)
+    debug.setupvalue(ShootFunction, 12, v6)
+    debug.setupvalue(ShootFunction, 19, v7)
+    return math.floor((v9 / v4) * 16777215), v7
 end
 
     local function IsValidTarget(Target)
