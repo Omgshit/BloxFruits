@@ -1478,7 +1478,7 @@ end
 		local RE_ShootGunEvent: RemoteEvent = Net:WaitForChild("RE/ShootGunEvent")
 		local RE_RegisterHit: RemoteEvent = Net:WaitForChild("RE/RegisterHit")
 		local Events: Folder = ReplicatedStorage:WaitForChild("Events")
-        self.ShootFunction = getupvalue(require(ReplicatedStorage.Controllers.CombatController).Attack, 9)
+        local ShootFunction = getupvalue(require(ReplicatedStorage.Controllers.CombatController).Attack, 9)
 		
 		local SUCCESS_FLAGS, COMBAT_REMOTE_THREAD = pcall(function()
 			return require(Modules.Flags).COMBAT_REMOTE_THREAD or false
@@ -1741,14 +1741,14 @@ end
 		end
 
      function FastAttack:GetValidator2()
-    if not self.ShootFunction then return 0, 0 end
-    local v1 = getupvalue(self.ShootFunction, 15)
-    local v2 = getupvalue(self.ShootFunction, 13)
-    local v3 = getupvalue(self.ShootFunction, 16)
-    local v4 = getupvalue(self.ShootFunction, 17)
-    local v5 = getupvalue(self.ShootFunction, 14)
-    local v6 = getupvalue(self.ShootFunction, 12)
-    local v7 = getupvalue(self.ShootFunction, 18)
+    if not ShootFunction then return 0, 0 end
+    local v1 = getupvalue(ShootFunction, 15)
+    local v2 = getupvalue(ShootFunction, 13)
+    local v3 = getupvalue(ShootFunction, 16)
+    local v4 = getupvalue(ShootFunction, 17)
+    local v5 = getupvalue(ShootFunction, 14)
+    local v6 = getupvalue(ShootFunction, 12)
+    local v7 = getupvalue(ShootFunction, 18)
 
     local v8 = v6 * v2
     local v9 = (v5 * v2 + v6 * v1) % v3
@@ -1756,13 +1756,13 @@ end
     v5 = math.floor(v9 / v3)
     v6 = v9 - v5 * v3
     v7 = v7 + 1
-    setupvalue(self.ShootFunction, 15, v1)
-    setupvalue(self.ShootFunction, 13, v2)
-    setupvalue(self.ShootFunction, 16, v3)
-    setupvalue(self.ShootFunction, 17, v4)
-    setupvalue(self.ShootFunction, 14, v5)
-    setupvalue(self.ShootFunction, 12, v6)
-    setupvalue(self.ShootFunction, 18, v7)
+    setupvalue(ShootFunction, 15, v1)
+    setupvalue(ShootFunction, 13, v2)
+    setupvalue(ShootFunction, 16, v3)
+    setupvalue(ShootFunction, 17, v4)
+    setupvalue(ShootFunction, 14, v5)
+    setupvalue(ShootFunction, 12, v6)
+    setupvalue(ShootFunction, 18, v7)
 
     return math.floor(v9 / v4 * 16777215), v7
 end
