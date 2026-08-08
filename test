@@ -1478,6 +1478,7 @@ end
 		local RE_ShootGunEvent: RemoteEvent = Net:WaitForChild("RE/ShootGunEvent")
 		local RE_RegisterHit: RemoteEvent = Net:WaitForChild("RE/RegisterHit")
 		local Events: Folder = ReplicatedStorage:WaitForChild("Events")
+        self.ShootFunction = getupvalue(require(ReplicatedStorage.Controllers.CombatController).Attack, 9)
 		
 		local SUCCESS_FLAGS, COMBAT_REMOTE_THREAD = pcall(function()
 			return require(Modules.Flags).COMBAT_REMOTE_THREAD or false
