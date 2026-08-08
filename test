@@ -1740,27 +1740,32 @@ end
 		end
 		
 		function FastAttack:GetValidator2()
-    local v1 = getupvalue(SHOOT_FUNCTION, 14) -- 798405
-    local v2 = getupvalue(SHOOT_FUNCTION, 16) -- 727595
-    local v3 = 1048576
-    local v4 = 1099511627776
-    local v5 = getupvalue(SHOOT_FUNCTION, 15) -- seed1
-    local v6 = getupvalue(SHOOT_FUNCTION, 17) -- seed2
-    local v7 = getupvalue(SHOOT_FUNCTION, 19) -- counter
-
+    local upvalues = {}
+    for i = 1, 30 do
+        local name, val = debug.getupvalue(SHOOT_FUNCTION, i)
+        if not name then break end
+        upvalues[i] = val
+    end
+    local v1 = upvalues[13]
+    local v2 = upvalues[11]
+    local v3 = upvalues[14]
+    local v4 = upvalues[15]
+    local v5 = upvalues[12]
+    local v6 = upvalues[10]
+    local v7 = upvalues[16]
+    if not (v1 and v2 and v3 and v4 and v5 and v6 and v7) then
+        warn("Validator quebrado - upvalues mudaram")
+        return 0, 0
+    end
     local v8 = v6 * v2
     local v9 = (v5 * v2 + v6 * v1) % v3
-
     v9 = (v9 * v3 + v8) % v4
-
     v5 = math.floor(v9 / v3)
     v6 = v9 - v5 * v3
     v7 = v7 + 1
-
-    setupvalue(SHOOT_FUNCTION, 15, v5)
-    setupvalue(SHOOT_FUNCTION, 17, v6)
-    setupvalue(SHOOT_FUNCTION, 19, v7)
-
+    debug.setupvalue(SHOOT_FUNCTION, 12, v5)
+    debug.setupvalue(SHOOT_FUNCTION, 10, v6)
+    debug.setupvalue(SHOOT_FUNCTION, 16, v7)
     return math.floor(v9 / v4 * 16777215), v7
 end
 
