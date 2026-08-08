@@ -1738,34 +1738,31 @@ end
 				end
 			end
 		end
-		
-		function FastAttack:GetValidator2()
-    local upvalues = {}
-    for i = 1, 30 do
-        local name, val = debug.getupvalue(SHOOT_FUNCTION, i)
-        if not name then break end
-        upvalues[i] = val
-    end
-    local v1 = upvalues[13]
-    local v2 = upvalues[11]
-    local v3 = upvalues[14]
-    local v4 = upvalues[15]
-    local v5 = upvalues[12]
-    local v6 = upvalues[10]
-    local v7 = upvalues[16]
-    if not (v1 and v2 and v3 and v4 and v5 and v6 and v7) then
-        warn("Validator quebrado - upvalues mudaram")
-        return 0, 0
-    end
+
+     function FastAttack:GetValidator2()
+    if not self.ShootFunction then return 0, 0 end
+    local v1 = getupvalue(self.ShootFunction, 15)
+    local v2 = getupvalue(self.ShootFunction, 13)
+    local v3 = getupvalue(self.ShootFunction, 16)
+    local v4 = getupvalue(self.ShootFunction, 17)
+    local v5 = getupvalue(self.ShootFunction, 14)
+    local v6 = getupvalue(self.ShootFunction, 12)
+    local v7 = getupvalue(self.ShootFunction, 18)
+
     local v8 = v6 * v2
     local v9 = (v5 * v2 + v6 * v1) % v3
     v9 = (v9 * v3 + v8) % v4
     v5 = math.floor(v9 / v3)
     v6 = v9 - v5 * v3
     v7 = v7 + 1
-    debug.setupvalue(SHOOT_FUNCTION, 12, v5)
-    debug.setupvalue(SHOOT_FUNCTION, 10, v6)
-    debug.setupvalue(SHOOT_FUNCTION, 16, v7)
+    setupvalue(self.ShootFunction, 15, v1)
+    setupvalue(self.ShootFunction, 13, v2)
+    setupvalue(self.ShootFunction, 16, v3)
+    setupvalue(self.ShootFunction, 17, v4)
+    setupvalue(self.ShootFunction, 14, v5)
+    setupvalue(self.ShootFunction, 12, v6)
+    setupvalue(self.ShootFunction, 18, v7)
+
     return math.floor(v9 / v4 * 16777215), v7
 end
 
