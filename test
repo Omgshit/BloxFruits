@@ -1742,26 +1742,30 @@ end
 
      function FastAttack:GetValidator2()
     if not ShootFunction then return 0, 0 end
-    local v1 = debug.getupvalue(ShootFunction, 13)
-    local v2 = debug.getupvalue(ShootFunction, 14)
-    local v3 = debug.getupvalue(ShootFunction, 15)
-    local v4 = debug.getupvalue(ShootFunction, 17)
-    local v7 = debug.getupvalue(ShootFunction, 19)
-    local v5 = debug.getupvalue(ShootFunction, 16)
-    local v6 = debug.getupvalue(ShootFunction, 12)
-    if not (v1 and v2 and v3 and v4 and v5 and v6) then
-        warn("validator quebrado")
+    local nums = {}
+    for i = 1, 25 do
+        local _, val = debug.getupvalue(ShootFunction, i)
+        if type(val) == "number" then
+            table.insert(nums, {i, val})
+        end
+    end
+    if #nums < 6 then
+        warn("Number ye")
         return 0, 0
     end
+    local v1 = nums[1][2]
+    local v2 = nums[2][2]
+    local v3 = nums[3][2]
+    local v4 = nums[4][2]
+    local v5 = nums[5][2]
+    local v6 = nums[6][2]
+    local v7 = nums[7] and nums[7][2] or 0
     local v8 = v6 * v2
     local v9 = (v5 * v2 + v6 * v1) % v3
     v9 = (v9 * v3 + v8) % v4
     v5 = math.floor(v9 / v3)
     v6 = v9 - v5 * v3
     v7 = v7 + 1
-    debug.setupvalue(ShootFunction, 16, v5)
-    debug.setupvalue(ShootFunction, 12, v6)
-    debug.setupvalue(ShootFunction, 19, v7)
     return math.floor((v9 / v4) * 16777215), v7
 end
 
