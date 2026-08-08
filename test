@@ -1657,7 +1657,7 @@ end
 						
 						if ShootType == "Position" or (ShootType == "TAP" and Equipped:FindFirstChild("RemoteEvent")) then
 							Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-							GunValidator:FireServer(self:GetValidator2())
+							GunValidator:FireServer()
 							
 							if ShootType == "TAP" then
 								Equipped.RemoteEvent:FireServer("TAP", TargetPosition)
@@ -1738,30 +1738,6 @@ end
 				end
 			end
 		end
-		
-		function FastAttack:GetValidatorFixed()
-    local v1 = getupvalue(SHOOT_FUNCTION, NEW_1)
-    local v2 = getupvalue(SHOOT_FUNCTION, NEW_2)
-    local v3 = 1048576
-    local v4 = 1099511627776
-    local v5 = getupvalue(SHOOT_FUNCTION, NEW_5)
-    local v6 = getupvalue(SHOOT_FUNCTION, NEW_6)
-    local v7 = getupvalue(SHOOT_FUNCTION, NEW_7)
-
-    local v8 = v6 * v2
-    local v9 = (v5 * v2 + v6 * v1) % v3
-
-    v9 = (v9 * v3 + v8) % v4
-    v5 = math.floor(v9 / v3)
-    v6 = v9 - v5 * v3
-    v7 = v7 + 1
-
-    setupvalue(SHOOT_FUNCTION, NEW_5, v5)
-    setupvalue(SHOOT_FUNCTION, NEW_6, v6)
-    setupvalue(SHOOT_FUNCTION, NEW_7, v7)
-
-    return math.floor(v9 / v4 * 16777215), v7
-end
 
     local function IsValidTarget(Target)
 	if not (Target and Target.Parent) then return false end
@@ -1779,7 +1755,7 @@ function FastAttack:ShootWithValidation(Position, Targets)
 	if not Equipped then return end
 	if Equipped.ToolTip ~= "Gun" then return end
 	Equipped:SetAttribute("LocalTotalShots",(Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-	GunValidator:FireServer(self:GetValidator2())
+	GunValidator:FireServer()
 	if Targets then
 		RE_ShootGunEvent:FireServer(Position, Targets)
 	else
