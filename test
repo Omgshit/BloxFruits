@@ -1468,10 +1468,6 @@ end
 			return require(Modules.Flags).COMBAT_REMOTE_THREAD or false
 		end)
 		
-		local SUCCESS_SHOOT, SHOOT_FUNCTION = pcall(function()
-			return getupvalue(require(ReplicatedStorage.Controllers.CombatController).Attack, 9)
-		end)
-		
 		local HIT_FUNCTION; task.defer(function()			
 			if getsenv then
 					HIT_FUNCTION = (getmenv or getsenv)(Net)._G.SendHitsToServer
@@ -1641,8 +1637,7 @@ end
 						local ShootType = self.SpecialShoots[Equipped.Name] or "Normal"
 						
 						if ShootType == "Position" or (ShootType == "TAP" and Equipped:FindFirstChild("RemoteEvent")) then
-							Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-							GunValidator:FireServer(self:GetValidator2())
+							Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 
 							
 							if ShootType == "TAP" then
 								Equipped.RemoteEvent:FireServer("TAP", TargetPosition)
@@ -1723,34 +1718,6 @@ end
 				end
 			end
 		end
-		
-		function FastAttack:GetValidator2()
-			local v1 = getupvalue(SHOOT_FUNCTION, 15) -- v40, 15
-			local v2 = getupvalue(SHOOT_FUNCTION, 13) -- v41, 13
-			local v3 = getupvalue(SHOOT_FUNCTION, 16) -- v42, 16
-			local v4 = getupvalue(SHOOT_FUNCTION, 17) -- v43, 17
-			local v5 = getupvalue(SHOOT_FUNCTION, 14) -- v44, 14
-			local v6 = getupvalue(SHOOT_FUNCTION, 12) -- v45, 12
-			local v7 = getupvalue(SHOOT_FUNCTION, 18) -- v46, 18
-			
-			local v8 = v6 * v2									-- v133
-			local v9 = (v5 * v2 + v6 * v1) % v3 -- v134
-			
-			v9 = (v9 * v3 + v8) % v4
-			v5 = math.floor(v9 / v3)
-			v6 = v9 - v5 * v3
-			v7 = v7 + 1
-			
-			setupvalue(SHOOT_FUNCTION, 15, v1) -- v40, 15
-			setupvalue(SHOOT_FUNCTION, 13, v2) -- v41, 13
-			setupvalue(SHOOT_FUNCTION, 16, v3) -- v42, 16
-			setupvalue(SHOOT_FUNCTION, 17, v4) -- v43, 17
-			setupvalue(SHOOT_FUNCTION, 14, v5) -- v44, 14
-			setupvalue(SHOOT_FUNCTION, 12, v6) -- v45, 12
-			setupvalue(SHOOT_FUNCTION, 18, v7) -- v46, 18
-			
-			return math.floor(v9 / v4 * 16777215), v7
-		end  
 
     local function IsValidTarget(Target)
 	if not (Target and Target.Parent) then return false end
@@ -1768,7 +1735,6 @@ function FastAttack:ShootWithValidation(Position, Targets)
 	if not Equipped then return end
 	if Equipped.ToolTip ~= "Gun" then return end
 	Equipped:SetAttribute("LocalTotalShots",(Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-	GunValidator:FireServer(self:GetValidator2())
 	if Targets then
 		RE_ShootGunEvent:FireServer(Position, Targets)
 	else
@@ -1882,9 +1848,7 @@ end
 						self:UseFruitM1(Character, Equipped, Combo)
 					end
 				elseif ToolTip == "Gun" then
-					if SUCCESS_SHOOT and SHOOT_FUNCTION then
 						self:UseGunShoot(Character, Equipped)
-					end
 	    	  elseif ToolTip == "Melee" or ToolTip == "Sword" or self.NormalClickFruits[Equipped.Name] then
 		      	self:UseNormalClick(Cooldown)
 				end
