@@ -1637,7 +1637,7 @@ end
 						local ShootType = self.SpecialShoots[Equipped.Name] or "Normal"
 						
 						if ShootType == "Position" or (ShootType == "TAP" and Equipped:FindFirstChild("RemoteEvent")) then
-							Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1
+							Equipped:SetAttribute("LocalTotalShots", (Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
 							
 							if ShootType == "TAP" then
 								Equipped.RemoteEvent:FireServer("TAP", TargetPosition)
