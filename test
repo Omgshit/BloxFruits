@@ -2145,7 +2145,7 @@ end
 							for i = 1, #ClosestList do
 								local BasePart = ClosestList[i]
 								
-								if BasePart and (not Enemies[1] or (BasePart.Position - Enemies[1].Position).Magnitude <= 300 then
+								if BasePart and (not Enemies[1] or (BasePart.Position - Enemies[1].Position).Magnitude <= 300) then
 									table.insert(Enemies, BasePart)
 								end
 							end
