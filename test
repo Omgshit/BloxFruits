@@ -1139,7 +1139,7 @@ Module.Enemies = (function()
 			if Enemy:GetAttribute("RaidBoss") then
 				task.spawn(New, EnemiesModule.__RaidBoss, Enemy)
 			elseif EnemiesModule[`__{ EnemyName }`] then
-Attackask.spawn(New, EnemiesModule[`__{ EnemyName }`], Enemy)
+				task.spawn(New, EnemiesModule[`__{ EnemyName }`], Enemy)
 			else
 				for Tag, Mobs in pairs(TagsMobs) do
 					if Mobs[EnemyName] then
