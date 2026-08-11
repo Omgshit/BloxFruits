@@ -1764,16 +1764,39 @@ end
 end
 
 function FastAttack:ShootWithValidation(Position, Targets)
-	local Equipped = Player.Character and Player.Character:FindFirstChildOfClass("Tool")
-	if not Equipped then return end
-	if Equipped.ToolTip ~= "Gun" then return end
-	Equipped:SetAttribute("LocalTotalShots",(Equipped:GetAttribute("LocalTotalShots") or 0) + 1)
-	GunValidator:FireServer(self:GetValidator2())
-	if Targets then
-		RE_ShootGunEvent:FireServer(Position, Targets)
-	else
-		RE_ShootGunEvent:FireServer(Position)
-	end
+    local Equipped = Player.Character and Player.Character:FindFirstChildOfClass("Tool")
+    if not Equipped then
+        warn("NO TOOL")
+        return
+    end
+
+    if Equipped.ToolTip ~= "Gun" then
+        warn("NOT GUN:", Equipped.Name, Equipped.ToolTip)
+        return
+    end
+
+    local Validator = self:GetValidator2()
+
+    print(
+        "SHOOT:",
+        Equipped.Name,
+        "Position:", Position,
+        "Targets:", Targets and #Targets or "nil",
+        "Validator:", Validator
+    )
+
+    Equipped:SetAttribute(
+        "LocalTotalShots",
+        (Equipped:GetAttribute("LocalTotalShots") or 0) + 1
+    )
+
+    GunValidator:FireServer(Validator)
+
+    if Targets then
+        RE_ShootGunEvent:FireServer(Position, Targets)
+    else
+        RE_ShootGunEvent:FireServer(Position)
+    end
 end
 
 function FastAttack:HandleOverheat(Equipped, Data)
