@@ -1726,7 +1726,7 @@ end
 
 local v_u_38 = 727595
 local v_u_39 = 798405
-local v_u_40 = 1048576 + shared("")
+local v_u_40 = 1048576 
 local v_u_41 = 1099511627776
 local v_u_42 = 0
 local v_u_43 = 1
