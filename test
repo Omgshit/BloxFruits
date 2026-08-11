@@ -1723,31 +1723,24 @@ end
 				end
 			end
 		end
-		
-		function FastAttack:GetValidator2()
-    local v1 = getupvalue(SHOOT_FUNCTION, 15)
-    local v2 = getupvalue(SHOOT_FUNCTION, 13)
-    local v3 = getupvalue(SHOOT_FUNCTION, 16)
-    local v4 = getupvalue(SHOOT_FUNCTION, 17)
-    local v5 = getupvalue(SHOOT_FUNCTION, 14)
-    local v7 = getupvalue(SHOOT_FUNCTION, 18)
 
-    local v8 = v5 * v2
-    local v9 = (v5 * v2) % v3
-
-    v9 = (v9 * v3 + v8) % v4
-    v5 = math.floor(v9 / v3)
-
-    v7 = v7 + 1
-
-    setupvalue(SHOOT_FUNCTION, 15, v1)
-    setupvalue(SHOOT_FUNCTION, 13, v2)
-    setupvalue(SHOOT_FUNCTION, 16, v3)
-    setupvalue(SHOOT_FUNCTION, 17, v4)
-    setupvalue(SHOOT_FUNCTION, 14, v5)
-    setupvalue(SHOOT_FUNCTION, 18, v7)
-
-    return v7, math.floor(v9 / v4 * 16777215)
+local v_u_38 = 727595
+local v_u_39 = 798405
+local v_u_40 = 1048576 + shared("")
+local v_u_41 = 1099511627776
+local v_u_42 = 0
+local v_u_43 = 1
+local v_u_44 = 0
+function FastAttack:GetValidator2()
+    local v117 = v_u_43 * v_u_39
+    local v118 = (v_u_42 * v_u_39 + v_u_43 * v_u_38) % v_u_40
+    v118 = (v118 * v_u_40 + v117) % v_u_41
+    local v119 = v118 / v_u_40
+    v_u_42 = math.floor(v119)
+    v_u_43 = v118 - v_u_42 * v_u_40
+    v_u_44 += 1
+    local v121 = v118 / v_u_41 * 16777215
+    return math.floor(v121), v_u_44
 end
 
     local function IsValidTarget(Target)
