@@ -1747,7 +1747,7 @@ end
     setupvalue(SHOOT_FUNCTION, 14, v5)
     setupvalue(SHOOT_FUNCTION, 18, v7)
 
-    return math.floor(v4 / v9 * 16777215), v7
+    return v7, math.floor(v9 / v4 * 16777215)
 end
 
     local function IsValidTarget(Target)
