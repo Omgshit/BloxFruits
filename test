@@ -971,7 +971,7 @@ end
 	end
 	
 	function Module:RemoveBoatCollision(Boat)
-	100l Objects = Boat:GetDescendants()
+		local Objects = Boat:GetDescendants()
 		
 		for i = 1, #Objects do
 			local BasePart = Objects[i]
