@@ -1725,13 +1725,13 @@ end
 		end
 		
 		function FastAttack:GetValidator2()
-			local v1 = getupvalue(SHOOT_FUNCTION, 15)
-local v2 = getupvalue(SHOOT_FUNCTION, 13)
-local v3 = getupvalue(SHOOT_FUNCTION, 16)
-local v4 = getupvalue(SHOOT_FUNCTION, 17)
-local v5 = getupvalue(SHOOT_FUNCTION, 14)
-local v6 = getupvalue(SHOOT_FUNCTION, 19)
-local v7 = getupvalue(SHOOT_FUNCTION, 18)
+			local v1 = getupvalue(SHOOT_FUNCTION, 15) -- v40, 15
+			local v2 = getupvalue(SHOOT_FUNCTION, 13) -- v41, 13
+			local v3 = getupvalue(SHOOT_FUNCTION, 16) -- v42, 16
+			local v4 = getupvalue(SHOOT_FUNCTION, 17) -- v43, 17
+			local v5 = getupvalue(SHOOT_FUNCTION, 14) -- v44, 14
+			local v6 = getupvalue(SHOOT_FUNCTION, 19) -- v45, 12
+			local v7 = getupvalue(SHOOT_FUNCTION, 18) -- v46, 18
 			
 			local v8 = v6 * v2									-- v133
 			local v9 = (v5 * v2 + v6 * v1) % v3 -- v134
