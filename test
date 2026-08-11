@@ -1730,7 +1730,7 @@ end
 			local v3 = getupvalue(SHOOT_FUNCTION, 16) -- v42, 16
 			local v4 = getupvalue(SHOOT_FUNCTION, 17) -- v43, 17
 			local v5 = getupvalue(SHOOT_FUNCTION, 14) -- v44, 14
-			local v6 = getupvalue(SHOOT_FUNCTION, 12) -- v45, 12
+			local v6 = getupvalue(SHOOT_FUNCTION, 13) -- v45, 12
 			local v7 = getupvalue(SHOOT_FUNCTION, 18) -- v46, 18
 			
 			local v8 = v6 * v2									-- v133
@@ -1746,7 +1746,7 @@ end
 			setupvalue(SHOOT_FUNCTION, 16, v3) -- v42, 16
 			setupvalue(SHOOT_FUNCTION, 17, v4) -- v43, 17
 			setupvalue(SHOOT_FUNCTION, 14, v5) -- v44, 14
-			setupvalue(SHOOT_FUNCTION, 12, v6) -- v45, 12
+			setupvalue(SHOOT_FUNCTION, 13, v6) -- v45, 12
 			setupvalue(SHOOT_FUNCTION, 18, v7) -- v46, 18
 			
 			return math.floor(v9 / v4 * 16777215), v7
