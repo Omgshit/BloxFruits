@@ -1403,14 +1403,15 @@ end
         self.MasteryRequirements[name] = item.MasteryRequirements
     end
 end
+
+      function Inventory:Refresh() for _, item in pairs(getInventory()) do self:UpdateItem(item) end end
 		
 		local function OnClientEvent(Method, ...)
 			if Method == "Notify" then
 				Module.Signals.Notify:Fire(...)
+                Inventory:Refresh()
 			end
 		end
-
-        function Inventory:Refresh() for _, item in pairs(getInventory()) do self:UpdateItem(item) end end
 		
 		task.spawn(function()
 			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
