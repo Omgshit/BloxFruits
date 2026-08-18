@@ -2077,7 +2077,7 @@ end
 				local Players = Players:GetPlayers()
 				local Enemies = Enemies:GetChildren()
 				
-				local Distance = 900
+				local Distance = if _ENV.rz_EnabledOptions.DragonHunter then 120 else 900
 				local ClosestsDistance = if Equipped.ToolTip == "Gun" then 120 else 60
 
                if not _G.NoAimPlayer then
