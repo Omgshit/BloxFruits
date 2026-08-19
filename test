@@ -1405,17 +1405,23 @@ end
 end
 
       function Inventory:Refresh() for _, item in pairs(getInventory()) do self:UpdateItem(item) end end
+
+      spawn(function()
+        while task.wait(Settings.SmoothMode and 0.25 or 0) do
+            pcall(function()
+               Inventory:Refresh()
+            end)
+        end
+    end)
 		
 		local function OnClientEvent(Method, ...)
 			if Method == "Notify" then
 				Module.Signals.Notify:Fire(...)
-                Inventory:Refresh()
 			end
 		end
 		
 		task.spawn(function()
 			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
-			Inventory:Refresh()
 		end)
 		
 		return Inventory
