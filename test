@@ -1420,6 +1420,7 @@ end
 		
 		task.spawn(function()
 			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
+            for _, item in pairs(getInventory()) do self:UpdateItem(item) end
 		end)
 		
 		return Inventory
