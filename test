@@ -1411,7 +1411,7 @@ end
             pcall(function()
                Inventory:Refresh() 
             end)
-            task.wait(Settings.SmoothMode and 0.25 or 0.05)
+            task.wait(Settings.SmoothMode and 0.25 or 0.15)
         end
     end)
 		
