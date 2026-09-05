@@ -1407,7 +1407,7 @@ end
       function Inventory:Refresh() for _, item in pairs(getInventory()) do self:UpdateItem(item) end end
 
       spawn(function()
-        while task.wait(600) do
+        while task.wait(100) do
             pcall(function()
                  Inventory:Refresh() 
             end)
