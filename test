@@ -310,15 +310,21 @@ local Module = {} do
 
        CACHE_NPC_LIST = require(game.ReplicatedStorage.GuideModule).Data.NPCList
 function getQuestPosition(Name)
-    for i, v in next, CACHE_NPC_LIST do
+    for _, v in next, CACHE_NPC_LIST do
         if typeof(v) == "table" then
-            for r, x in next, v do
+            for _, x in next, v do
                 if x == Name then
-                    return v.Position
+                    local Position = v.Position
+                    if typeof(Position) == "CFrame" then
+                        return Position
+                    elseif typeof(Position) == "Vector3" then
+                        return CFrame.new(Position)
+                    end
                 end
             end
         end
     end
+    return nil
 end
 		
 		Module.Bosses = {
