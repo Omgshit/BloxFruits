@@ -312,86 +312,86 @@ local Module = {} do
 			-- Bosses Sea 1
 			["Saber Expert"] = {
 				NoQuest = true,
-				Position = CFrame.new(-1461, 30, -51)
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Saber Expert"].CFrame
 			},
 			["The Saw"] = {
 				RaidBoss = true,
-				Position = CFrame.new(-690, 15, 1583)
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["The Saw"].CFrame
 			},
 			["Greybeard"] = {
 				RaidBoss = true,
-				Position = CFrame.new(-5043, 25, 4262)
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Greybeard"].CFrame
 			},
 			["The Gorilla King"] = {
 				IsBoss = true,
 				Level = 20,
-				Position = CFrame.new(-1128, 6, -451),
+				Position =game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["The Gorilla King"].CFrame,
 				Quest = {"JungleQuest", CFrame.new(-1598, 37, 153)}
 			},
 			["Bobby"] = {
 				IsBoss = true,
 				Level = 55,
-				Position = CFrame.new(-1131, 14, 4080),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Bobby"].CFrame,
 				Quest = {"BuggyQuest1", CFrame.new(-1140, 4, 3829)}
 			},
 			["Yeti"] = {
 				IsBoss = true,
 				Level = 105,
-				Position = CFrame.new(1185, 106, -1518),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Yeti"].CFrame,
 				Quest = {"SnowQuest", CFrame.new(1385, 87, -1298)}
 			},
 			["Vice Admiral"] = {
 				IsBoss = true,
 				Level = 130,
-				Position = CFrame.new(-4807, 21, 4360),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Vice Admiral"].CFrame,
 				Quest = {"MarineQuest2", CFrame.new(-5035, 29, 4326), 2}
 			},
 			["Swan"] = {
 				IsBoss = true,
 				Level = 240,
-				Position = CFrame.new(5230, 4, 749),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Swan"].CFrame,
 				Quest = {"ImpelQuest", CFrame.new(5191, 4, 692)}
 			},
 			["Chief Warden"] = {
 				IsBoss = true,
 				Level = 230,
-				Position = CFrame.new(5230, 4, 749),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Chief Warden"].CFrame,
 				Quest = {"ImpelQuest", CFrame.new(5191, 4, 692), 2}
 			},
 			["Warden"] = {
 				IsBoss = true,
 				Level = 220,
-				Position = CFrame.new(5230, 4, 749),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Warden"].CFrame,
 				Quest = {"ImpelQuest", CFrame.new(5191, 4, 692), 1}
 			},
 			["Magma Admiral"] = {
 				IsBoss = true,
 				Level = 350,
-				Position = CFrame.new(-5694, 18, 8735),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Magma Admiral"].CFrame,
 				Quest = {"MagmaQuest", CFrame.new(-5319, 12, 8515)}
 			},
 			["Fishman Lord"] = {
 				IsBoss = true,
 				Level = 425,
-				Position = CFrame.new(61350, 31, 1095),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Fishman Lord"].CFrame,
 				Quest = {"FishmanQuest", CFrame.new(61122, 18, 1567)}
 			},
 			["Wysper"] = {
 				IsBoss = true,
 				Level = 500,
-				Position = CFrame.new(-7927, 5551, -637),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Wysper"].CFrame,
 				Quest = {"SkyExp1Quest", CFrame.new(-7861, 5545, -381)}
 			},
 			["Thunder God"] = {
 				IsBoss = true,
 				Level = 575,
-				Position = CFrame.new(-7751, 5607, -2315),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Thunder God"].CFrame,
 				Quest = {"SkyExp2Quest", CFrame.new(-7903, 5636, -1412)}
 			},
 			["Cyborg"] = {
 				IsBoss = true,
 				Level = 675,
-				Position = CFrame.new(6138, 10, 3939),
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Cyborg"].CFrame,
 				Quest = {"FountainQuest", CFrame.new(5258, 39, 4052)}
 			},
 			
