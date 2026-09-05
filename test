@@ -399,7 +399,7 @@ end
 				IsBoss = true,
 				Level = 500,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Wysper"].CFrame,
-				Quest = {"SkyExp1Quest", getQuestPosition("SkyExp3Quest")}
+				Quest = {"SkyExp1Quest", getQuestPosition("SkyExpQuest")}
 			},
 			["Thunder God"] = {
 				IsBoss = true,
