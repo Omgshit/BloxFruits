@@ -2229,7 +2229,7 @@ end
 	end)()
 
   task.defer(function()
-	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "Effect", "Container", "Death"))
+	 	local DeathEffect = require(WaitChilds(ReplicatedStorage, "EffectContainer", "Death"))
 	 	local CameraShaker = require(WaitChilds(ReplicatedStorage, "Util", "CameraShaker"))
 		if CameraShaker then
 	 		CameraShaker:Stop()
