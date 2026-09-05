@@ -1300,7 +1300,7 @@ local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChil
             BodyPosition.Position = Target.Position
           end
          else
-          if (RootPart.Position - Target.Position).Magnitude <= 300 then
+          if (RootPart.Position - Target.Position).Magnitude <= 250 then
             RootPart.CFrame = Target
             RootPart.CanCollide = false
           else
