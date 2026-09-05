@@ -371,21 +371,6 @@ end
             Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Vice Admiral"].CFrame,
             Quest = {"MarineQuest2", getQuestPosition("MarineQuest2"), 2}
         },
-
-        ["Swan"] = {
-            IsBoss = true,
-            Level = 240,
-            Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Swan"].CFrame,
-            Quest = {"ImpelQuest", getQuestPosition("ImpelQuest")}
-        },
-
-        ["Chief Warden"] = {
-            IsBoss = true,
-            Level = 230,
-            Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Chief Warden"].CFrame,
-            Quest = {"ImpelQuest", getQuestPosition("ImpelQuest"), 2}
-        },
-
         ["Warden"] = {
             IsBoss = true,
             Level = 220,
