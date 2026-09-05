@@ -253,7 +253,7 @@ local Module = {} do
 		Sea = SeaId,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
-		MaxLevel = game.Workspace:GetAttribute("LEVEL_CAP"),
+		MaxLevel = game.Players.LocalPlayer:GetAttribute("LevelCap"),
         StringVersion = require(ReplicatedStorage.BuildInfo).VERSION
 	}
 	
