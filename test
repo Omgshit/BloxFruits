@@ -344,7 +344,7 @@ end
 			["The Gorilla King"] = {
 				IsBoss = true,
 				Level = 20,
-				Position =game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["The Gorilla King"].CFrame,
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["The Gorilla King"].CFrame,
 				Quest = {"JungleQuest", getQuestPosition("JungleQuest")}
 			},
 			["Bobby"] = {
