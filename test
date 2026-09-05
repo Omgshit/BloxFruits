@@ -307,6 +307,19 @@ local Module = {} do
 			["rbxassetid://118054805452821"] = "Gas",
 			["rbxassetid://95749033139458"] = "Dragon East"
 		}
+
+       CACHE_NPC_LIST = require(game.ReplicatedStorage.GuideModule).Data.NPCList
+function getQuestPosition(Name)
+    for i, v in next, CACHE_NPC_LIST do
+        if typeof(v) == "table" then
+            for r, x in next, v do
+                if x == Name then
+                    return CFrame.new(v.Position)
+                end
+            end
+        end
+    end
+end
 		
 		Module.Bosses = {
 			-- Bosses Sea 1
@@ -326,73 +339,73 @@ local Module = {} do
 				IsBoss = true,
 				Level = 20,
 				Position =game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["The Gorilla King"].CFrame,
-				Quest = {"JungleQuest", CFrame.new(-1598, 37, 153)}
+				Quest = {"JungleQuest", getQuestPosition("JungleQuest")}
 			},
 			["Bobby"] = {
 				IsBoss = true,
 				Level = 55,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Chef"].CFrame,
-				Quest = {"BuggyQuest1", CFrame.new(-1140, 4, 3829)}
+				Quest = {"BuggyQuest1", getQuestPosition("BuggyQuest1")}
 			},
 			["Yeti"] = {
 				IsBoss = true,
 				Level = 105,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Yeti"].CFrame,
-				Quest = {"SnowQuest", CFrame.new(1385, 87, -1298)}
+				Quest = {"SnowQuest", getQuestPosition("SnowQuest")}
 			},
 			["Vice Admiral"] = {
 				IsBoss = true,
 				Level = 130,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Vice Admiral"].CFrame,
-				Quest = {"MarineQuest2", CFrame.new(-5035, 29, 4326), 2}
+				Quest = {"MarineQuest2", getQuestPosition("MarineQuest2"), 2}
 			},
 			["Swan"] = {
 				IsBoss = true,
 				Level = 240,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Swan"].CFrame,
-				Quest = {"ImpelQuest", CFrame.new(5191, 4, 692)}
+				Quest = {"ImpelQuest", getQuestPosition("ImpelQuest")}
 			},
 			["Chief Warden"] = {
 				IsBoss = true,
 				Level = 230,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Chief Warden"].CFrame,
-				Quest = {"ImpelQuest", CFrame.new(5191, 4, 692), 2}
+				Quest = {"ImpelQuest", getQuestPosition("ImpelQuest"), 2}
 			},
 			["Warden"] = {
 				IsBoss = true,
 				Level = 220,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Warden"].CFrame,
-				Quest = {"ImpelQuest", CFrame.new(5191, 4, 692), 1}
+				Quest = {"ImpelQuest", getQuestPosition("ImpelQuest"), 1}
 			},
 			["Magma Admiral"] = {
 				IsBoss = true,
 				Level = 350,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Magma Admiral"].CFrame,
-				Quest = {"MagmaQuest", CFrame.new(-5319, 12, 8515)}
+				Quest = {"MagmaQuest", getQuestPosition("MagmaQuest")}
 			},
 			["Fishman Lord"] = {
 				IsBoss = true,
 				Level = 425,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Fishman Lord"].CFrame,
-				Quest = {"FishmanQuest", CFrame.new(61122, 18, 1567)}
+				Quest = {"FishmanQuest", getQuestPosition("FishmanQuest")}
 			},
 			["Wysper"] = {
 				IsBoss = true,
 				Level = 500,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Wysper"].CFrame,
-				Quest = {"SkyExp1Quest", CFrame.new(-7861, 5545, -381)}
+				Quest = {"SkyExp1Quest", getQuestPosition("SkyExp1Quest")}
 			},
 			["Thunder God"] = {
 				IsBoss = true,
 				Level = 575,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Thunder God"].CFrame,
-				Quest = {"SkyExp2Quest", CFrame.new(-7903, 5636, -1412)}
+				Quest = {"SkyExp2Quest", getQuestPosition("SkyExp2Quest")}
 			},
 			["Cyborg"] = {
 				IsBoss = true,
 				Level = 675,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Cyborg"].CFrame,
-				Quest = {"FountainQuest", CFrame.new(5258, 39, 4052)}
+				Quest = {"FountainQuest", getQuestPosition("FountainQuest")}
 			},
 			
 			-- Bosses Sea 2
