@@ -328,7 +328,7 @@ function getQuestPosition(Name)
 end
 		
 		Module.Bosses = {
-			-- Bosses Sea 1
+			if SeaId == 1 then
 			["Saber Expert"] = {
 				NoQuest = true,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Saber Expert"].CFrame
@@ -414,7 +414,7 @@ end
 				Quest = {"FountainQuest", getQuestPosition("FountainQuest")}
 			},
 			
-			-- Bosses Sea 2
+			elseif SeaId == 2 then
 			["Don Swan"] = {
 				RaidBoss = true,
 				Position = CFrame.new(2289, 15, 808)
@@ -464,7 +464,7 @@ end
 				Quest = {"ForgottenQuest", CFrame.new(-3056, 240, -10145)}
 			},
 			
-			-- Bosses Sea 3
+			elseif SeaId == 3 then
 			["Tyrant of the Skies"] = {
 				RaidBoss = true,
 				Position = CFrame.new(-16252, 153, 1394)
@@ -521,6 +521,7 @@ end
 				NoQuest = true,
 				Position = CFrame.new(-10218, 333, -9444)
 			}
+           end
 		}
 		
 		Module.Shop = {
