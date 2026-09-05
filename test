@@ -331,7 +331,7 @@ local Module = {} do
 			["Bobby"] = {
 				IsBoss = true,
 				Level = 55,
-				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Bobby"].CFrame,
+				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Chief"].CFrame,
 				Quest = {"BuggyQuest1", CFrame.new(-1140, 4, 3829)}
 			},
 			["Yeti"] = {
