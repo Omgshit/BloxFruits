@@ -399,13 +399,13 @@ end
 				IsBoss = true,
 				Level = 500,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Wysper"].CFrame,
-				Quest = {"SkyExp1Quest", getQuestPosition("SkyExp1Quest")}
+				Quest = {"SkyExp1Quest", getQuestPosition("SkyExp2Quest")}
 			},
 			["Thunder God"] = {
 				IsBoss = true,
 				Level = 575,
 				Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Thunder God"].CFrame,
-				Quest = {"SkyExp2Quest", getQuestPosition("SkyExp2Quest")}
+				Quest = {"SkyExp2Quest", getQuestPosition("SkyExp3Quest")}
 			},
 			["Cyborg"] = {
 				IsBoss = true,
