@@ -1410,12 +1410,11 @@ end
 
       function Inventory:Refresh() for _, item in pairs(getInventory()) do self:UpdateItem(item) end end
 
-      task.spawn(function()
-        while true do
+      spawn(function()
+        while task.wait(Settings.SmoothMode and 0.25 or 0.15) do
             pcall(function()
-               Inventory:Refresh() 
+                 Inventory:Refresh() 
             end)
-            task.wait(Settings.SmoothMode and 0.25 or 0.15)
         end
     end)
 		
