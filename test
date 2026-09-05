@@ -314,7 +314,7 @@ function getQuestPosition(Name)
         if typeof(v) == "table" then
             for r, x in next, v do
                 if x == Name then
-                    return CFrame.new(v.Position)
+                    return v.Position
                 end
             end
         end
