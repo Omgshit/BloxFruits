@@ -392,14 +392,14 @@ end
             Quest = {"FishmanQuest", getQuestPosition("FishmanQuest")}
         },
 
-        ["Wysper"] = {
+        ["Sky Warlord"] = {
             IsBoss = true,
             Level = 500,
             Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Wysper"].CFrame,
             Quest = {"SkyExp1Quest", getQuestPosition("SkyExp1Quest"), 3}
         },
 
-        ["Thunder God"] = {
+        ["Lightning God"] = {
             IsBoss = true,
             Level = 575,
             Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Thunder God"].CFrame,
