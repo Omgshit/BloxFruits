@@ -239,11 +239,15 @@ elseif table.find({7449423635, 100117331123089}, game.PlaceId) then
 end
 
 local LevelCap = game.Players.LocalPlayer:GetAttribute("LevelCap")
+if LevelCap == nil then
+    game.Players.LocalPlayer:GetAttributeChangedSignal("LevelCap"):Wait()
+    LevelCap = game.Players.LocalPlayer:GetAttribute("LevelCap")
+end
 if LevelCap and LevelCap > 2800 and LevelCap <= 3000 then
-    LevelCap = 2750
+    LevelCap = 2800
 end
 if not LevelCap then
-   LevelCap = 2750
+    LevelCap = 2800
 end
 
 local Module = {} do
