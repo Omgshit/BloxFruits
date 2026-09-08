@@ -1750,7 +1750,7 @@ end
 				local Enemy = _Enemies[i]
 				local RootPart = IsAlive(Enemy) and Enemy.PrimaryPart
 				
-				if RootPart and (RootPart.Position - MyPosition).Magnitude <= 50 then
+				if RootPart and (RootPart.Position - MyPosition).Magnitude <= 55 then
 					Equipped.LeftClickRemote:FireServer((RootPart.Position - MyPosition).Unit, Combo)
 				end
 			end
