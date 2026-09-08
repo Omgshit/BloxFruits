@@ -1536,7 +1536,7 @@ end
 		
 		FastAttack.ShootsFunctions = {
 			["Skull Guitar"] = function(self: FastAttack, Equipped: Tool, Position: Vector3): (nil)
-				Equipped.RemoteEvent:FireServer("TAP", Position) -- Events.ShootSoulGuitar:Invoke(Position)
+				Equipped.RemoteEvent:FireServer(Position) -- Events.ShootSoulGuitar:Invoke(Position)
 			end
 		}
 		
