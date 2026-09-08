@@ -1143,7 +1143,7 @@ Module.Enemies = (function()
 
 		local TagsMobs = {
 			__Elite = CreateDictionary({ "Deandre", "Diablo", "Urban" }, true),
-			__Bones = CreateDictionary({ "Reborn Skeleton", "Living Zombie", "Demonic Soul", "Posessed Mummy" }, true),
+			__Bones = CreateDictionary({ "Living Zombie", "Demonic Soul", "Posessed Mummy" }, true),
 			__CakePrince = CreateDictionary({ "Head Baker", "Baking Staff", "Cake Guard", "Cookie Crafter" }, true),
 			__TyrantSkies = CreateDictionary({ "Sun-kissed Warrior", "Skull Slayer", "Isle Champion", "Serpent Hunter" }, true)
 		}
