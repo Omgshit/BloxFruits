@@ -703,7 +703,7 @@ end
 		end
 
      Module.RunFunctions.Quests = function(self, QuestsModule, getTasks)
-			local MaxLvl = ({ {0, 700}, {700, 1500}, {1500, math.huge} })[self.Sea]
+			local MaxLvl = ({ {0, 700}, {700, 1500}, {1500, LevelCap} })[self.Sea]
 			local bl_Quests = {"BartiloQuest", "MarineQuest", "CitizenQuest"}
 			
 			for name, task in QuestsModule do
