@@ -1536,7 +1536,7 @@ end
 		
 		FastAttack.ShootsFunctions = {
 			["Skull Guitar"] = function(self: FastAttack, Equipped: Tool, Position: Vector3): (nil)
-				Equipped.RemoteEvent:FireServer(Position) -- Events.ShootSoulGuitar:Invoke(Position)
+				Equipped.RemoteEvent:FireServer("TAP", Position) -- Events.ShootSoulGuitar:Invoke(Position)
                 GunValidator:FireServer(self:GetValidator2())
 			end
 		}
@@ -1700,7 +1700,7 @@ end
 							GunValidator:FireServer(self:GetValidator2())
 							
 							if ShootType == "TAP" then
-								Equipped.RemoteEvent:FireServer(TargetPosition)
+								Equipped.RemoteEvent:FireServer("TAP", TargetPosition)
 							else
 								RE_ShootGunEvent:FireServer(TargetPosition)
 							end
@@ -1750,7 +1750,7 @@ end
 				local Enemy = _Enemies[i]
 				local RootPart = IsAlive(Enemy) and Enemy.PrimaryPart
 				
-				if RootPart and (RootPart.Position - MyPosition).Magnitude <= 55 then
+				if RootPart and (RootPart.Position - MyPosition).Magnitude <= 50 then
 					Equipped.LeftClickRemote:FireServer((RootPart.Position - MyPosition).Unit, Combo)
 				end
 			end
