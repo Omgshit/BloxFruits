@@ -238,6 +238,11 @@ elseif table.find({7449423635, 100117331123089}, game.PlaceId) then
     SeaId = 3
 end
 
+local LevelCap = game.Players.LocalPlayer:GetAttribute("LevelCap")
+if LevelCap and LevelCap > 2800 and LevelCap <= 3000 then
+   LevelCap = 2800
+end
+
 local Module = {} do
 	local Cached = {
 		Closest = nil,
@@ -253,7 +258,7 @@ local Module = {} do
 		Sea = SeaId,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
-		MaxLevel = 2800,
+		MaxLevel = LevelCap,
         StringVersion = require(ReplicatedStorage.BuildInfo).VERSION
 	}
 	
