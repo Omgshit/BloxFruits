@@ -242,9 +242,6 @@ local LevelCap = game.Players.LocalPlayer:GetAttribute("LevelCap")
 if LevelCap and LevelCap > 2800 and LevelCap <= 3000 then
     LevelCap = 2800
 end
-if not LevelCap then
-   LevelCap = 2800
-end
 
 local Module = {} do
 	local Cached = {
