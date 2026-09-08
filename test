@@ -378,7 +378,7 @@ end
             Quest = {"ImpelQuest", getQuestPosition("ImpelQuest"), 2}
         },
 
-        ["Magma Admiral"] = {
+        ["Magma General"] = {
             IsBoss = true,
             Level = 350,
             Position = game:GetService("ReplicatedStorage").FortBuilderReplicatedSpawnPositionsFolder["Magma Admiral"].CFrame,
