@@ -1536,8 +1536,8 @@ end
 		
 		FastAttack.ShootsFunctions = {
 			["Skull Guitar"] = function(self: FastAttack, Equipped: Tool, Position: Vector3): (nil)
-                local Event = game:GetService("Players").LocalPlayer.Character.Humanoid:GetChildren()[19]
-				Event:InvokeServer("TAP", Position) 
+                local humanoid = Equipped.Parent:FindFirstChildOfClass("Humanoid")
+                for _, v in ipairs(humanoid:GetChildren()) do if v:IsA("RemoteFunction") and v.Name == "" then v:InvokeServer("TAP", Position) end end
 			end
 		}
 		
@@ -1700,8 +1700,8 @@ end
 							GunValidator:FireServer(self:GetValidator2())
 							
 							if ShootType == "TAP" then
-							  local Event = game:GetService("Players").LocalPlayer.Character.Humanoid:GetChildren()[19]
-				              Event:InvokeServer("TAP", Position) 
+							  local humanoid = Equipped.Parent:FindFirstChildOfClass("Humanoid")
+                              for _, v in ipairs(humanoid:GetChildren()) do if v:IsA("RemoteFunction") and v.Name == "" then v:InvokeServer("TAP", Position) end end
 							else
 								RE_ShootGunEvent:FireServer(TargetPosition)
 							end
