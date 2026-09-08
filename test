@@ -1536,7 +1536,7 @@ end
 		
 		FastAttack.ShootsFunctions = {
 			["Skull Guitar"] = function(self: FastAttack, Equipped: Tool, Position: Vector3): (nil)
-				Equipped.Parent.Humanoid[" "]:InvokeServer("TAP", Position) 
+				Equipped.Parent.Humanoid[""]:InvokeServer("TAP", Position) 
 			end
 		}
 		
@@ -1699,7 +1699,7 @@ end
 							GunValidator:FireServer(self:GetValidator2())
 							
 							if ShootType == "TAP" then
-								Equipped.Parent.Humanoid[" "]:InvokeServer("TAP", TargetPosition) 
+								Equipped.Parent.Humanoid[""]:InvokeServer("TAP", TargetPosition) 
 							else
 								RE_ShootGunEvent:FireServer(TargetPosition)
 							end
