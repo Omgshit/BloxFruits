@@ -238,18 +238,6 @@ elseif table.find({7449423635, 100117331123089}, game.PlaceId) then
     SeaId = 3
 end
 
-local LevelCap = game.Players.LocalPlayer:GetAttribute("LevelCap")
-if LevelCap == nil then
-    game.Players.LocalPlayer:GetAttributeChangedSignal("LevelCap"):Wait()
-    LevelCap = game.Players.LocalPlayer:GetAttribute("LevelCap")
-end
-if LevelCap and LevelCap > 2800 and LevelCap <= 3000 then
-    LevelCap = 2800
-end
-if not LevelCap then
-    LevelCap = 2800
-end
-
 local Module = {} do
 	local Cached = {
 		Closest = nil,
@@ -265,7 +253,7 @@ local Module = {} do
 		Sea = SeaId,
 		SeasName = { "Main", "Dressrosa", "Zou" },
 		MaxMastery = 600,
-		MaxLevel = LevelCap,
+		MaxLevel = 2800,
         StringVersion = require(ReplicatedStorage.BuildInfo).VERSION
 	}
 	
@@ -707,7 +695,7 @@ end
 		end
 
      Module.RunFunctions.Quests = function(self, QuestsModule, getTasks)
-			local MaxLvl = ({ {0, 700}, {700, 1500}, {1500, LevelCap} })[self.Sea]
+			local MaxLvl = ({ {0, 700}, {700, 1500}, {1500, 2800} })[self.Sea]
 			local bl_Quests = {"BartiloQuest", "MarineQuest", "CitizenQuest"}
 			
 			for name, task in QuestsModule do
