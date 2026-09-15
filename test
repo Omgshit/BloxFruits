@@ -1451,9 +1451,9 @@ end
 end
 
       function Inventory:Refresh() for _, item in pairs(getInventory()) do self:UpdateItem(item) end end
-
+      Inventory:Refresh()
       spawn(function()
-        while task.wait(5) do
+        while task.wait() do
             pcall(function()
                  Inventory:Refresh() 
             end)
@@ -1467,8 +1467,7 @@ end
 		end
 		
 		task.spawn(function()
-			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
-            Inventory:Refresh() 
+			table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent)) 
 		end)
 		
 		return Inventory
