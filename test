@@ -1451,14 +1451,16 @@ end
 end
 
       function Inventory:Refresh() for _, item in pairs(getInventory()) do self:UpdateItem(item) end end
-      Inventory:Refresh()
-      spawn(function()
-        while task.wait() do
-            pcall(function()
-                 Inventory:Refresh() 
-            end)
+     task.spawn(function()
+    while task.wait(1) do
+        local success, err = pcall(function()
+            Inventory:Refresh()
+        end)
+        if not success then
+            warn("Refresh Error:", err)
         end
-    end)
+    end
+end)
 		
 		local function OnClientEvent(Method, ...)
 			if Method == "Notify" then
