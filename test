@@ -1394,19 +1394,15 @@ end
 
 local function getInventory()
     local Items = {}
-
     for _, v in pairs(safeGetItems()) do
         if type(v) == "table" then
             local itemId = v.ItemId
             local dataResult = itemId and ItemId.getDataFromId(itemId)
-
             if dataResult and dataResult:isOk() then
                 local ItemData = dataResult:unwrap()
                 local key = ItemData.StorageKey
-
                 if key then
                     local entry = Items[key]
-
                     if not entry then
                         entry = {
                             Name = key,
@@ -1416,9 +1412,7 @@ local function getInventory()
                         }
                         Items[key] = entry
                     end
-
                     entry.NetworkedUID = v.NetworkedUID or entry.NetworkedUID
-
                     if v.Key == "Quantity" then
                         entry.Count = tonumber(v.Value) or 0
                     elseif v.Key == "IsOwned" then
@@ -1430,20 +1424,6 @@ local function getInventory()
             end
         end
     end
-
-    for key, item in pairs(Items) do
-        print(
-            "ITEM:",
-            key,
-            "| Type:", item.Type,
-            "| ItemId:", item.ItemId,
-            "| Count:", item.Count,
-            "| Owned:", item.Owned,
-            "| Mastery:", item.Mastery,
-            "| UID:", item.NetworkedUID
-        )
-    end
-
     return Items
 end
 
