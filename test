@@ -1471,10 +1471,16 @@ Module.Inventory = (function()
         local NewItems = getInventory() self.Items = {} for _, item in pairs(NewItems) do self:UpdateItem(item) end
     end
     Inventory:Refresh()
+    task.spawn(function()
+        while task.wait(1) do
+            pcall(function()
+                Inventory:Refresh()
+            end)
+        end
+    end)
     local function OnClientEvent(Method, ...)
         if Method == "Notify" then
             Module.Signals.Notify:Fire(...)
-            Inventory:Refresh()
         end
     end
     task.spawn(function()table.insert(Connections,CommE.OnClientEvent:Connect(OnClientEvent))end)
