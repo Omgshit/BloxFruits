@@ -1456,7 +1456,8 @@ Module.Inventory = (function()
         end
         local name = item.Name
         self.Items[name] = item
-        self.Unlocked[name] = true
+        local count = tonumber(item.Count) or 0
+        self.Unlocked[name] = count > 0
         if item.Count ~= nil then
             self.Count[name] = tonumber(item.Count) or 0
         end
