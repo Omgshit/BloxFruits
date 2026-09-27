@@ -1382,50 +1382,9 @@ end
 		return EnemiesModule
 	end)()
 
-  local function safeGetItems()
-    local ok, result = pcall(function()
-        return ItemReplicationService:GetItems()
-    end)
-    if ok and type(result) == "table" then
-        return result
-    end
-    return {}
-end
-
-local function getInventory()
-    local Items = {}
-    for _, v in pairs(safeGetItems()) do
-        if type(v) == "table" then
-            local itemId = v.ItemId
-            local dataResult = itemId and ItemId.getDataFromId(itemId)
-            if dataResult and dataResult:isOk() then
-                local ItemData = dataResult:unwrap()
-                local key = ItemData.StorageKey
-                if key then
-                    local entry = Items[key]
-                    if not entry then
-                        entry = {
-                            Name = key,
-                            Type = ItemData.Type,
-                            ItemId = itemId,
-                            Count = 0
-                        }
-                        Items[key] = entry
-                    end
-                    entry.NetworkedUID = v.NetworkedUID or entry.NetworkedUID
-                    if v.Key == "Quantity" then
-                        entry.Count = tonumber(v.Value) or 0
-                    elseif v.Key == "IsOwned" then
-                        entry.Owned = v.Value == true
-                    elseif v.Key == "Mastery" then
-                        entry.Mastery = tonumber(v.Value) or 0
-                    end
-                end
-            end
-        end
-    end
-    return Items
-end
+        local ItemReplicationService = require(game:GetService("ReplicatedStorage"):WaitForChild("ItemReplicationService"))
+		local ItemConfig = require(game:GetService("ReplicatedStorage"):WaitForChild("ItemConfig"))
+		GetInventoryItems = function()local n={};local L=require(game:GetService("ReplicatedStorage"):WaitForChild("ItemReplicationService")).KEYS;for U,U in  ItemReplicationService :GetItems(L.QUANTITY)do if U.Value and U.Value>0 then local w,y=pcall(function()return  ItemConfig .match(U.ItemId):unwrap();end);if w and y and y.Display then local w,S=y.Display.Category,y.Index and y.Index.StorageKey;local K,R=if w=="Blox Fruit"then S or y.Display.Name or"ItemId_"..U.ItemId else y.Display.Name or S or"ItemId_"..U.ItemId, ItemReplicationService :ReadItem(L.MASTERY,U.ItemId,U.NetworkedUID)or 0;table.insert(n,{Name=K,Type=w,Count=U.Value,Mastery=R,ItemId=U.ItemId,UID=U.NetworkedUID});end;end;end;return n;end
 
 Module.Inventory = (function()
     local Inventory = {
@@ -1469,7 +1428,7 @@ Module.Inventory = (function()
         end
     end
     function Inventory:Refresh()
-        local NewItems = getInventory() self.Items = {} for _, item in pairs(NewItems) do self:UpdateItem(item) end
+        local NewItems = GetInventoryItems() self.Items = {} for _, item in pairs(NewItems) do self:UpdateItem(item) end
     end
     Inventory:Refresh()
     task.spawn(function()
