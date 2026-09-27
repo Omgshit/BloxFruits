@@ -13,11 +13,6 @@ local TeleportService: TeleportService = game:GetService("TeleportService")
 local RunService: RunService = game:GetService("RunService")
 local Players: Players = game:GetService("Players")
 
-local HttpService = game:GetService("HttpService")
-local ItemReplicationService = require(ReplicatedStorage.ItemReplicationService)
-local ItemId = require(ReplicatedStorage.Economy.ItemId)
-local ItemConfig = require(ReplicatedStorage.ItemConfig)
-
 local Remotes = ReplicatedStorage:WaitForChild("Remotes")
 local GunValidator: RemoteEvent = Remotes:WaitForChild("Validator2")
 local CommF: RemoteFunction = Remotes:WaitForChild("CommF_")
