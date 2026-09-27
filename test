@@ -1425,7 +1425,6 @@ Module.Inventory = (function()
     function Inventory:Refresh()
         local NewItems = GetInventoryItems() self.Items = {} for _, item in pairs(NewItems) do self:UpdateItem(item) end
     end
-    Inventory:Refresh()
     task.spawn(function()
         while task.wait(1) do
             pcall(function()
