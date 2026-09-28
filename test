@@ -1429,9 +1429,6 @@ Module.Inventory = (function()
     local CurrentItems = {}
     for _, item in pairs(NewItems) do
         if type(item) == "table" and item.Name then
-            if item.Type == "Wear" then
-                item.Type = "Accessory"
-            end
             CurrentItems[item.Name] = true
             self:UpdateItem(item)
         end
