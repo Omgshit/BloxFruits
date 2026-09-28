@@ -1421,9 +1421,32 @@ Module.Inventory = (function()
             self.MasteryRequirements[name] = item.MasteryRequirements
         end
     end
-    function Inventory:Refresh()
+    function Inventory:Add()
         local NewItems = GetInventoryItems() self.Items = {} for _, item in pairs(NewItems) do self:UpdateItem(item) end
     end
+    function Inventory:Refresh()
+    local NewItems = GetInventoryItems()
+    local CurrentItems = {}
+    for _, item in pairs(NewItems) do
+        if type(item) == "table" and item.Name then
+            if item.Type == "Wear" then
+                item.Type = "Accessory"
+            end
+            CurrentItems[item.Name] = true
+            self:UpdateItem(item)
+        end
+    end
+    for name in pairs(self.Items) do
+        if not CurrentItems[name] then
+            self.Items[name] = nil
+            self.Unlocked[name] = nil
+            self.Count[name] = nil
+            self.Mastery[name] = nil
+            self.MasteryRequirements[name] = nil
+        end
+    end
+end
+Inventory:Add()
     task.spawn(function()
         while task.wait(1) do
             pcall(function()
