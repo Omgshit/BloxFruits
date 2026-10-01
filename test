@@ -1333,7 +1333,7 @@ local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChil
             BodyPosition.Position = Target.Position
           end
        elseif _ENV.rz_EnabledOptions.DungeonKill then
-       if (RootPart.Position - Target.Position).Magnitude <= 150 and not Enemy:GetAttribute("RaidBoss") then
+       if (RootPart.Position - Target.Position).Magnitude <= 125 and not Enemy:GetAttribute("RaidBoss") then
             RootPart.CFrame = Target
             RootPart.CanCollide = false
           else
@@ -1341,7 +1341,7 @@ local PlayerRootPart = (Player.Character or Player.CharacterAdded()):WaitForChil
             BodyPosition.Position = Target.Position
           end
          else
-          if (RootPart.Position - Target.Position).Magnitude <= 250 then
+          if (RootPart.Position - Target.Position).Magnitude <= 225 then
             RootPart.CFrame = Target
             RootPart.CanCollide = false
           else
