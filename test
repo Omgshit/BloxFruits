@@ -1102,33 +1102,28 @@ end
         if typeof(Fruit) ~= "Instance" or not Fruit.Parent then
             return "Fruit [ ??? ]"
         end
-
-        local RealFruitsName = Module.FruitsId
         local Name = Fruit.Name
-
-        if Name ~= "Fruit " then
+        if Name ~= "Fruit " and Name ~= "Fruit" then
             rawset(self, Fruit, Name)
             return Name
         end
-
-        rawset(self, Fruit, "Fruit [ ??? ]")
-
         task.spawn(function()
             pcall(function()
-                if not Fruit.Parent then return end
+                if not Fruit or not Fruit.Parent then return end
                 local Model = Fruit:WaitForChild("Fruit", 5)
                 if not Model or not Fruit.Parent then return end
-                local Idle = FastWait(2, Model, "Idle") or FastWait(1, Model, "Animation") or FastWait(1, Model, "Fruit")
-                if Idle and (Idle:IsA("Animation") or Idle:IsA("MeshPart")) and Fruit.Parent then
-                    local Property = if Idle:IsA("MeshPart") then "MeshId" else "AnimationId"
-                    local RealName = RealFruitsName[Idle[Property] or ""]
+                local Idle = FastWait(2, Model, "Idle")
+                    or FastWait(1, Model, "Animation")
+                    or FastWait(1, Model, "Fruit")
+                if Idle and Fruit.Parent then
+                    local Property = Idle:IsA("MeshPart") and "MeshId" or "AnimationId"
+                    local RealName = Module.FruitsId[Idle[Property] or ""]
                     if RealName and type(RealName) == "string" then
-                        rawset(self, Fruit, `Fruit [ {RealName} ]`)
+                        rawset(self, Fruit, "Fruit [ " .. RealName .. " ]")
                     end
                 end
             end)
         end)
-
         return "Fruit [ ??? ]"
     end
 })
@@ -1412,7 +1407,10 @@ Module.Inventory = (function()
         self.Items[name] = item
         self.Unlocked[name] = true
         if item.Count ~= nil then
-            self.Count[name] = tonumber(item.Count) or 0
+            local num = tonumber(item.Count)
+            self.Count[name] = (num and num > 0) and num or 0
+        else
+            self.Count[name] = 1
         end
         if item.Mastery ~= nil then
             self.Mastery[name] = tonumber(item.Mastery) or 0
