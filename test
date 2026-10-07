@@ -1013,6 +1013,24 @@ end
 		end
 	})
 
+local function autoCleanMT()
+    local count = 0
+    return {
+        __newindex = function(t, k, v)
+            if count >= 50 then
+                for key, val in t do
+                    if typeof(val) == "Instance" and not val:IsDescendantOf(game) then
+                        rawset(t, key, nil)
+                    end
+                end
+                count = 0
+            end
+            count += 1
+            return rawset(t, k, v)
+        end
+    }
+end
+
 local FRUIT_PREFIX = "Fruit "
 local FRUIT_TIMEOUT = 10
 local UNKNOWN = "???-???"
