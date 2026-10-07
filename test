@@ -265,49 +265,6 @@ local Module = {} do
 	}
 	
 	do
-		Module.FruitsId = {
-			["rbxassetid://15124425041"] = "Rocket",
-			["rbxassetid://15123685330"] = "Spin",
-			["rbxassetid://15123613404"] = "Blade",
-			["rbxassetid://15123689268"] = "Spring",
-			["rbxassetid://15123595806"] = "Bomb",
-			["rbxassetid://15123677932"] = "Smoke",
-			["rbxassetid://15124220207"] = "Spike",
-			["rbxassetid://121545956771325"] = "Flame",
-			["rbxassetid://15123673019"] = "Sand",
-			["rbxassetid://15123618591"] = "Dark",
-			["rbxassetid://77885466312115"] = "Eagle",
-			["rbxassetid://15112600534"] = "Diamond",
-			["rbxassetid://15123640714"] = "Light",
-			["rbxassetid://15123668008"] = "Rubber",
-			["rbxassetid://15123662036"] = "Ghost",
-			["rbxassetid://15123645682"] = "Magma",
-			["rbxassetid://15123606541"] = "Quake",
-			["rbxassetid://15123606541"] = "Buddha",
-			["rbxassetid://15123643097"] = "Love",
-			["rbxassetid://15123681598"] = "Spider",
-			["rbxassetid://116828771482820"] = "Creation",
-			["rbxassetid://15123679712"] = "Sound",
-			["rbxassetid://15123654553"] = "Phoenix",
-			["rbxassetid://15123656798"] = "Portal",
-			["rbxassetid://15123670514"] = "Rumble",
-			["rbxassetid://15123652069"] = "Pain",
-			["rbxassetid://15123587371"] = "Blizzard",
-			["rbxassetid://15123633312"] = "Gravity",
-			["rbxassetid://15123648309"] = "Mammoth",
-			["rbxassetid://15694681122"] = "T-Rex",
-			["rbxassetid://15123624401"] = "Dough",
-			["rbxassetid://15123675904"] = "Shadow",
-			["rbxassetid://10773719142"] = "Venom",
-			["rbxassetid://15123616275"] = "Control",
-			["rbxassetid://11911905519"] = "Spirit",
-			["rbxassetid://15123638064"] = "Leopard",
-			["rbxassetid://15487764876"] = "Kitsune",
-			["rbxassetid://115276580506154"] = "Yeti",
-			["rbxassetid://118054805452821"] = "Gas",
-			["rbxassetid://95749033139458"] = "Dragon East"
-		}
-
        CACHE_NPC_LIST = require(game.ReplicatedStorage.GuideModule).Data.NPCList
 function getQuestPosition(Name)
     for _, v in next, CACHE_NPC_LIST do
@@ -814,55 +771,13 @@ end
          task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", game.JobId)
 	end
 
-   function Module:ServerHop(bO)
-       if not bO then
-        bO = 10
-    end
-    ticklon = tick()
-    repeat
-        task.wait()
-    until tick() - ticklon >= 1
-    local function Hop()
-        for r = 1, math.huge do
-            local bP = game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer(r)
+   function Module:ServerHop()
+      local bP = game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer(r)
             for k, v in pairs(bP) do
-                if k ~= game.JobId and v["Count"] < bO then
+                if k ~= game.JobId and v["Count"] < 12 then
                    game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer("teleport", k)
                 end
             end
-        end
-        return false
-    end
-    if not getgenv().Loaded then
-        local function bQ(v)
-            if v.Name == "ErrorPrompt" then
-                if v.Visible then
-                    if v.TitleFrame.ErrorTitle.Text == "Teleport Failed" then
-                        HopServer()
-                        v.Visible = false
-                    end
-                end
-                v:GetPropertyChangedSignal("Visible"):Connect(
-                    function()
-                        if v.Visible then
-                            if v.TitleFrame.ErrorTitle.Text == "Teleport Failed" then
-                                HopServer()
-                                v.Visible = false
-                            end
-                        end
-                    end
-                )
-            end
-        end
-        for k, v in pairs(game.CoreGui.RobloxPromptGui.promptOverlay:GetChildren()) do
-            bQ(v)
-        end
-        game.CoreGui.RobloxPromptGui.promptOverlay.ChildAdded:Connect(bQ)
-        getgenv().Loaded = true
-    end
-    while not Hop() do
-        wait()
-    end
   end
 	
 	function Module.EnemySpawned(EnemyName)
@@ -1097,36 +1012,83 @@ end
 		end
 	})
 
-   Module.FruitsName = setmetatable({}, {
-    __index = function(self, Fruit)
-        if typeof(Fruit) ~= "Instance" or not Fruit.Parent then
-            return "Fruit [ ??? ]"
-        end
-        local Name = Fruit.Name
-        if Name ~= "Fruit " and Name ~= "Fruit" then
-            rawset(self, Fruit, Name)
-            return Name
-        end
-        task.spawn(function()
-            pcall(function()
-                if not Fruit or not Fruit.Parent then return end
-                local Model = Fruit:WaitForChild("Fruit", 5)
-                if not Model or not Fruit.Parent then return end
-                local Idle = FastWait(2, Model, "Idle")
-                    or FastWait(1, Model, "Animation")
-                    or FastWait(1, Model, "Fruit")
-                if Idle and Fruit.Parent then
-                    local Property = Idle:IsA("MeshPart") and "MeshId" or "AnimationId"
-                    local RealName = Module.FruitsId[Idle[Property] or ""]
-                    if RealName and type(RealName) == "string" then
-                        rawset(self, Fruit, "Fruit [ " .. RealName .. " ]")
-                    end
-                end
-            end)
-        end)
-        return "Fruit [ ??? ]"
+local FRUIT_PREFIX = "Fruit "
+local FRUIT_TIMEOUT = 10
+local UNKNOWN = "???-???"
+local ZERO_ASSET = "rbxassetid://0"
+
+local FruitMeshIds = {}
+local function addFruitId(id, name)
+    FruitMeshIds["rbxassetid://" .. id] = name
+end
+
+addFruitId(15124425041, "Rocket")
+addFruitId(15123685330, "Spin")
+addFruitId(15123613404, "Blade")
+addFruitId(15123689268, "Spring")
+addFruitId(15123595806, "Bomb")
+addFruitId(15123677932, "Smoke")
+addFruitId(15124220207, "Spike")
+addFruitId(121545956771325, "Flame")
+addFruitId(15123673019, "Sand")
+addFruitId(15123618591, "Dark")
+addFruitId(77885466312115, "Eagle")
+addFruitId(15112600534, "Diamond")
+addFruitId(15123640714, "Light")
+addFruitId(15123668008, "Rubber")
+addFruitId(15123662036, "Ghost")
+addFruitId(15123645682, "Magma")
+addFruitId(15123606541, "Quake")
+addFruitId(15123643097, "Love")
+addFruitId(15123681598, "Spider")
+addFruitId(116828771482820, "Creation")
+addFruitId(15123679712, "Sound")
+addFruitId(15123654553, "Phoenix")
+addFruitId(15123656798, "Portal")
+addFruitId(15123670514, "Rumble")
+addFruitId(15123652069, "Pain")
+addFruitId(15123587371, "Blizzard")
+addFruitId(15123633312, "Gravity")
+addFruitId(15123648309, "Mammoth")
+addFruitId(15694681122, "T-Rex")
+addFruitId(15123624401, "Dough")
+addFruitId(15123675904, "Shadow")
+addFruitId(10773719142, "Venom")
+addFruitId(15123616275, "Control")
+addFruitId(118054805452821, "Gas")
+addFruitId(11911905519, "Spirit")
+addFruitId(15123638064, "Leopard")
+addFruitId(115276580506154, "Yeti")
+addFruitId(15487764876, "Kitsune")
+addFruitId(95749033139458, "Dragon East")
+
+local realFruitNames = setmetatable({}, autoCleanMT())
+local realFruitIds = setmetatable({}, autoCleanMT())
+
+local function getPropName(obj)
+    return if obj:IsA("MeshPart") then "MeshId" else "AnimationId"
+end
+
+local function tryResolveChild(child)
+    local expectedClass = ({Animation = "Animation", Fruit = "MeshPart", Idle = "MeshPart"})[child.Name]
+    if expectedClass and child:IsA(expectedClass) then
+        local id = child[getPropName(child)]
+        return FruitMeshIds[id], id
     end
-})
+end
+
+function Nodule.GetRealFruitName(fruit, returnId)
+    if fruit.Name ~= FRUIT_PREFIX then
+        return fruit.Name
+    end
+    if realFruitNames[fruit] then
+        return if returnId then realFruitIds[fruit] else realFruitNames[fruit]
+    end
+    realFruitNames[fruit] = UNKNOWN
+    realFruitIds[fruit] = ZERO_ASSET
+    local model = fruit:WaitForChild("Fruit", math.huge)
+    return (returnId and realFruitIds[fruit] or realFruitNames[fruit]) or ZERO_ASSET
+end
 
 Module.Enemies = (function()
 		local EnemiesModule = CreateDictionary({
