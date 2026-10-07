@@ -1078,7 +1078,7 @@ local function tryResolveChild(child)
     end
 end
 
-function Nodule.GetRealFruitName(fruit, returnId)
+function Module.FruitsName(fruit, returnId)
     if fruit.Name ~= FRUIT_PREFIX then
         return fruit.Name
     end
