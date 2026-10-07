@@ -776,8 +776,9 @@ end
             for k, v in pairs(bP) do
                 if k ~= game.JobId and v["Count"] < 12 then
                    game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer("teleport", k)
-                end
-            end
+                   wait()
+               end
+         end
   end
 	
 	function Module.EnemySpawned(EnemyName)
