@@ -1068,19 +1068,22 @@ Module.FruitsName = setmetatable({}, {
             rawset(self, Fruit, Name)
             return Name
         end
-        local Model = Fruit:FindFirstChild("Fruit")
-        if Model then
-            local Idle = Model:FindFirstChild("Idle") or Model:FindFirstChild("Animation") or Model:FindFirstChild("Fruit")
-            if Idle and (Idle:IsA("Animation") or Idle:IsA("MeshPart")) then
-                local Property = if Idle:IsA("MeshPart") then "MeshId" else "AnimationId"
-                local RealName = RealFruitsName[Idle[Property] or ""]
-                if RealName and type(RealName) == "string" then
-                    local full = `Fruit [ {RealName} ]`
-                    rawset(self, Fruit, full)
-                    return full
+        task.spawn(function()
+            pcall(function()
+                if not Fruit.Parent then return end
+                local Model = Fruit:FindFirstChild("Fruit")
+                if not Model or not Fruit.Parent then return end
+                local Idle = Model:FindFirstChild("Idle") or Model:FindFirstChild("Animation") or Model:FindFirstChild("Fruit")
+                if Idle and (Idle:IsA("Animation") or Idle:IsA("MeshPart")) and Fruit.Parent then
+                    local Property = if Idle:IsA("MeshPart") then "MeshId" else "AnimationId"
+                    local RealName = RealFruitsName[Idle[Property] or ""]
+                    if RealName and type(RealName) == "string" then
+                        rawset(self, Fruit, `Fruit [ {RealName} ]`)
+                    end
                 end
-            end
-        end
+               wait()
+            end)
+        end)
         return "Fruit [ ??? ]"
     end
 })
