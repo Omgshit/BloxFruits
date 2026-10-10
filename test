@@ -815,15 +815,69 @@ end
          task.spawn(ServerBrowser.InvokeServer, ServerBrowser, "teleport", game.JobId)
 	end
 
-   function Module:ServerHop()
-      local bP = game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer(r)
-            for k, v in pairs(bP) do
-                if k ~= game.JobId and v["Count"] < 12 then
-                   game:GetService("ReplicatedStorage").__ServerBrowser:InvokeServer("teleport", k)
-                   wait()
-               end
-         end
-  end
+   function Module:ServerHop(maxPlayers)
+    maxPlayers = maxPlayers or 12
+    local browser = game:GetService("ReplicatedStorage"):WaitForChild("__ServerBrowser")
+    local currentJobId = game.JobId
+    if not getgenv()._ServerHopLoaded then
+        getgenv()._ServerHopLoaded = true
+        local function onPrompt(v)
+            if v.Name ~= "ErrorPrompt" then return end
+            local function tryRetry()
+                if v.Visible and v:FindFirstChild("TitleFrame") then
+                    local title = v.TitleFrame:FindFirstChild("ErrorTitle")
+                    if title and title.Text == "Teleport Failed" then
+                        v.Visible = false
+                        task.defer(function()
+                            Module:ServerHop(maxPlayers)
+                        end)
+                    end
+                end
+            end
+            tryRetry()
+            v:GetPropertyChangedSignal("Visible"):Connect(tryRetry)
+        end
+        local overlay = game.CoreGui:WaitForChild("RobloxPromptGui"):WaitForChild("promptOverlay")
+        for _, v in ipairs(overlay:GetChildren()) do
+            onPrompt(v)
+        end
+        overlay.ChildAdded:Connect(onPrompt)
+    end
+    local ok, servers = pcall(function()
+        return browser:InvokeServer(1)
+    end)
+    if not ok or type(servers) ~= "table" then
+        return
+    end
+    local bestJobId, lowest = nil, maxPlayers
+    for jobId, data in pairs(servers) do
+        if jobId ~= currentJobId and type(data) == "table" and type(data.Count) == "number" then
+            if data.Count < lowest then
+                lowest = data.Count
+                bestJobId = jobId
+            end
+        end
+    end
+    if bestJobId then
+        pcall(function()
+            browser:InvokeServer("teleport", bestJobId)
+        end)
+    else
+        local ok2, page2 = pcall(function()
+            return browser:InvokeServer(2)
+        end)
+        if ok2 and type(page2) == "table" then
+            for jobId, data in pairs(page2) do
+                if jobId ~= currentJobId and type(data) == "table" and type(data.Count) == "number" and data.Count < maxPlayers then
+                    pcall(function()
+                        browser:InvokeServer("teleport", jobId)
+                    end)
+                    return
+                end
+            end
+        end
+    end
+end
 	
 	function Module.EnemySpawned(EnemyName)
 		local Enemies = Module.Enemies
