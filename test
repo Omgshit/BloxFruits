@@ -595,7 +595,7 @@ end
 		Module.PirateRaid = 0
 		
 		Module.Webhooks = true
-		Module.JobIds = true
+		Module.JobIds = false
 		
 		Module.Progress = {}
 		Module.EnemyLocations = {}
