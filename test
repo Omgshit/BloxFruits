@@ -2256,6 +2256,8 @@ end
 		end
 		
 		for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
+        table.insert(Connections, EnemySpawns.ChildAdded:Connect(NewSpawn))
+		table.insert(Connections, Locations.ChildAdded:Connect(NewIslandAdded))
 	end)
 end
 
