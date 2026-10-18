@@ -2249,17 +2249,12 @@ end
 			
 			local EnemySpawn = Part.CFrame + Vector3.new(0, 25, 0)
 			SpawnLocations[EnemyName] = Part
-			
-			if not table.find(EnemyLocations[EnemyName], EnemySpawn) then
-				table.insert(EnemyLocations[EnemyName], EnemySpawn)
-			end
+			table.insert(EnemyLocations[EnemyName], EnemySpawn)
 		end
 		
 		for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
 		table.insert(Connections, EnemySpawns.ChildAdded:Connect(NewSpawn))
 		table.insert(Connections, Locations.ChildAdded:Connect(NewIslandAdded))
-        table.insert(Connections, EnemySpawns.ChildRemoved:Connect(NewSpawn))
-		table.insert(Connections, Locations.ChildRemoved:Connect(NewIslandAdded))
 	end)
 end
 
