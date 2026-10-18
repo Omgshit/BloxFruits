@@ -2264,8 +2264,11 @@ end
 			end
 		end
 
+      for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
+      for _, Spawn in EnemySpawns:GetChildren() do NewIslandAdded(Spawn) end
+
        spawn(function()
-        while task.wait() do
+        while task.wait(5) do
             pcall(function()
                for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
                for _, Spawn in EnemySpawns:GetChildren() do NewIslandAdded(Spawn) end
