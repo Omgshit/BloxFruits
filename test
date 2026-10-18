@@ -2258,6 +2258,14 @@ end
 		for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
 		EnemySpawns.ChildAdded:Connect(NewSpawn)
 		Locations.ChildAdded:Connect(NewIslandAdded)
+        spawn(function()
+           while task.wait(50) do
+            pcall(function()
+               for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
+               for _, Spawn in EnemySpawns:GetChildren() do NewIslandAdded(Spawn) end
+               end)
+            end
+        end)
 	end)
 end
 
