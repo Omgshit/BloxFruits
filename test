@@ -2261,11 +2261,8 @@ end
 			
 			if not table.find(EnemyLocations[EnemyName], EnemySpawn) then
 				table.insert(EnemyLocations[EnemyName], EnemySpawn)
+                table.remove(EnemyLocations[EnemyName], EnemySpawn)
 			end
-              local Index = table.find(EnemyLocations[EnemyName], EnemySpawn)
-             if Index then
-               table.remove(EnemyLocations[EnemyName], Index)
-            end
 		end
 		
 		for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
