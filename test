@@ -2232,8 +2232,8 @@ end
  		hookfunction(DeathEffect, function(...) return ... end)
 	 	end
 	end)
-	
-	task.spawn(function()
+
+  task.spawn(function()
 		local SpawnLocations = Module.SpawnLocations
 		local EnemyLocations = Module.EnemyLocations
 		
@@ -2254,18 +2254,10 @@ end
 				table.insert(EnemyLocations[EnemyName], EnemySpawn)
 			end
 		end
-
-      for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
-      for _, Spawn in EnemySpawns:GetChildren() do NewIslandAdded(Spawn) end
-
-       spawn(function()
-        while task.wait(5) do
-            pcall(function()
-               for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
-               for _, Spawn in EnemySpawns:GetChildren() do NewIslandAdded(Spawn) end
-            end)
-        end
-      end)
+		
+		for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
+		EnemySpawns.ChildAdded:Connect(NewSpawn)
+		Locations.ChildAdded:Connect(NewIslandAdded)
 	end)
 end
 
