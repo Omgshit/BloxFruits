@@ -2263,10 +2263,15 @@ end
 				table.insert(EnemyLocations[EnemyName], EnemySpawn)
 			end
 		end
-		
-		for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
-		table.insert(Connections, EnemySpawns.ChildAdded:Connect(NewSpawn))
-		table.insert(Connections, Locations.ChildAdded:Connect(NewIslandAdded))
+
+       spawn(function()
+        while task.wait() do
+            pcall(function()
+               for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
+               for _, Spawn in EnemySpawns:GetChildren() do NewIslandAdded(Spawn) end
+            end)
+        end
+      end)
 	end)
 end
 
