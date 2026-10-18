@@ -2249,7 +2249,6 @@ end
 			
 			local EnemySpawn = Part.CFrame + Vector3.new(0, 25, 0)
 			SpawnLocations[EnemyName] = Part
-			table.insert(EnemyLocations[EnemyName], EnemySpawn)
 		end
 		
 		for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
