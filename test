@@ -1119,7 +1119,6 @@ Module.FruitsName = setmetatable({}, {
 			rawset(self, Fruit, Name)
 			return Name
 		end
-		rawset(self, Fruit, "Fruit [ ??? ]")
 		local Model = Fruit:FindFirstChild("Fruit")
 		if not Model then
 			return "Fruit [ ??? ]"
