@@ -2257,7 +2257,15 @@ end
 	if not EnemyName or EnemyName == "" then return end
 	local EnemySpawn = Part.CFrame + Vector3.new(0, 25, 0)
 	SpawnLocations[EnemyName] = Part
-	EnemyLocations[EnemyName] = { EnemySpawn }
+	EnemyLocations[EnemyName] = EnemyLocations[EnemyName] or {}
+	local list = EnemyLocations[EnemyName]
+	for i = 1, #list do
+		if (list[i].Position - EnemySpawn.Position).Magnitude < 20 then
+			list[i] = EnemySpawn
+			return
+		end
+	end
+	table.insert(list, EnemySpawn)
 end
 		
 		for _, Spawn in EnemySpawns:GetChildren() do NewSpawn(Spawn) end
