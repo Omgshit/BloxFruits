@@ -1670,6 +1670,9 @@ end)()
 			if Anything or self.attackMobs then
 				ProcessHits(Enemies, self.Equipped, Distance)
 			end
+           if Anything or self.attackMobs then
+				ProcessHits(workspace.PumpkinHunt, self.Equipped, Distance)
+			end
 			if Anything or self.attackPlayers then
 				ProcessHits(Characters, self.Equipped, Distance)
 			end
