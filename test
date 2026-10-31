@@ -1383,90 +1383,169 @@ end
 		return EnemiesModule
 	end)()
 
-        local ItemReplicationService = require(game:GetService("ReplicatedStorage"):WaitForChild("ItemReplicationService"))
-		local ItemConfig = require(game:GetService("ReplicatedStorage"):WaitForChild("ItemConfig"))
-		GetInventoryItems = function()local n={};local L=require(game:GetService("ReplicatedStorage"):WaitForChild("ItemReplicationService")).KEYS;for U,U in  ItemReplicationService :GetItems(L.QUANTITY)do if U.Value and U.Value>0 then local w,y=pcall(function()return  ItemConfig .match(U.ItemId):unwrap();end);if w and y and y.Display then local w,S=y.Display.Category,y.Index and y.Index.StorageKey;local K,R=if w=="Blox Fruit"then S or y.Display.Name or"ItemId_"..U.ItemId else y.Display.Name or S or"ItemId_"..U.ItemId, ItemReplicationService :ReadItem(L.MASTERY,U.ItemId,U.NetworkedUID)or 0;table.insert(n,{Name=K,Type=w,Count=U.Value,Mastery=R,ItemId=U.ItemId,UID=U.NetworkedUID});end;end;end;return n;end
+local ItemReplicationService = require(game:GetService("ReplicatedStorage"):WaitForChild("ItemReplicationService"))
+local ItemConfig = require(game:GetService("ReplicatedStorage"):WaitForChild("ItemConfig"))
+
+local function GetInventoryItems()
+	local result = {}
+	local keys = ItemReplicationService.KEYS
+	local okItems, items = pcall(function()
+		return ItemReplicationService:GetItems(keys.QUANTITY)
+	end)
+	if not okItems or type(items) ~= "table" then
+		return result
+	end
+	for _, entry in pairs(items) do
+		if type(entry) ~= "table" then
+			continue
+		end
+		local qty = tonumber(entry.Value) or 0
+		if qty <= 0 then
+			continue
+		end
+		local itemId = entry.ItemId
+		if itemId == nil then
+			continue
+		end
+		local okMatch, matched = pcall(function()
+			return ItemConfig.match(itemId):unwrap()
+		end)
+		if not okMatch or type(matched) ~= "table" or not matched.Display then
+			continue
+		end
+		local category = matched.Display.Category
+		local storageKey = matched.Index and matched.Index.StorageKey
+		local name
+		if category == "Blox Fruit" then
+			name = storageKey or matched.Display.Name or ("ItemId_" .. tostring(itemId))
+		else
+			name = matched.Display.Name or storageKey or ("ItemId_" .. tostring(itemId))
+		end
+		if type(name) ~= "string" or name == "" then
+			continue
+		end
+		local mastery = 0
+		pcall(function()
+			mastery = tonumber(ItemReplicationService:ReadItem(keys.MASTERY, itemId, entry.NetworkedUID)) or 0
+		end)
+		table.insert(result, {
+			Name = name,
+			Type = category,
+			Count = qty,
+			Mastery = mastery,
+			ItemId = itemId,
+			UID = entry.NetworkedUID,
+		})
+	end
+	return result
+end
 
 Module.Inventory = (function()
-    local Inventory = {
-        Unlocked = setmetatable({}, {
-            __index = function()
-                return false
-            end
-        }),
-        Mastery = setmetatable({}, {
-            __index = function()
-                return 0
-            end
-        }),
-        Count = setmetatable({}, {
-            __index = function()
-                return 0
-            end
-        }),
-        MasteryRequirements = {},
-        Items = {}
-    }
-    function Inventory:UpdateItem(item)
-        if type(item) ~= "table" or not item.Name then
-            return
-        end
-        if item.Type == "Wear" then
-            item.Type = "Accessory"
-        end
-        local name = item.Name
-        self.Items[name] = item
-        self.Unlocked[name] = true
-        if item.Count ~= nil then
-            local num = tonumber(item.Count)
-            self.Count[name] = (num and num > 0) and num or 0
-        else
-            self.Count[name] = 1
-        end
-        if item.Mastery ~= nil then
-            self.Mastery[name] = tonumber(item.Mastery) or 0
-        end
-        if item.MasteryRequirements ~= nil then
-            self.MasteryRequirements[name] = item.MasteryRequirements
-        end
-    end
-    function Inventory:Add()
-        local NewItems = GetInventoryItems() self.Items = {} for _, item in pairs(NewItems) do self:UpdateItem(item) end
-    end
-    function Inventory:Refresh()
-    local NewItems = GetInventoryItems()
-    local CurrentItems = {}
-    for _, item in pairs(NewItems) do
-        if type(item) == "table" and item.Name then
-            CurrentItems[item.Name] = true
-            self:UpdateItem(item)
-        end
-    end
-    for name in pairs(self.Items) do
-        if not CurrentItems[name] then
-            self.Items[name] = nil
-            self.Unlocked[name] = nil
-            self.Count[name] = nil
-            self.Mastery[name] = nil
-            self.MasteryRequirements[name] = nil
-        end
-    end
-end
-Inventory:Add()
-    task.spawn(function()
-        while task.wait(1) do
-            pcall(function()
-                Inventory:Refresh()
-            end)
-        end
-    end)
-    local function OnClientEvent(Method, ...)
-        if Method == "Notify" then
-            Module.Signals.Notify:Fire(...)
-        end
-    end
-    task.spawn(function()table.insert(Connections,CommE.OnClientEvent:Connect(OnClientEvent))end)
-    return Inventory
+	local function falseIndex()
+		return false
+	end
+	local function zeroIndex()
+		return 0
+	end
+
+	local Inventory = {
+		Unlocked = setmetatable({}, { __index = falseIndex }),
+		Mastery = setmetatable({}, { __index = zeroIndex }),
+		Count = setmetatable({}, { __index = zeroIndex }),
+		MasteryRequirements = {},
+		Items = {},
+	}
+
+	local function clearMaps()
+		table.clear(Inventory.Items)
+		table.clear(Inventory.MasteryRequirements)
+		for k in pairs(Inventory.Unlocked) do
+			rawset(Inventory.Unlocked, k, nil)
+		end
+		for k in pairs(Inventory.Count) do
+			rawset(Inventory.Count, k, nil)
+		end
+		for k in pairs(Inventory.Mastery) do
+			rawset(Inventory.Mastery, k, nil)
+		end
+	end
+
+	function Inventory:UpdateItem(item)
+		if type(item) ~= "table" or type(item.Name) ~= "string" or item.Name == "" then
+			return
+		end
+		local count = tonumber(item.Count) or 0
+		if count <= 0 then
+			return
+		end
+		local name = item.Name
+		local typ = item.Type
+		if typ == "Wear" then
+			typ = "Accessory"
+		end
+		local data = {
+			Name = name,
+			Type = typ,
+			Count = count,
+			Mastery = tonumber(item.Mastery) or 0,
+			ItemId = item.ItemId,
+			UID = item.UID,
+			MasteryRequirements = item.MasteryRequirements,
+		}
+		self.Items[name] = data
+		rawset(self.Unlocked, name, true)
+		rawset(self.Count, name, count)
+		rawset(self.Mastery, name, data.Mastery)
+		if item.MasteryRequirements ~= nil then
+			self.MasteryRequirements[name] = item.MasteryRequirements
+		end
+	end
+
+	function Inventory:Rebuild()
+		local newItems = GetInventoryItems()
+		clearMaps()
+		for _, item in ipairs(newItems) do
+			self:UpdateItem(item)
+		end
+	end
+
+	function Inventory:Add()
+		self:Rebuild()
+	end
+
+	function Inventory:Refresh()
+		self:Rebuild()
+	end
+
+	function Inventory:Has(name)
+		return rawget(self.Unlocked, name) == true and (rawget(self.Count, name) or 0) > 0
+	end
+
+	function Inventory:GetCount(name)
+		return rawget(self.Count, name) or 0
+	end
+
+	Inventory:Rebuild()
+
+	task.spawn(function()
+		while task.wait(1) do
+			pcall(function()
+				Inventory:Refresh()
+			end)
+		end
+	end)
+
+	local function OnClientEvent(Method, ...)
+		if Method == "Notify" then
+			Module.Signals.Notify:Fire(...)
+		end
+	end
+
+	task.spawn(function()
+		table.insert(Connections, CommE.OnClientEvent:Connect(OnClientEvent))
+	end)
+
+	return Inventory
 end)()
 
    Module.FastAttack = (function()
